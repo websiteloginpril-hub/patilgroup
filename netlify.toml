@@ -1,0 +1,447 @@
+# Netlify configuration for Patil Group Railway Infrastructure Website
+# Optimized for Next.js static export with comprehensive caching strategy
+
+[build]
+  publish = "out"
+  command = "npm run build"
+
+[build.environment]
+  NODE_ENV = "production"
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Increase file upload limit for resumes (10MB)
+  NETLIFY_FORMS_MAX_FILE_SIZE = "10485760"
+
+# ========================================
+# VIDEO FILES - Long cache with byte-range support
+# ========================================
+
+# Main hero videos
+[[headers]]
+  for = "/herovideo.webm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/webm"
+
+[[headers]]
+  for = "/herovideo.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+# Nationwide presence video
+[[headers]]
+  for = "/lppatil.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+# Section-specific videos
+[[headers]]
+  for = "/cmeherovideo.webm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/webm"
+
+[[headers]]
+  for = "/cmelogomoving.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+[[headers]]
+  for = "/sustainhero.webm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/webm"
+
+[[headers]]
+  for = "/productherovideo (1).webm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/webm"
+
+[[headers]]
+  for = "/ourlegacy1.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+[[headers]]
+  for = "/systemvideo.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+[[headers]]
+  for = "/innews.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+[[headers]]
+  for = "/djiproject.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+# Generic video patterns
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/mp4"
+
+[[headers]]
+  for = "/*.webm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/webm"
+
+[[headers]]
+  for = "/*.avi"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept-Ranges = "bytes"
+    Content-Type = "video/avi"
+
+# ========================================
+# IMAGE FILES - Long cache for static assets
+# ========================================
+
+# Logo and brand assets
+[[headers]]
+  for = "/pg.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/png"
+
+[[headers]]
+  for = "/makeindia.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/png"
+
+[[headers]]
+  for = "/indiaflag.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/png"
+
+# SVG files
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/svg+xml"
+
+# WebP images (modern format)
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/webp"
+
+# JPEG/JPG images
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/jpeg"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/jpeg"
+
+[[headers]]
+  for = "/*.JPG"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/jpeg"
+
+# PNG images
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/png"
+
+# Client logos directory
+[[headers]]
+  for = "/client logos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Management photos directory
+[[headers]]
+  for = "/management/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ========================================
+# PDF FILES - Proper headers for inline viewing
+# ========================================
+
+[[headers]]
+  for = "/Brochure/*.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "application/pdf"
+    Content-Disposition = "inline"
+    X-Frame-Options = "SAMEORIGIN"
+
+[[headers]]
+  for = "/*.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "application/pdf"
+    Content-Disposition = "inline"
+    X-Frame-Options = "SAMEORIGIN"
+
+# ========================================
+# FONT FILES - Long cache for custom fonts
+# ========================================
+
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "font/woff2"
+
+[[headers]]
+  for = "/*.woff"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "font/woff"
+
+# Clash Grotesk font files
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ========================================
+# NEXT.JS STATIC ASSETS - Long cache
+# ========================================
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/image*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ========================================
+# HTML PAGES - Short cache for content updates
+# ========================================
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=1800, must-revalidate"
+
+# ========================================
+# SECURITY & PERFORMANCE HEADERS
+# ========================================
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers (SAMEORIGIN allows PDF iframes from same domain)
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    
+    # Performance headers
+    X-DNS-Prefetch-Control = "on"
+    
+    # Enhanced Content Security Policy (migrated from Next.js config) - Updated for PDF support
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https: wss: ws:; media-src 'self' https: blob: data:; object-src 'none'; child-src 'self' blob: data:; worker-src 'self' blob:; frame-src 'self' data: blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; prefetch-src 'self'; navigate-to 'self' https:; upgrade-insecure-requests"
+    
+    # CSP Report-Only for testing
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https:; media-src 'self' https: blob: data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; report-uri /api/csp-report"
+    
+    # Browser feature permissions
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=()"
+    
+    # Cross-Origin headers
+    Cross-Origin-Embedder-Policy = "unsafe-none"
+    Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+    Cross-Origin-Resource-Policy = "cross-origin"
+
+# ========================================
+# REDIRECTS - Clean URLs and SEO
+# ========================================
+
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+# Railway-specific redirects for SEO
+[[redirects]]
+  from = "/railway-sleepers"
+  to = "/sleepers"
+  status = 301
+
+[[redirects]]
+  from = "/railway-fasteners"
+  to = "/fasteners"
+  status = 301
+
+[[redirects]]
+  from = "/metro-projects"
+  to = "/projects"
+  status = 301
+
+# ========================================
+# COMPRESSION & OPTIMIZATION
+# ========================================
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# ========================================
+# FORM HANDLING & NOTIFICATIONS
+# ========================================
+
+# Career application form notifications
+[[forms]]
+  name = "career-application"
+  
+  # Email notifications for form submissions (includes file attachments)
+  [forms.notifications]
+    email = "careers@patilgroup.com"
+    subject = "New Career Application - Patil Group"
+    include_attachments = true
+    
+  # Auto-reply to applicants
+  [forms.auto_reply]
+    enabled = true
+    subject = "Application Received - Patil Group Careers"
+    body = """
+    Dear Applicant,
+
+    Thank you for your interest in joining Patil Group!
+
+    We have successfully received your application and resume. Our HR team will review it carefully and contact you within 5-7 business days regarding the next steps in our recruitment process.
+
+    Your application details:
+    - Position: {{position}}
+    - Contact Email: {{email}}
+    - Phone: {{phone}}
+
+    If you have any questions, please feel free to contact us at careers@patilgroup.com
+
+    Best regards,
+    Human Resources Team
+    Patil Group
+    """
+
+# Whistleblower report form notifications
+[[forms]]
+  name = "whistleblower-report"
+  
+  # Email notifications for confidential reports
+  [forms.notifications]
+    email = "compliance@patilgroup.com"
+    subject = "Confidential Whistleblower Report - Patil Group"
+    
+  # Auto-reply to reporters
+  [forms.auto_reply]
+    enabled = true
+    subject = "Report Received - Patil Group Compliance"
+    body = """
+    Dear Reporter,
+
+    Thank you for bringing this matter to our attention through our Whistleblower Policy channel.
+
+    We have successfully received your confidential report. Please be assured that:
+
+    - Your report will be handled with complete confidentiality
+    - We take all concerns seriously and will investigate thoroughly
+    - You are protected against any form of retaliation
+    - Our compliance team will review and take appropriate action
+
+    Your report details:
+    - Contact Email: {{email}}
+    - Report Date: {{date}}
+
+    If you need to provide additional information or have questions about this process, please contact us at compliance@patilgroup.com
+
+    Thank you for helping us maintain our commitment to integrity and transparency.
+
+    Best regards,
+    Compliance Team
+    Patil Group
+    """
+
+
+# ========================================
+# PLUGINS
+# ========================================
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Optional: Lighthouse CI for performance monitoring
+# [[plugins]]
+#   package = "netlify-plugin-lighthouse"
+#   [plugins.inputs]
+#     output_path = "lighthouse"
+
+# ========================================
+# ENVIRONMENT-SPECIFIC SETTINGS
+# ========================================
+
+[context.production]
+  command = "npm run build:prod"
+
+[context.deploy-preview]
+  command = "npm run build"
+
+[context.branch-deploy]
+  command = "npm run build"
