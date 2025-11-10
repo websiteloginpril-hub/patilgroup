@@ -821,7 +821,7 @@ const SleepersPage = () => {
                   playsInline
                   className="w-full h-64 sm:h-80 object-cover"
                   preload="metadata"
-                  poster="/12_sleeper_types.jpg"
+                  poster="/sleepersslider.jpg"
                 />
               </div>
             </div>
@@ -844,7 +844,7 @@ const SleepersPage = () => {
                   playsInline
                   className="w-full h-full object-cover"
                   preload="metadata"
-                  poster="/12_sleeper_types.jpg"
+                  poster="/sleepersslider.jpg"
                 />
               </div>
             </div>

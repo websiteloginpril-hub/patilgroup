@@ -97,9 +97,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/pg.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/pg.png" />
         <link rel="shortcut icon" href="/pg.png" />
-        
-        {/* Preload critical resources */}
-        <link rel="preload" href="/pg.png" as="image" />
       </head>
       <body className={`${helvetica.className} ${helvetica.variable}`}>
         <LenisProvider>
