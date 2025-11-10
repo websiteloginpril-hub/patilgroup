@@ -7,8 +7,6 @@ import { PlusCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }: { 
   end: number; 
@@ -51,37 +49,45 @@ const AboutUsPage = () => {
   useGSAPAnimations();
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const philosophySection = document.getElementById('philosophy-section');
-    if (!philosophySection) return;
+    // Dynamically import GSAP to reduce initial bundle
+    const loadGSAPAnimation = async () => {
+      const { default: gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      
+      gsap.registerPlugin(ScrollTrigger);
+      const philosophySection = document.getElementById('philosophy-section');
+      if (!philosophySection) return;
 
-    const items = gsap.utils.toArray('.philosophy-item');
-    if (items.length === 0) return;
-    
-    gsap.set(items, { opacity: 0, y: 30 });
+      const items = gsap.utils.toArray('.philosophy-item');
+      if (items.length === 0) return;
+      
+      gsap.set(items, { opacity: 0, y: 30 });
 
-    const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: philosophySection,
-            start: 'top 60%',
-            toggleActions: 'play none none none',
-        }
-    });
+      const tl = gsap.timeline({
+          scrollTrigger: {
+              trigger: philosophySection,
+              start: 'top 60%',
+              toggleActions: 'play none none none',
+          }
+      });
 
-    tl.to(items, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.4,
-        duration: 0.8,
-        ease: 'power2.out',
-    });
+      tl.to(items, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.4,
+          duration: 0.8,
+          ease: 'power2.out',
+      });
 
-    return () => {
-        if (tl.scrollTrigger) {
-            tl.scrollTrigger.kill();
-        }
-        tl.kill();
+      return () => {
+          if (tl.scrollTrigger) {
+              tl.scrollTrigger.kill();
+          }
+          tl.kill();
+      };
     };
+
+    loadGSAPAnimation();
   }, []);
 
   return (

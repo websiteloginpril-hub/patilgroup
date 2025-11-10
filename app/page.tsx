@@ -15,12 +15,6 @@ import {
 } from "@/components/ui/carousel"
 import SwitchingText from '@/components/SwitchingText';
 import HLSVideo from '@/components/HLSVideo';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const projects = [
   {
@@ -358,7 +352,8 @@ export default function Home() {
             muted
             playsInline
             className="w-full h-full object-cover"
-            preload="auto"
+            preload="metadata"
+            poster="/pg.png"
           />
           {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-black/60"></div>

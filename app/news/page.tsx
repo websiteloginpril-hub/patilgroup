@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
 import Navbar from '@/components/Navbar';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { motion, Variants } from 'framer-motion';
 import HLSVideo from '@/components/HLSVideo';
 
 const cards = [
@@ -67,68 +66,6 @@ const cards = [
     bullets: [],
   },
 ];
-
-// Animation variants
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 60,
-    scale: 0.95,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut" as const,
-    },
-  },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut" as const,
-    },
-  },
-};
-
-const imageVariants: Variants = {
-  rest: { scale: 1, filter: "brightness(1)" },
-  hover: { 
-    scale: 1.1, 
-    filter: "brightness(1.1)",
-    transition: {
-      duration: 0.4,
-      ease: "easeOut" as const,
-    },
-  },
-};
-
-const textVariants: Variants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut" as const,
-      delay: 0.2,
-    },
-  },
-};
 
 const NewsPage = () => {
   useGSAPAnimations();
@@ -208,18 +145,9 @@ const NewsPage = () => {
       <section className="relative py-8 sm:py-12 md:py-16 lg:py-20">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.h2 
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-clash font-bold mb-6 sm:mb-8 md:mb-10 text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] text-center lg:text-left"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 0.8, 
-              ease: "easeOut" as const
-            }}
-          >
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-clash font-bold mb-6 sm:mb-8 md:mb-10 text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] text-center lg:text-left fade-in-section">
             Our Latest 
-          </motion.h2>
+          </h2>
 
           {/* Mobile Auto Carousel */}
           <div className="lg:hidden">
@@ -387,132 +315,65 @@ const NewsPage = () => {
             </div>
           </div>
 
-          {/* Desktop Layout - Vertical Stack with Animations */}
+          {/* Desktop Layout - Vertical Stack with CSS Animations */}
           <div className="hidden lg:block">
-            <motion.div 
-              className="space-y-8"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
+            <div className="space-y-8 stagger-children">
               {cards.map((newsCard, cardIndex) => (
-                <motion.div 
+                <div 
                   key={cardIndex}
-                  variants={cardVariants}
-                  whileHover="hover"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden cursor-pointer group"
+                  className="bg-white rounded-xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden cursor-pointer group stagger-item transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 items-start">
                     {/* Left image with hover effects */}
-                    <motion.div 
-                      className="md:col-span-1 overflow-hidden relative"
-                      initial="rest"
-                      whileHover="hover"
-                      variants={imageVariants}
-                    >
-                      <motion.img 
+                    <div className="md:col-span-1 overflow-hidden relative">
+                      <img 
                         src={newsCard.image} 
-                        alt={newsCard.title} 
-                        className="w-full h-[200px] md:h-[240px] object-cover"
-                        variants={imageVariants}
+                        alt={newsCard.title}
+                        loading="lazy"
+                        className="w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
                       />
                       {/* Overlay gradient that appears on hover */}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-[#F2913F]/20 to-[#8A393B]/20"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </motion.div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#F2913F]/20 to-[#8A393B]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
                     
                     {/* Right content with staggered text animations */}
-                    <motion.div 
-                      className="md:col-span-2 p-6 md:p-8"
-                      variants={textVariants}
-                    >
-                      <motion.h3 
-                        className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] mb-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: cardIndex * 0.1 }}
-                      >
+                    <div className="md:col-span-2 p-6 md:p-8">
+                      <h3 className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] mb-4 fade-text">
                         {newsCard.title}
-                      </motion.h3>
+                      </h3>
                       
-                      <motion.div 
-                        className="space-y-3"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: cardIndex * 0.1 + 0.2 }}
-                      >
+                      <div className="space-y-3">
                         {newsCard.paragraphs.map((paragraph, paragraphIndex) => (
-                          <motion.p 
+                          <p 
                             key={paragraphIndex} 
-                            className="text-gray-700 text-base md:text-lg leading-relaxed"
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ 
-                              duration: 0.5, 
-                              delay: cardIndex * 0.1 + 0.3 + paragraphIndex * 0.1 
-                            }}
+                            className="text-gray-700 text-base md:text-lg leading-relaxed fade-paragraph"
                           >
                             {paragraph}
-                          </motion.p>
+                          </p>
                         ))}
                         
                         {newsCard.bullets.length > 0 && (
-                          <motion.div 
-                            className="mt-4"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: cardIndex * 0.1 + 0.5 }}
-                          >
+                          <div className="mt-4">
                             <p className="text-gray-900 font-semibold text-base md:text-lg mb-3">Key innovations include:</p>
                             <ul className="space-y-2 text-gray-700 text-base md:text-lg">
                               {newsCard.bullets.map((bullet, bulletIndex) => (
-                                <motion.li 
+                                <li 
                                   key={bulletIndex} 
-                                  className="flex items-start"
-                                  initial={{ opacity: 0, x: -15 }}
-                                  whileInView={{ opacity: 1, x: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{ 
-                                    duration: 0.4, 
-                                    delay: cardIndex * 0.1 + 0.6 + bulletIndex * 0.1 
-                                  }}
+                                  className="flex items-start fade-paragraph"
                                 >
-                                  <motion.span 
-                                    className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0"
-                                    initial={{ scale: 0 }}
-                                    whileInView={{ scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ 
-                                      duration: 0.3, 
-                                      delay: cardIndex * 0.1 + 0.7 + bulletIndex * 0.1,
-                                      type: "spring",
-                                      stiffness: 200
-                                    }}
-                                  />
+                                  <span className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0" />
                                   <span>{bullet}</span>
-                                </motion.li>
+                                </li>
                       ))}
                     </ul>
-                          </motion.div>
+                          </div>
                 )}
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
               </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
