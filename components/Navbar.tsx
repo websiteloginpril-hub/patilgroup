@@ -135,7 +135,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-[103px]">
           {/* Logo */}
           <div className="flex items-center animate-fadeInLeft -ml-2 sm:-ml-4 md:-ml-6 lg:-ml-10">
-              <Link href="/" onMouseEnter={() => setIsAboutMenuOpen(false)}>
+              <Link href="/" onMouseEnter={() => setIsAboutMenuOpen(false)} aria-label="Patil Group Home">
                 <picture>
                   <source srcSet="/pg.png" type="image/png" />
                   <img
