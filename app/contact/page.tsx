@@ -9,7 +9,7 @@ const ContactPage = () => {
     <div className="bg-black text-white min-h-screen">
       {/* Image Section */}
       <div className="relative h-[50vh] hero-section">
-        <img src="/seework2.jpg" alt="Contact us background" className="w-full h-full object-cover hero-image" />
+        <img src="/seework2.jpg" alt="Contact us background" loading="eager" className="w-full h-full object-cover hero-image" />
         <div className="absolute bottom-0 left-0 p-8 hero-content">
           <h1 className="hero-title font-bold text-white px-4">Contact</h1>
         </div>

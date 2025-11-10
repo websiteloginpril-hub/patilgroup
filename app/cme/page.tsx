@@ -123,7 +123,7 @@ const CMEPage = () => {
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#F2913F] mb-3 sm:mb-4">Our Key Goals</h2>
               <p className="text-base sm:text-lg font-semibold text-[#8A393B] mb-4">ZERO-BAD Approach</p>
               <div className="relative flex items-center overflow-visible">
-                <img src="/zero%20cme%20element.png" alt="Zero element" className="absolute left-0 top-1/2 -translate-y-1/2 h-36 sm:h-44 md:h-56 w-auto select-none z-0 opacity-95" />
+                <img src="/zero%20cme%20element.png" alt="Zero element" loading="lazy" className="absolute left-0 top-1/2 -translate-y-1/2 h-36 sm:h-44 md:h-56 w-auto select-none z-0 opacity-95" />
                 <div className="relative z-10 flex-1 space-y-3 ml-24 sm:ml-32 md:ml-40">
                   <div className="bg-[#8A393B] text-white rounded-lg px-5 py-2.5 text-base sm:text-lg font-semibold w-full max-w-sm">Breakdown</div>
                   <div className="bg-[#F2913F] text-black rounded-lg px-5 py-2.5 text-base sm:text-lg font-semibold w-full max-w-sm">Accidents</div>
@@ -142,7 +142,7 @@ const CMEPage = () => {
 
             {/* Right column image */}
             <div className="flex justify-center md:justify-end">
-              <img src="/cmenewperson.jpg" alt="CME shopfloor" className="w-full max-w-md sm:max-w-lg md:max-w-xl rounded-md object-cover" />
+              <img src="/cmenewperson.jpg" alt="CME shopfloor" loading="lazy" className="w-full max-w-md sm:max-w-lg md:max-w-xl rounded-md object-cover" />
             </div>
           </div>
         </div>

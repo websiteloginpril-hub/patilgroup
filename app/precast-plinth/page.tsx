@@ -20,7 +20,7 @@ const PrecastPlinthPage = () => {
       <div className="relative hero-section">
         {/* Mobile Layout */}
         <div className="md:hidden h-screen relative hero-image">
-          <img src="/Precast plinth.png" alt="Precast Plinth" className="h-full w-full object-cover z-0" />
+          <img src="/Precast plinth.png" alt="Precast Plinth" loading="eager" className="h-full w-full object-cover z-0" />
           <div className="absolute inset-0 bg-black/50 z-10"></div>
           
           <div className="absolute inset-0 flex items-center justify-start z-20 hero-content">
@@ -38,7 +38,7 @@ const PrecastPlinthPage = () => {
         
         {/* Desktop Layout */}
         <div className="hidden md:block relative h-screen hero-image">
-          <img src="/Precast plinth.png" alt="Precast Plinth" className="h-full w-full object-cover z-0" />
+          <img src="/Precast plinth.png" alt="Precast Plinth" loading="eager" className="h-full w-full object-cover z-0" />
           {/* Overlay */}
           <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
           

@@ -10,7 +10,7 @@ const BallastlessTrackUrbanMetroPage = () => {
       <div className="relative h-screen max-h-screen overflow-hidden hero-section">
         {/* Mobile Layout */}
         <div className="md:hidden h-full relative hero-image">
-          <img src="/Ballestless generated image.png" alt="Ballastless Track Urban Metro" className="h-full w-full object-cover z-0" />
+          <img src="/Ballestless generated image.png" alt="Ballastless Track Urban Metro" loading="eager" className="h-full w-full object-cover z-0" />
           <div className="absolute inset-0 bg-black/50 z-10"></div>
           
           <div className="absolute inset-0 flex items-center justify-start z-20 py-8 hero-content">
@@ -28,7 +28,7 @@ const BallastlessTrackUrbanMetroPage = () => {
         
         {/* Desktop Layout */}
         <div className="hidden md:block relative h-full hero-image">
-          <img src="/Ballestless generated image.png" alt="Ballastless Track Urban Metro" className="h-full w-full object-cover z-0" />
+          <img src="/Ballestless generated image.png" alt="Ballastless Track Urban Metro" loading="eager" className="h-full w-full object-cover z-0" />
           {/* Overlay */}
           <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
           

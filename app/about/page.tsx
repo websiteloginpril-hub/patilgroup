@@ -285,7 +285,7 @@ const AboutUsPage = () => {
         {/* Mobile Layout */}
         <div className="md:hidden px-4">
           <div className="bg-gradient-to-r from-orange-50 to-green-50 rounded-2xl p-6 mx-auto max-w-sm">
-            <img src="/makeindia.png" alt="Make in India" className="h-16 sm:h-24 mx-auto mb-4" />
+            <img src="/makeindia.png" alt="Make in India" loading="lazy" className="h-16 sm:h-24 mx-auto mb-4" />
             <p className="text-lg sm:text-2xl font-bold text-black leading-tight">Installed across India</p>
             <div
               className="h-1.5 mt-3 mx-auto rounded-full"
@@ -300,9 +300,9 @@ const AboutUsPage = () => {
         {/* Desktop Layout - Original */}
         <div className="hidden md:block">
           <div className="flex justify-center items-center max-w-7xl mx-auto max-w-full w-auto">
-            <img src="/indiaflag.png" alt="Indian Flag" className="w-[636px] h-96" />
-            <img src="/makeindia.png" alt="Make in India" className="h-56 mx-8" />
-            <img src="/indiaflag.png" alt="Indian Flag" className="w-[636px] h-96 transform scale-x-[-1]" />
+            <img src="/indiaflag.png" alt="Indian Flag" loading="lazy" className="w-[636px] h-96" />
+            <img src="/makeindia.png" alt="Make in India" loading="lazy" className="h-56 mx-8" />
+            <img src="/indiaflag.png" alt="Indian Flag" loading="lazy" className="w-[636px] h-96 transform scale-x-[-1]" />
           </div>
           <div className="mt-12">
             <p className="text-5xl font-semibold text-black">Installed across India</p>
