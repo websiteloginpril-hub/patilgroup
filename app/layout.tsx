@@ -1,42 +1,9 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import LenisProvider from '@/components/LenisProvider';
-
-const helvetica = localFont({
-  src: [
-    {
-      path: '../fonts/helvetica-light-587ebe5a59211.ttf',
-      weight: '300',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/Helvetica.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/Helvetica-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/Helvetica-Oblique.ttf',
-      weight: '400',
-      style: 'italic',
-    },
-    {
-      path: '../fonts/Helvetica-BoldOblique.ttf',
-      weight: '700',
-      style: 'italic',
-    },
-  ],
-  display: 'swap',
-  variable: '--font-helvetica',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patilgroup.com'),
@@ -98,7 +65,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/pg.png" />
         <link rel="shortcut icon" href="/pg.png" />
       </head>
-      <body className={`${helvetica.className} ${helvetica.variable}`}>
+      <body className="font-sans">
         <LenisProvider>
           <Navbar />
           <main>{children}</main>
