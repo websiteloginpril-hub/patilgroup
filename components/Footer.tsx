@@ -14,21 +14,18 @@ const Footer = () => {
 
   return (
     <footer className="bg-black text-white">
-      {/* Contact headline above address */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 md:pt-16">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-extrabold leading-tight">
-          
-        </h2>
-        
-      </div>
-
       {/* Pre-footer section */}
-      <div className="bg-black pt-4 sm:pt-6 md:pt-8">
+      <div className="bg-black pt-8 sm:pt-12 md:pt-16">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center">
           <div className="mb-6 md:mb-0 md:pr-64 lg:pr-96 xl:pr-[36rem]">
-            <div>
-              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold">6-3-1342/4 Raj Bhavan Rd, Raj Bhavan Quarters Colony Somajiguda,<br />Hyderabad, Telangana 500082</h3>
-            </div>
+            <address className="not-italic">
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold">
+                6-3-1342/4 Raj Bhavan Rd,<br />
+                Raj Bhavan Quarters Colony,<br />
+                Somajiguda, Hyderabad,<br />
+                Telangana 500082, India
+              </p>
+            </address>
             <div className="flex items-center gap-4 mt-6">
               <Link href="/contact" className="inline-block">
                 <button className="bg-[#F2913F] text-black font-bold py-2 sm:py-3 px-6 sm:px-8 rounded-full text-xs sm:text-sm hover:bg-orange-400 transition-colors">
