@@ -13,10 +13,8 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
   },
-  // Increase body size limit for file uploads (resume files up to 10MB)
-  serverActions: {
-    bodySizeLimit: '10mb',
-  },
+  // Note: File upload size limits are configured in netlify.toml
+  // Netlify Forms handles resume uploads with 10MB limit
   // Headers are handled by netlify.toml for better static export compatibility
 };
 
