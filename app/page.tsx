@@ -180,6 +180,7 @@ const OurProjectsSection = () => {
       <Carousel
         opts={{ align: "start", loop: true }}
         className="w-full"
+        aria-label="Our Projects Carousel"
       >
         <CarouselContent className="-ml-4 px-2.5">
           {projects.map((project, index) => (

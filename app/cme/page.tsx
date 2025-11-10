@@ -405,6 +405,7 @@ const CMEPage = () => {
                 className="w-full h-full"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                aria-label="CME Awards Carousel"
               >
                 <CarouselContent className="h-full">
                   <CarouselItem className="h-full">

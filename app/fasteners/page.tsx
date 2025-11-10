@@ -458,6 +458,7 @@ const FastenersPage = () => {
                   className="w-full h-full"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
+                  aria-label="W Clamp Images Carousel"
                 >
                   <CarouselContent className="h-full">
                     <CarouselItem className="h-full">

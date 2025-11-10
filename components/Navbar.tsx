@@ -159,7 +159,12 @@ const Navbar = () => {
               setIsProductsMenuOpen(false);
               setIsSystemsMenuOpen(false);
             }}>
-                <button className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F] flex items-center gap-1">
+                <button 
+                  className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F] flex items-center gap-1"
+                  aria-expanded={isAboutMenuOpen}
+                  aria-haspopup="true"
+                  aria-label="Know us menu"
+                >
                   Know us
                 <ChevronDown size={16} className={`transition-transform duration-300 ${isAboutMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
@@ -178,7 +183,12 @@ const Navbar = () => {
                 setIsProductsMenuOpen(false);
                 setIsSystemsMenuOpen(true);
               }}>
-                <Link href="/systems" className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F] flex items-center gap-1">
+                <Link 
+                  href="/systems" 
+                  className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F] flex items-center gap-1"
+                  aria-expanded={isSystemsMenuOpen}
+                  aria-haspopup="true"
+                >
                   Systems
                   <ChevronDown size={16} className={`transition-transform duration-300 ${isSystemsMenuOpen ? 'rotate-180' : ''}`} />
                 </Link>
@@ -189,7 +199,12 @@ const Navbar = () => {
               setIsSystemsMenuOpen(false);
               setIsProductsMenuOpen(true);
             }}>
-                <Link href="/products" className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F] flex items-center gap-1">
+                <Link 
+                  href="/products" 
+                  className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F] flex items-center gap-1"
+                  aria-expanded={isProductsMenuOpen}
+                  aria-haspopup="true"
+                >
                 Products
                 <ChevronDown size={16} className={`transition-transform duration-300 ${isProductsMenuOpen ? 'rotate-180' : ''}`} />
                 </Link>
