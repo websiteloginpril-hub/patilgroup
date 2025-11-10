@@ -39,6 +39,7 @@ const helvetica = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://patilgroup.com'),
   title: 'Patil Group - Delivering Track Solutions | Railway Infrastructure',
   description: 'Trusted leader in railway infrastructure, delivering high-quality track solutions for urban and interurban transport. Made in India with over 50 years of expertise.',
   icons: {
