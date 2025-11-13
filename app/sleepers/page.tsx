@@ -57,8 +57,7 @@ const SleepersPage = () => {
         {/* Desktop Layout */}
         <div className="hidden md:block relative h-screen">
           <HLSVideo
-            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/9da4c69637586c9e8fc64a9688d60017/manifest/video.m3u8
-"
+            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/9da4c69637586c9e8fc64a9688d60017/manifest/video.m3u8"
             fallbackSrc="/1.mp4"
             autoPlay
             muted
@@ -837,8 +836,7 @@ const SleepersPage = () => {
             <div className="slide-in-right">
               <div className="relative rounded-lg overflow-hidden">
                 <HLSVideo
-                  src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/f20f1b2d05a66f0e26bb600fc9e00a74/manifest/video.m3u8
-"
+                  src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/f20f1b2d05a66f0e26bb600fc9e00a74/manifest/video.m3u8"
                   fallbackSrc="/2.mp4"
                   autoPlay
                   muted

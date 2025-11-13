@@ -118,11 +118,11 @@ const PatilRhedaSystemPage = () => {
                 <ul className="space-y-2 text-black fluid-body">
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                    Mumbai Metro (tunnel sections)
+                    17.79 kms of station aprons all over India
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                    Chennai Metro (viaduct zones)
+                    17.38 kms of tunnel segments
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>

@@ -161,26 +161,8 @@ const PrecastPlinthPage = () => {
             {/* Content */}
             <div className="w-full md:w-1/2">
               <h3 className="text-[#8A393B] fluid-h3 font-bold mb-6">
-                This system has been used in:
+                This system will be implemented soon over different parts of the nation.
               </h3>
-              <ul className="space-y-2 text-black fluid-body">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                  Mumbai Metro Line 2A
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                  Bangalore Metro Reach 5
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                  Pune Metro
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                  Ahmedabad Metro
-                </li>
-              </ul>
             </div>
           </div>
         </div>
