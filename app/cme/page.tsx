@@ -59,7 +59,7 @@ const CMEPage = () => {
       <section className="relative h-screen hero-section">
         <div className="absolute inset-0 hero-video">
           <HLSVideo
-            src="https://customer-5j20f6geb6l5wmm2.cloudflarestream.com/012c31e4679d5efd6ce8fc4e507dccca/manifest/video.m3u8"
+            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/a0536fc38f3e4f9f77a222e3c785c7c7/manifest/video.m3u8"
             fallbackSrc="/cmeherovideo.mp4"
             autoPlay
             loop

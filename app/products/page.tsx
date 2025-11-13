@@ -49,7 +49,7 @@ const ProductsPage = () => {
         {/* Background Video for parallax */}
         <div className="absolute inset-0 w-full h-full hero-video">
           <HLSVideo
-            src="https://customer-5j20f6geb6l5wmm2.cloudflarestream.com/7f508f8619fc694d88c228bc4df4c260/manifest/video.m3u8"
+            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/b85fa33f9ac6e10de8a968e15e4f6467/manifest/video.m3u8"
             fallbackSrc="/productherovideo.mp4"
             autoPlay
             loop
