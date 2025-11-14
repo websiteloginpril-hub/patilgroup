@@ -344,7 +344,11 @@ const NewsPage = () => {
                         src={newsCard.image} 
                         alt={newsCard.title}
                         loading="lazy"
-                        className="w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                        className={
+                            newsCard.image.includes("indianrailways")
+                              ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                              : "w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                          }
                       />
                       {/* Overlay gradient that appears on hover */}
                       <div className="absolute inset-0 bg-gradient-to-r from-[#F2913F]/20 to-[#8A393B]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
