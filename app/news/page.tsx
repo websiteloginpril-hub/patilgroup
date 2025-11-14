@@ -8,6 +8,20 @@ import HLSVideo from '@/components/HLSVideo';
 
 const cards = [
   {
+    image: '/indianrailways.jpg',
+    title: 'Honoured by CII for our top railway innovation',
+    paragraphs: [
+      "Patil Group has been recognised by the Confederation of Indian Industry (CII) as one of the top 10 Indian innovations in the railway sector for its indigenous Stricter Tolerance Track Fastening System, designed to enhance safety and ride comfort on semi-high-speed corridors including Vande Bharat routes.",
+    ],
+    bullets: [
+      'Maintains precise ±1 mm track gauge for superior stability',
+      'Proven performance with over a year of sustained improvement on live tracks',
+      'No change in existing sleeper or rail components required',
+      'Enhances ride quality, reduces track irregularities, and improves safety',
+      'Supports the Viksit Bharat vision under Atmanirbhar Bharat',
+    ],
+  },
+  {
     image: '/highspeedtrain.jpg',
     title: 'Modern fastening for high-speed trains',
     paragraphs: [
@@ -330,7 +344,11 @@ const NewsPage = () => {
                         src={newsCard.image} 
                         alt={newsCard.title}
                         loading="lazy"
-                        className="w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                        className={
+                            newsCard.image.includes("indianrailways")
+                              ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                              : "w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                          }
                       />
                       {/* Overlay gradient that appears on hover */}
                       <div className="absolute inset-0 bg-gradient-to-r from-[#F2913F]/20 to-[#8A393B]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
