@@ -25,8 +25,8 @@ const projectsData = [
     client: 'Delhi Metro Rail Corporation (DMRC)',
     principalClient: 'DMRC',
     specs: [
-      'Fastener Types: 2-hole and 4-hole elastic rail clip systems',
-      'Models Used: Vossloh 336 (standard), ADFF-6 (for vibration-sensitive underground zones)',
+      'Fastener Types: 2&4 Bolts elastic rail clip systems',
+      'Models Used: FS 336 (standard), ADFF-6 (for vibration-sensitive underground zones)',
       'Compliance: RDSO standards (IRS-T-39), ISO 2631 (vibration control), and Metro safety norms',
       'Application: Suitable for ballastless and ballasted track sections across the corridor',
     ],
@@ -40,7 +40,7 @@ const projectsData = [
     client: 'Delhi Metro Rail Corporation (DMRC)',
     principalClient: 'DMRC',
     specs: [
-      'Fastener Configurations: 4-anchor & 2-anchor plate systems',
+      'Fastener Configurations: 2&4 Anchor Bolts FS 336 plate systems',
       'Quantities Supplied: ~2.13 lakh unit sets',
       'Usage Context: Ballastless track designed for speeds up to 110km/h, handling axle loads of up to 20t',
       'Compliance: Pre-approved by Ministry of Railways, tested to RDSO/DMRC safety criteria per Metro footing Annexure C-II standards',
@@ -55,7 +55,7 @@ const projectsData = [
     client: 'Paras Railtech Pvt. Ltd.',
     principalClient: 'Metro Authority, Kolkata',
     specs: [
-      'Fastener Types: 2-hole and 4-hole elastic clip systems',
+      'Fastener Types: 2&4 Bolts elastic clip systems',
       'Quantities Supplied: 38,317 (2-hole) + 28,493 (4-hole) sets',
       'Application: Compatible with tunnel, elevated viaduct, and station slab tracks',
       'Compliance: Supplied as per Metro safety and vibration standards, RDSO-compliant',
@@ -70,7 +70,7 @@ const projectsData = [
     client: 'KEC International Ltd.',
     principalClient: 'Gujarat Metro Rail Corporation (GMRCL)',
     specs: [
-      'Fastener Types: 2-hole and 4-hole elastic systems',
+      'Fastener Types: 2&4 Bolts elastic systems',
       'Quantities Supplied: 1,80,000 (2-hole) + 20,500 (4-hole) sets',
       'Application: Engineered for elevated track sections and viaduct spans',
       'Standards: RDSO-certified systems suitable for high-speed, low-vibration metro operations',
@@ -85,7 +85,7 @@ const projectsData = [
     client: 'KEC International Ltd.',
     principalClient: 'Mumbai Metropolitan Region Development Authority (MMRDA)',
     specs: [
-      'Fastener Types: 2-hole and 4-hole elastic clip sets',
+      'Fastener Types: 2&4 Bolts elastic clip sets',
       'Quantities Supplied: 58,218 (2-hole) + 18,697 (4-hole) sets',
       'Application: Designed for elevated viaduct track sections under heavy axle load',
       'Standards: Fully compliant with RDSO and MMRDA performance norms for metro systems',
@@ -100,7 +100,7 @@ const projectsData = [
     client: 'Paras Railtech Pvt. Ltd.',
     principalClient: 'DMRC',
     specs: [
-      'Fastener Types: 2-hole and 4-hole elastic systems',
+      'Fastener Types: 2&4 Bolts elastic systems',
       'Quantities Supplied: 56,420 (2-hole) + 29,800 (4-hole) sets',
       'Application: Suitable for metro tracks including elevated and airport corridor sections',
       'Standards: Conforms to RDSO and DMRC metro infrastructure guidelines',
@@ -115,7 +115,7 @@ const projectsData = [
     client: 'SEW-VSE Joint Venture',
     principalClient: 'Maharashtra Metro Rail Corporation Ltd. (Maha Metro)',
     specs: [
-      'Fastener Types: 2-hole and 4-hole clip-based systems',
+      'Fastener Types: 2&4 Bolts clip-based systems',
       'Quantities Supplied: 88,000 (2-hole) + 12,500 (4-hole) sets',
       'Application: Elevated viaduct and station track structures',
       'Standards: Designed and supplied as per Maha Metro and RDSO guidelines',
