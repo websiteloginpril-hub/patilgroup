@@ -346,7 +346,7 @@ const NewsPage = () => {
                         loading="lazy"
                         className={
                             newsCard.image.includes("indianrailways")
-                              ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                              ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-90 group-hover:brightness-110"
                               : "w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
                           }
                       />
