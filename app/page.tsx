@@ -181,7 +181,7 @@ const OurProjectsSection = () => {
         <CarouselContent className="-ml-4 px-2.5">
           {projects.map((project, index) => (
             <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 project-card">
-              <div className="group">
+              <div className="group rounded-2xl overflow-hidden">
                 <div className="overflow-hidden rounded-2xl mb-5 shadow-lg transform transition-transform duration-300 group-hover:-translate-y-2">
                   <Image
                     src={project.image}
