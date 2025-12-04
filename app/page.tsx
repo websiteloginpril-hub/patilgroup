@@ -134,16 +134,18 @@ const GradientLine = () => {
       style={{
         top: '50%',
         transform: 'translateY(-50%)',
-        left: 'calc(max(50% - 640px + 350px, 350px))',
+        width: '100%',
       }}
     >
       <div 
-        className={`h-full gradient-line-rtl gradient-line-md transition-all duration-1000 ease-out ${
+        className={`h-full gradient-line-rtl transition-all duration-1000 ease-out ${
           inView ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
         }`}
         style={{
           transformOrigin: 'right',
           height: '100%',
+          width: 'clamp(200px, 60vw, 864px)',
+          marginLeft: 'auto',
         }}
       />
     </div>
@@ -179,7 +181,7 @@ const OurProjectsSection = () => {
         <CarouselContent className="-ml-4 px-2.5">
           {projects.map((project, index) => (
             <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 project-card">
-              <div className="group">
+              <div className="group rounded-2xl overflow-hidden">
                 <div className="overflow-hidden rounded-2xl mb-5 shadow-lg transform transition-transform duration-300 group-hover:-translate-y-2">
                   <Image
                     src={project.image}
@@ -360,16 +362,16 @@ export default function Home() {
         </div>
 
         {/* Hero Content Overlay - Compact spacing */}
-        <div className={`relative z-10 flex h-full flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 hero-content`}>
+        <div className={`absolute inset-0 z-10 flex flex-col items-center text-center px-4 sm:px-6 lg:px-8 hero-content`} style={{ justifyContent: 'center', paddingTop: 'clamp(6rem, 15vh, 10rem)' }}>
           {/* Main Heading - First Animation */}
-          <h1 className={`mb-6 transition-all duration-1000 ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <div className="text-white text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-1">
-              WORLD’S
+          <h1 className={`mb-4 sm:mb-5 md:mb-6 transition-all duration-1000 ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <div className="text-white text-3xl sm:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-1">
+              WORLD'S
             </div>
-            <div className="text-[#F2913F] text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-1">
+            <div className="text-[#F2913F] text-3xl sm:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-1">
               LARGEST SLEEPER
             </div>
-            <div className="text-white text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+            <div className="text-white text-3xl sm:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-4 sm:mb-5 md:mb-6">
               MANUFACTURER
             </div>
             {/* Stats removed as requested */}
@@ -377,7 +379,7 @@ export default function Home() {
 
           {/* Stats Section - Second Animation (after 800ms) */}
           <div 
-            className={`grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-5 md:mb-6 max-w-4xl w-full transition-all duration-1000`}
+            className={`grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4 md:mb-5 max-w-4xl w-full transition-all duration-1000`}
             style={{
               opacity: showText ? 1 : 0,
               transform: showText ? 'translateY(0)' : 'translateY(20px)',
@@ -386,24 +388,24 @@ export default function Home() {
           >
             {/* Stat 1 */}
             <div className="flex flex-col items-center">
-              <div className="text-white text-xl sm:text-3xl md:text-4xl font-bold mb-1">
+              <div className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-1">
                 {showText ? <CountUp end={50} duration={2} suffix="+" delay={0.8} /> : '0+'}
               </div>
-              <div className="text-[#F2913F] text-base sm:text-lg font-medium">years on the job</div>
+              <div className="text-[#F2913F] text-sm sm:text-base font-medium">years on the job</div>
             </div>
 
             {/* Stat 3 */}
             <div className="flex flex-col items-center">
-              <div className="text-white text-xl sm:text-3xl md:text-4xl font-bold mb-1">
+              <div className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-1">
                 {showText ? <CountUp end={400000} duration={2} separator="," suffix="+" delay={0.8} /> : '0+'}
               </div>
-              <div className="text-[#F2913F] text-base sm:text-lg font-medium">Safe Sleepers per year</div>
+              <div className="text-[#F2913F] text-sm sm:text-base font-medium">Safe Sleepers per year</div>
             </div>
           </div>
 
           {/* Tagline - Third Animation (after 1600ms) */}
           <div 
-            className={`text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight pb-2 sm:pb-3 md:pb-4 transition-all duration-1000`}
+            className={`text-base sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight pb-2 sm:pb-3 transition-all duration-1000`}
             style={{
               opacity: showText ? 1 : 0,
               transform: showText ? 'translateY(0)' : 'translateY(20px)',

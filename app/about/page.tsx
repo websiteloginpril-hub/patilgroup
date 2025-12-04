@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import { PlusCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
@@ -323,39 +322,6 @@ const AboutUsPage = () => {
         </div>
       </section>
       
-      <div className="border-t border-gray-200"></div>
-
-      {/* Responsive Clientele and Presence Section */}
-      <section className="py-10 sm:py-16 md:py-24 bg-white fade-in-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 text-center">
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
-                <span className="text-[#8A393B]">Our </span>
-                <span className="text-[#F2913F]">Clientele</span>
-              </h2>
-              <Link href="/our-clientele" className="inline-flex items-center text-lg sm:text-xl md:text-2xl text-black group">
-                View
-                <span className="ml-2 sm:ml-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#8A393B] text-[#8A393B] group-hover:bg-[#8A393B] group-hover:text-white transition-colors">
-                  <ArrowRight size={16} className="sm:w-5 sm:h-5" />
-                </span>
-              </Link>
-            </div>
-            <div className="space-y-4 sm:space-y-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
-                <span className="text-[#8A393B]">Our </span>
-                <span className="text-[#F2913F]">Presence</span>
-              </h2>
-              <Link href="/our-presence" className="inline-flex items-center text-lg sm:text-xl md:text-2xl text-black group">
-                View
-                <span className="ml-2 sm:ml-3 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#8A393B] text-[#8A393B] group-hover:bg-[#8A393B] group-hover:text-white transition-colors">
-                  <ArrowRight size={16} className="sm:w-5 sm:h-5" />
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
