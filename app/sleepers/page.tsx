@@ -132,23 +132,29 @@ const SleepersPage = () => {
       </div>
 
       {/* Our Composite Sleeper Range Section */}
-      <section className="bg-white py-8 sm:py-10 md:py-12 relative">
-        {/* Right Edge Gradient Line */}
-        <div 
-          className="absolute hidden lg:block fade-in-section gradient-line-rtl gradient-line-lg"
-          style={{
-            height: '28px',
-            right: '0px',
-            top: '60px'
-          }}
-        />
-        
+      <section className="bg-white py-8 sm:py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          {/* Range Header */}
+          {/* Range Header with Banner Layout */}
           <div className="fade-in-section mb-8">
-            <h3 className="fluid-h3 font-bold text-[#8A393B]">
-              Our Composite Sleeper Range
-            </h3>
+            {/* Mobile Layout */}
+            <div className="md:hidden">
+              <h3 className="fluid-h3 font-bold text-[#8A393B]">
+                Our Composite Sleeper Range
+              </h3>
+            </div>
+            
+            {/* Desktop Layout - Heading on left, Gradient extending horizontally from it */}
+            <div className="hidden md:flex items-center">
+              <h3 className="fluid-h3 font-bold text-[#8A393B] flex-shrink-0 pr-6">
+                Our Composite Sleeper Range
+              </h3>
+              <div 
+                className="flex-1 h-7 fade-in-section"
+                style={{
+                  background: 'linear-gradient(90deg, rgba(242, 145, 63, 0) 0%, #F2913F 20%, #1E3888 50%, #8A393B 100%)'
+                }}
+              ></div>
+            </div>
           </div>
 
           {/* Dropdown/Accordion Style Sections */}
@@ -329,37 +335,36 @@ const SleepersPage = () => {
       </div>
 
       {/* Sleeper Types Section */}
-      <section className="bg-white py-8 sm:py-10 md:py-12 relative">
-        {/* Left Edge Gradient Line */}
-        <div
-          className="absolute hidden lg:block fade-in-section"
-          style={{
-            width: '564px',
-            height: '28px',
-            left: '0px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
-          }}
-        />
-
-        {/* Right Edge Gradient Line */}
-        <div
-          className="absolute hidden lg:block fade-in-section"
-          style={{
-            width: '564px',
-            height: '28px',
-            right: '0px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
-          }}
-        />
-
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-8 fade-in-section">
-          <h2 className="text-[#8A393B] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-center">
+      <section className="bg-white py-8 sm:py-10 md:py-12">
+        {/* Mobile Layout */}
+        <div className="md:hidden max-w-6xl mx-auto px-5 sm:px-8 fade-in-section">
+          <h2 className="text-[#8A393B] text-4xl sm:text-5xl md:text-6xl font-bold text-center">
             Sleeper Types
           </h2>
+        </div>
+        
+        {/* Desktop Layout - Full Width Banner with Gradients on Both Sides */}
+        <div className="hidden md:block w-screen overflow-hidden fade-in-section">
+          <div className="flex items-center justify-center">
+            {/* Left gradient from edge */}
+            <div className="flex-1" style={{
+              height: '28px',
+              background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
+            }}></div>
+            
+            {/* Heading centered in banner with padding for gap */}
+            <div className="px-6 sm:px-8 flex-shrink-0">
+              <h2 className="text-[#8A393B] text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight whitespace-nowrap">
+                Sleeper Types
+              </h2>
+            </div>
+            
+            {/* Right gradient to edge */}
+            <div className="flex-1" style={{
+              height: '28px',
+              background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
+            }}></div>
+          </div>
         </div>
       </section>
 

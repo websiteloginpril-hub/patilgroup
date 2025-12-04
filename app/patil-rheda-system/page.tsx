@@ -55,32 +55,20 @@ const PatilRhedaSystemPage = () => {
 
       <div className="relative z-10 bg-white">
         {/* Description Section */}
-        <section className="bg-white py-6 sm:py-8 md:py-10 relative">
-          {/* Top Left Gradient Line */}
-          <div 
-            className="absolute hidden lg:block fade-in-section gradient-line-ltr gradient-line-lg"
-            style={{
-              height: '28px',
-              left: '0px',
-              top: '0px'
-            }}
-          />
-          
+        <section className="bg-white py-6 sm:py-8 md:py-10">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
-            <p className="text-black text-lg sm:text-2xl leading-relaxed">
+            <p className="text-black text-lg sm:text-2xl leading-relaxed mb-6">
               The Patil RHEDA system is a slab-track solution optimized for tunnels and elevated structures. Developed with inputs from German RHEDA specifications, it provides integrated slab, rail, and fastening control within constrained alignments.
             </p>
           </div>
-
-          {/* Bottom Right Gradient Line */}
+          
+          {/* Gradient Bar Below Text - Full width from left corner to right, pale to dark */}
           <div 
-            className="absolute hidden lg:block fade-in-section gradient-line-rtl gradient-line-lg"
+            className="w-full h-7 fade-in-section"
             style={{
-              height: '28px',
-              right: '0px',
-              bottom: '40px'
+              background: 'linear-gradient(90deg, rgba(255, 245, 235, 1) 0%, rgba(255, 235, 205, 0.9) 10%, rgba(242, 145, 63, 0.6) 25%, #F2913F 40%, #1E3888 65%, #8A393B 100%)'
             }}
-          />
+          ></div>
         </section>
 
         {/* System Overview Section */}

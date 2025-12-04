@@ -52,36 +52,20 @@ const FlashButtWeldingOfRailsPage = () => {
       </div>
 
       {/* Description Section */}
-      <section className="bg-white py-8 sm:py-10 md:py-12 relative">
-        {/* Top Left Gradient Line */}
-        <div 
-          className="absolute hidden lg:block fade-in-section"
-          style={{
-            width: '864px',
-            height: '28px',
-            left: '0px',
-            top: '0px',
-            background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
-          }}
-        />
-        
+      <section className="bg-white py-8 sm:py-10 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
-          <p className="text-black fluid-body">
+          <p className="text-black fluid-body mb-6">
             Our flash‑butt welding plants deliver factory‑controlled, high‑integrity welded rail panels. Using precision electrical‑resistance welding, each joint is formed without filler, reducing thermal distortion and improving fatigue resistance.
           </p>
         </div>
-
-        {/* Bottom Right Gradient Line */}
+        
+        {/* Gradient Bar Below Text - Full width from left corner to right, pale to dark */}
         <div 
-          className="absolute hidden lg:block fade-in-section"
+          className="w-full h-7 fade-in-section"
           style={{
-            width: '864px',
-            height: '28px',
-            right: '0px',
-            bottom: '40px',
-            background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
+            background: 'linear-gradient(90deg, rgba(255, 245, 235, 1) 0%, rgba(255, 235, 205, 0.9) 10%, rgba(242, 145, 63, 0.6) 25%, #F2913F 40%, #1E3888 65%, #8A393B 100%)'
           }}
-        />
+        ></div>
       </section>
 
       {/* Main Content Section */}
@@ -139,19 +123,7 @@ const FlashButtWeldingOfRailsPage = () => {
       </section>
 
       {/* Applications Section */}
-      <section className="bg-white py-8 sm:py-10 md:py-12 relative">
-        {/* Gradient Line */}
-        <div 
-          className="absolute hidden lg:block fade-in-section"
-          style={{
-            width: '864px',
-            height: '28px',
-            right: '0px',
-            top: '60px',
-            background: 'linear-gradient(270deg, #F2913F 0%, #1E3888 50%, #8A393B 100%)'
-          }}
-        />
-        
+      <section className="bg-white py-8 sm:py-10 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
           <h3 className="text-[#F2913F] fluid-h3 font-bold mb-6">
             This system has been integral to:
