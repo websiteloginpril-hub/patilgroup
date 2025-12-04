@@ -199,37 +199,59 @@ const BallastlessTrackUrbanMetroPage = () => {
       </section>
 
       {/* Legacy & Impact Section */}
-      <section className="bg-white py-6 sm:py-8 md:py-10 relative">
-        {/* Left Edge Gradient Line */}
-        <div 
-          className="absolute hidden lg:block fade-in-section gradient-line-ltr gradient-line-md"
-          style={{
-            height: '28px',
-            left: '0px',
-            top: '30%',
-            transform: 'translateY(-50%)'
-          }}
-        />
+      <section className="bg-white py-6 sm:py-8 md:py-10 fade-in-section">
+        {/* Mobile Layout */}
+        <div className="md:hidden max-w-6xl mx-auto px-4 sm:px-6 mb-6">
+          <div className="text-center">
+            {/* Mobile gradient line above */}
+            <div className="w-24 h-1.5 mx-auto mb-4 rounded-full" style={{
+              background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 50%, #F2913F 100%)'
+            }}></div>
+            
+            {/* Mobile heading */}
+            <h3 className="text-[#8A393B] text-2xl sm:text-3xl font-bold leading-tight mb-4">
+              Legacy and impact
+            </h3>
+            
+            {/* Mobile gradient line below */}
+            <div className="w-24 h-1.5 mx-auto mb-6 rounded-full" style={{
+              background: 'linear-gradient(90deg, #F2913F 0%, #1E3888 50%, #8A393B 100%)'
+            }}></div>
+          </div>
+        </div>
         
-        {/* Right Edge Gradient Line */}
-        <div 
-          className="absolute hidden lg:block fade-in-section gradient-line-rtl gradient-line-md"
-          style={{
-            height: '28px',
-            right: '0px',
-            top: '30%',
-            transform: 'translateY(-50%)'
-          }}
-        />
+        {/* Desktop Layout - Full Width Gradient Banner */}
+        <div className="hidden md:block w-screen overflow-hidden mb-6">
+          <div className="flex items-center">
+            {/* Left gradient from edge */}
+            <div className="flex-1" style={{
+              height: '28px',
+              background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
+            }}></div>
+            
+            {/* Heading centered in banner */}
+            <div className="px-6 sm:px-8 flex-shrink-0">
+              <h3 className="text-[#8A393B] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight whitespace-nowrap">
+                Legacy and impact
+              </h3>
+            </div>
+            
+            {/* Right gradient to edge */}
+            <div className="flex-1" style={{
+              height: '28px',
+              background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
+            }}></div>
+          </div>
+        </div>
         
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-8 fade-in-section">
-          <h3 className="text-[#8A393B] text-xl sm:text-2xl md:text-5xl font-bold mb-6 text-center">
-            Legacy and impact
-          </h3>
-          <p className="text-black fluid-body text-center">
-                  Today, Patil RHEDA and BLT systems are synonymous with reliability in Indian Railways. By overcoming early challenges, we proved that innovation and perseverance can redefine national infrastructure.
-                </p>
-              </div>
+        {/* Paragraph Text - Centered */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-black fluid-body max-w-4xl mx-auto">
+              Today, Patil RHEDA and BLT systems are synonymous with reliability in Indian Railways. By overcoming early challenges, we proved that innovation and perseverance can redefine national infrastructure.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Image and Benefits Section */}
