@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Linkedin, ArrowUp, MapPin } from 'lucide-react';
 
 const Footer = () => {
@@ -16,7 +17,7 @@ const Footer = () => {
       {/* Pre-footer section */}
       <div className="bg-black pt-8 sm:pt-12 md:pt-16">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div className="mb-6 md:mb-0">
+          <div className="mb-6 md:mb-0 md:pr-64 lg:pr-96 xl:pr-[36rem]">
             <address className="not-italic">
               <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold">
                 6-3-1342/4 Raj Bhavan Rd,<br />
@@ -40,6 +41,15 @@ const Footer = () => {
                 <MapPin size={18} className="sm:w-5 sm:h-5" />
               </button>
             </div>
+          </div>
+          <div className="md:absolute right-0 md:-bottom-32 lg:-bottom-36 xl:-bottom-40 mt-4 md:mt-12 pointer-events-none">
+            <Image 
+              src="/trainfooter.svg"
+              alt="Footer illustration"
+              width={350}
+              height={200}
+              className="object-contain w-64 sm:w-80 md:w-96 lg:w-[500px] xl:w-[600px] h-auto px-6"
+            />
           </div>
         </div>
       </div>
