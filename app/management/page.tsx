@@ -8,22 +8,22 @@ import Image from 'next/image';
 
 const LeadershipCard = ({ image, name, post }: { image: string, name: string, post: string }) => (
   <div className="group bg-white text-black transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl will-change-transform">
-    <div className="relative h-[200px] sm:h-[220px] md:h-[240px] bg-white overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+    <div className="relative h-[400px] sm:h-[500px] md:h-[420px] bg-white overflow-hidden">
       <Image
         src={image}
         alt={name}
         fill
-        className="object-contain object-center transition-transform duration-500 will-change-transform"
+        className="object-cover object-center-top transition-transform duration-500 will-change-transform"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={true}
+        priority={false}
         quality={90}
         placeholder="blur"
         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
       />
     </div>
-    <div className="text-center mt-1.5 sm:mt-2 font-clash px-2 py-1.5 sm:py-2 bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
-      <p className="font-bold text-[10px] sm:text-xs text-white mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">{post}</p>
-      <p className="text-[10px] sm:text-xs text-white font-medium transition-colors duration-500 ease-out group-hover:text-black leading-tight">{name}</p>
+    <div className="text-center mt-3 sm:mt-4 font-clash px-2 py-3 bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
+      <p className="font-bold text-sm sm:text-base text-white mb-1 transition-colors duration-500 ease-out group-hover:text-black">{post}</p>
+      <p className="text-sm sm:text-base text-white font-medium transition-colors duration-500 ease-out group-hover:text-black">{name}</p>
     </div>
   </div>
 );
@@ -195,35 +195,35 @@ const ManagementPage = () => {
   return (
     <div className="bg-[#1E1E1E] text-white pt-[103px]">
       {/* Responsive Our Leadership Section */}
-      <section className="min-h-[calc(100vh-103px)] flex flex-col justify-center py-2 sm:py-3 md:py-4 bg-white text-black" style={{ backgroundColor: '#ffffff' }}>
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white text-black">
         {/* Legacy in Rail Header - Full Width */}
-        <div className="w-screen overflow-hidden mb-2 sm:mb-3 relative">
+        <div className="w-screen overflow-hidden mb-8 sm:mb-12 md:mb-16 relative">
           {/* Heading with gradient lines from screen edges */}
           <div className="w-full">
-            <div className="flex items-center mb-1 sm:mb-2">
+            <div className="flex items-center mb-6">
               {/* Left gradient from left edge of screen */}
               <div className="flex-1" style={{
-                height: '16px',
+                height: '28px',
                 background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
               }}></div>
               
               {/* Heading */}
-              <div className="px-4 sm:px-6 flex-shrink-0">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-clash font-bold text-[#8A393B] leading-tight whitespace-nowrap">
+              <div className="px-8 flex-shrink-0">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-clash font-bold text-[#8A393B] leading-tight whitespace-nowrap">
                   Legacy in Rail
                 </h2>
               </div>
               
               {/* Right gradient to right edge of screen */}
               <div className="flex-1" style={{
-                height: '16px',
+                height: '28px',
                 background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
               }}></div>
             </div>
             
             {/* Subtitle */}
             <div className="text-center">
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#F2913F] font-semibold">Led by Experience</p>
+              <p className="text-xl sm:text-2xl lg:text-3xl text-[#F2913F] font-semibold">Led by Experience</p>
             </div>
           </div>
         </div>
@@ -236,14 +236,14 @@ const ManagementPage = () => {
               <div className="flex touch-pan-y" style={{ backfaceVisibility: 'hidden', perspective: '1000px' }}>
                 {leadershipData.map((leader, i) => (
                   <div key={i} className="flex-shrink-0 w-[90%] sm:w-[80%] pl-4 first:pl-6 last:pr-6 will-change-transform" style={{ transform: 'translateZ(0)' }}>
-                    <div className="group leadership-card-mobile rounded-2xl border border-gray-300/30 backdrop-blur-sm bg-white overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl will-change-transform" style={{ backgroundColor: '#ffffff' }}>
+                    <div className="group leadership-card-mobile rounded-2xl border border-gray-300/30 backdrop-blur-sm bg-white overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl will-change-transform">
                       {/* Full Photo Container */}
-                      <div className="relative h-[180px] sm:h-[200px] bg-white overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+                      <div className="relative h-[320px] sm:h-[360px] bg-white overflow-hidden">
                         <Image
                           src={leader.image}
                           alt={leader.name}
                           fill
-                          className="object-contain object-center transition-transform duration-500 will-change-transform"
+                          className="object-cover object-center-top transition-transform duration-500 will-change-transform"
                           sizes="(max-width: 640px) 90vw, 80vw"
                           priority={i < 3}
                           quality={90}
@@ -253,11 +253,11 @@ const ManagementPage = () => {
                       </div>
                       
                       {/* Designation and Name Below Photo */}
-                      <div className="p-2 sm:p-3 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
-                        <p className="text-[10px] sm:text-xs text-white font-bold mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">
+                      <div className="p-4 sm:p-6 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
+                        <p className="text-sm sm:text-base text-white font-bold mb-1 transition-colors duration-500 ease-out group-hover:text-black">
                           {leader.post}
                         </p>
-                        <h3 className="text-[10px] sm:text-xs font-medium text-white leading-tight transition-colors duration-500 ease-out group-hover:text-black">
+                        <h3 className="text-base sm:text-lg font-medium text-white leading-tight transition-colors duration-500 ease-out group-hover:text-black">
                           {leader.name}
                         </h3>
                       </div>
@@ -268,7 +268,7 @@ const ManagementPage = () => {
             </div>
 
             {/* Mobile Scroll Indicator */}
-            <div className="flex justify-center mt-2 sm:mt-3 space-x-2">
+            <div className="flex justify-center mt-6 space-x-2">
               {leadershipData.map((_, index) => (
                 <button
                   key={index}
@@ -284,8 +284,8 @@ const ManagementPage = () => {
             </div>
             
             {/* Mobile Swipe Hint */}
-            <div className="text-center mt-1.5 sm:mt-2">
-              <p className="text-[10px] sm:text-xs text-gray-600 font-medium">
+            <div className="text-center mt-4">
+              <p className="text-xs text-gray-600 font-medium">
                 ← Swipe to explore →
               </p>
             </div>
