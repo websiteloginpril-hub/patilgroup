@@ -4,10 +4,26 @@ import './IndiaMap.css';
 
 type Pin = { x: number; y: number; label: string };
 
-const IndiaMap: React.FC = () => {
+interface IndiaMapProps {
+  onStateHover?: (stateId: string | null) => void;  // ⭐ Added
+}
+
+const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover }) => {
   const [svgMarkup, setSvgMarkup] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredStateId, setHoveredStateId] = useState<string | null>(null);
+  const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -16,39 +32,104 @@ const IndiaMap: React.FC = () => {
       .then((text) => {
         if (!isMounted) return;
         setSvgMarkup(text);
-      })
-      .catch(() => {
-        // ignore; component will remain empty if fetch fails
       });
     return () => {
       isMounted = false;
     };
   }, []);
 
+  // Update SVG paths with active state attribute for mobile styling
+  useEffect(() => {
+    if (!containerRef.current || !svgMarkup) return;
+    const svgEl = containerRef.current.querySelector('svg');
+    if (!svgEl) return;
+
+    // Remove all active state attributes
+    const allPaths = svgEl.querySelectorAll('[id^="IN-"]');
+    allPaths.forEach((path) => {
+      path.removeAttribute('data-state-active');
+    });
+
+    // Add active state attribute to hovered state on mobile
+    if (isMobile && hoveredStateId) {
+      const activePath = svgEl.querySelector(`[id="${hoveredStateId}"]`);
+      if (activePath) {
+        activePath.setAttribute('data-state-active', 'true');
+      }
+    }
+  }, [hoveredStateId, isMobile, svgMarkup]);
+
   useEffect(() => {
     if (!containerRef.current) return;
     const svgEl = containerRef.current.querySelector('svg');
     if (!svgEl) return;
-    // Use pointerover (bubbling) to detect the closest parent state group/path with IN-XX id
+
+    const handleStateInteraction = (id: string | null) => {
+      setHoveredStateId(id);
+      if (onStateHover) onStateHover(id);
+    };
+
     const onOver = (e: Event) => {
       const target = e.target as Element | null;
       if (!target) return;
       const stateEl = target.closest('[id^="IN-"]');
-      const id = stateEl?.getAttribute('id');
-      if (id) setHoveredStateId(id);
+      const id = stateEl?.getAttribute('id') ?? null;
+      handleStateInteraction(id);
     };
+
     const onLeave = () => {
-      setHoveredStateId(null);
+      if (!isMobile) {
+        handleStateInteraction(null);
+      }
     };
+
+    // Desktop hover events
     svgEl.addEventListener('pointerover', onOver);
     svgEl.addEventListener('pointerleave', onLeave);
+
+    // Mobile tap/click events
+    const onTap = (e: Event) => {
+      if (!isMobile) return;
+      const target = e.target as Element | null;
+      if (!target) return;
+      const stateEl = target.closest('[id^="IN-"]');
+      const id = stateEl?.getAttribute('id') ?? null;
+      
+      // Toggle state selection on mobile
+      if (hoveredStateId === id) {
+        handleStateInteraction(null);
+      } else {
+        handleStateInteraction(id);
+      }
+    };
+
+    svgEl.addEventListener('click', onTap);
+    svgEl.addEventListener('touchend', onTap);
+
+    // Close state selection when clicking outside on mobile
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (!isMobile) return;
+      const target = e.target as Element;
+      if (!containerRef.current?.contains(target)) {
+        handleStateInteraction(null);
+      }
+    };
+
+    if (isMobile) {
+      document.addEventListener('click', handleOutsideClick);
+      document.addEventListener('touchend', handleOutsideClick);
+    }
+
     return () => {
       svgEl.removeEventListener('pointerover', onOver);
       svgEl.removeEventListener('pointerleave', onLeave);
+      svgEl.removeEventListener('click', onTap);
+      svgEl.removeEventListener('touchend', onTap);
+      document.removeEventListener('click', handleOutsideClick);
+      document.removeEventListener('touchend', handleOutsideClick);
     };
-  }, [svgMarkup]);
+  }, [svgMarkup, onStateHover, isMobile, hoveredStateId]);
 
-  // Each pin has independent coordinates (percentages of the map container)
   const activePins: Pin[] = useMemo(
     () => [
       { label: 'Pathri', x: 28, y: 30 },
@@ -76,43 +157,63 @@ const IndiaMap: React.FC = () => {
     ],
     []
   );
+
+  const handlePinClick = (index: number) => {
+    if (isMobile) {
+      // Toggle pin label on mobile
+      setActivePinIndex(activePinIndex === index ? null : index);
+    }
+  };
+
+  const getLabelClass = (index: number) => {
+    const isActive = isMobile ? activePinIndex === index : false;
+    return `label transition-all duration-300 ${
+      isMobile 
+        ? isActive 
+          ? 'opacity-100 scale-110' 
+          : 'opacity-0'
+        : 'opacity-0 group-hover:opacity-100 group-hover:scale-110'
+    }`;
+  };
+
   return (
     <div className="map-container" aria-label="India map" ref={containerRef}>
-      {/* Enhanced Mobile Instructions */}
       <div className="md:hidden text-center mb-4">
         <p className="text-xs text-gray-500 bg-gray-100 rounded-full px-3 py-1 inline-flex items-center gap-1">
-          <div className="w-2 h-2 bg-[#F2913F] rounded-full animate-pulse"></div>
+          <span className="w-2 h-2 bg-[#F2913F] rounded-full animate-pulse inline-block"></span>
           Tap locations to explore
         </p>
       </div>
-      
-      {/* Inline the SVG so we can style paths and hover states */}
+
       {svgMarkup && (
         <div
           className="map-inline-svg"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: svgMarkup }}
         />
       )}
-      
-      {/* Enhanced Pins overlay */}
+
+      {/* FIXED Pins */}
       <div className="pins-overlay">
         {activePins.map((pin, idx) => (
           <div
             key={`${pin.label}-${idx}`}
-            className="pin group"
+            className={`pin group ${isMobile && activePinIndex === idx ? 'pin-active' : ''}`}
             style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
             role="button"
             tabIndex={0}
             aria-label={`Location: ${pin.label}`}
+            onClick={() => handlePinClick(idx)}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              handlePinClick(idx);
+            }}
           >
             <div className="dot" />
-            <div className="label group-hover:scale-110 transition-transform duration-300">{pin.label}</div>
+            <div className={getLabelClass(idx)}>{pin.label}</div>
           </div>
         ))}
       </div>
-      
-      {/* Mobile Map Legend */}
+
       <div className="md:hidden mt-6 flex justify-center">
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 flex items-center gap-4">
           <div className="flex items-center gap-2">
