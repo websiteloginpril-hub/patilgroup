@@ -36,9 +36,9 @@ const OurClientelePage = () => {
   useGSAPAnimations();
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-black text-white h-screen overflow-hidden flex flex-col">
       {/* Responsive Hero Section */}
-      <div className="relative h-[60vh] sm:h-[70vh]">
+      <div className="relative h-[40vh] sm:h-[45vh]">
         <Image
           src="/clientimage.jpg"
           alt="Architectural structure"
@@ -67,16 +67,15 @@ const OurClientelePage = () => {
         
         {/* Desktop Layout - Original */}
         <div className="hidden md:block">
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center pt-16">
             <h1 className="hero-title font-bold text-white text-center leading-tight px-4">
-              Our <br /> Clientele
+              Our Clientele
             </h1>
           </div>
         </div>
       </div>
-
       {/* Responsive Client Logos Section */}
-      <section className="py-12 sm:py-16 md:py-20 fade-in-section">
+      <section className="py-2 sm:py-4 md:py-6 fade-in-section flex-1 overflow-hidden">
         {/* Mobile Layout - Grid */}
         <div className="md:hidden px-4">
           <div className="max-w-2xl mx-auto">
@@ -128,8 +127,8 @@ const OurClientelePage = () => {
                 <div className="flex gap-8 flex-none">
                   {logos1.map((logo, index) => (
                     <div key={`row1-a-${index}`} className="flex-none w-44">
-                      <div className="h-32 w-full flex justify-center items-center p-4 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
-                        <Image src={logo} alt={`Client logo ${index + 1}`} width={160} height={96} className="max-h-24 w-auto object-contain" loading="lazy" />
+                      <div className="h-24 w-full flex justify-center items-center p-3 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
+                        <Image src={logo} alt={`Client logo ${index + 1}`} width={160} height={96} className="max-h-16 w-auto object-contain" loading="lazy" />
                       </div>
                     </div>
                   ))}
@@ -137,8 +136,8 @@ const OurClientelePage = () => {
                 <div className="flex gap-8 flex-none" aria-hidden="true">
                   {logos1.map((logo, index) => (
                     <div key={`row1-b-${index}`} className="flex-none w-44">
-                      <div className="h-32 w-full flex justify-center items-center p-4 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
-                        <Image src={logo} alt="" width={160} height={96} className="max-h-24 w-auto object-contain" loading="lazy" />
+                      <div className="h-24 w-full flex justify-center items-center p-3 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
+                        <Image src={logo} alt="" width={160} height={96} className="max-h-16 w-auto object-contain" loading="lazy" />
                       </div>
                     </div>
                   ))}
@@ -152,8 +151,8 @@ const OurClientelePage = () => {
                 <div className="flex gap-8 flex-none">
                   {logos2.map((logo, index) => (
                     <div key={`row2-a-${index}`} className="flex-none w-44">
-                      <div className="h-32 w-full flex justify-center items-center p-4 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
-                        <Image src={logo} alt={`Client logo ${index + 1}`} width={160} height={96} className="max-h-24 w-auto object-contain" loading="lazy" />
+                      <div className="h-24 w-full flex justify-center items-center p-3 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
+                        <Image src={logo} alt={`Client logo ${index + 1}`} width={160} height={96} className="max-h-16 w-auto object-contain" loading="lazy" />
                       </div>
                     </div>
                   ))}
@@ -161,8 +160,8 @@ const OurClientelePage = () => {
                 <div className="flex gap-8 flex-none" aria-hidden="true">
                   {logos2.map((logo, index) => (
                     <div key={`row2-b-${index}`} className="flex-none w-44">
-                      <div className="h-32 w-full flex justify-center items-center p-4 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
-                        <Image src={logo} alt="" width={160} height={96} className="max-h-24 w-auto object-contain" loading="lazy" />
+                      <div className="h-24 w-full flex justify-center items-center p-3 bg-white rounded-lg hover:shadow-lg transition-shadow duration-300">
+                        <Image src={logo} alt="" width={160} height={96} className="max-h-16 w-auto object-contain" loading="lazy" />
                       </div>
                     </div>
                   ))}
