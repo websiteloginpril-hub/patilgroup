@@ -615,6 +615,16 @@ h1, h2, h3, h4, h5, h6, p {
   background: #b45309;
 }
 
+/* Hide scrollbar utility class */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 /* Modern Mobile Navigation Enhancements */
 @media (max-width: 1024px) {
   /* Custom scrollbar for mobile navigation */

@@ -4,11 +4,19 @@ import './IndiaMap.css';
 
 type Pin = { x: number; y: number; label: string };
 
+type StateLocation = {
+  stateID: string;
+  state: string;
+  cities: string[];
+  color: string;
+};
+
 interface IndiaMapProps {
-  onStateHover?: (stateId: string | null) => void;  // ⭐ Added
+  onStateHover?: (stateId: string | null) => void;
+  stateLocationData?: StateLocation[];  // ⭐ Added: to show plant names on state hover
 }
 
-const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover }) => {
+const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover, stateLocationData = [] }) => {
   const [svgMarkup, setSvgMarkup] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredStateId, setHoveredStateId] = useState<string | null>(null);
@@ -165,14 +173,110 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover }) => {
     }
   };
 
-  const getLabelClass = (index: number) => {
+  // Get state for a pin label (to show label when state is hovered)
+  const getPinState = (pinLabel: string): string | null => {
+    if (!hoveredStateId || !stateLocationData.length) return null;
+    const stateData = stateLocationData.find(s => s.stateID === hoveredStateId);
+    if (stateData && stateData.cities.includes(pinLabel)) {
+      return hoveredStateId;
+    }
+    return null;
+  };
+
+  // Calculate label offset to prevent overlap when multiple labels are visible
+  const getLabelOffset = (index: number, pinLabel: string): { x: number; y: number } => {
+    const currentPin = activePins[index];
+    if (!currentPin) return { x: 0, y: 0 };
+
+    // If state is hovered, handle labels in that state
+    if (hoveredStateId && stateLocationData.length) {
+      const stateData = stateLocationData.find(s => s.stateID === hoveredStateId);
+      if (stateData && stateData.cities.includes(pinLabel)) {
+        // Get all pins in this state (including current pin)
+        const statePins = activePins
+          .map((pin, idx) => ({ pin, idx }))
+          .filter(({ pin }) => stateData.cities.includes(pin.label))
+          .sort((a, b) => {
+            // Sort by y position (top to bottom), then x (left to right)
+            const yDiff = Math.abs(a.pin.y - b.pin.y);
+            if (yDiff < 3) {
+              // Same row - sort by x
+              return a.pin.x - b.pin.x;
+            }
+            return a.pin.y - b.pin.y;
+          });
+        
+        // Always apply offset if there are multiple pins in the state
+        if (statePins.length > 1) {
+          const pinIndex = statePins.findIndex(({ idx }) => idx === index);
+          if (pinIndex !== -1) {
+            // Use tighter spacing for Telangana (22px), standard spacing (30px) for other states
+            const spacing = hoveredStateId === "IN-TG" ? 22 : 30;
+            const offsetY = pinIndex * -spacing;
+            
+            return { x: 0, y: offsetY };
+          }
+        }
+      }
+    }
+
+    // For individual pin hovers or nearby pins, check for overlaps
+    // Find all pins that are close to this one (within 8% distance)
+    const nearbyPins = activePins
+      .map((pin, idx) => ({ pin, idx }))
+      .filter(({ pin, idx }) => {
+        if (idx === index) return false;
+        // Calculate distance
+        const dx = Math.abs(pin.x - currentPin.x);
+        const dy = Math.abs(pin.y - currentPin.y);
+        // Consider pins within 8% as potentially overlapping
+        return dx < 8 && dy < 8;
+      });
+
+    if (nearbyPins.length > 0) {
+      // Sort all nearby pins including current one
+      const allPins = [...nearbyPins, { pin: currentPin, idx: index }].sort((a, b) => {
+        const yDiff = Math.abs(a.pin.y - b.pin.y);
+        if (yDiff < 3) {
+          return a.pin.x - b.pin.x;
+        }
+        return a.pin.y - b.pin.y;
+      });
+      
+      const currentIndex = allPins.findIndex(({ idx }) => idx === index);
+      if (currentIndex > 0) {
+        // Calculate if pins are very close horizontally
+        const prevPin = allPins[currentIndex - 1].pin;
+        const horizontalDist = Math.abs(currentPin.x - prevPin.x);
+        
+        if (horizontalDist < 5) {
+          // Very close - stack vertically with tighter spacing
+          const offsetY = currentIndex * -20;
+          return { x: 0, y: offsetY };
+        } else {
+          // Further apart - slight offset to avoid overlap
+          const offsetY = currentIndex * -22;
+          const offsetX = currentIndex % 2 === 0 ? -12 : 12;
+          return { x: offsetX, y: offsetY };
+        }
+      }
+    }
+    
+    return { x: 0, y: 0 };
+  };
+
+  const getLabelClass = (index: number, pinLabel: string) => {
     const isActive = isMobile ? activePinIndex === index : false;
+    const isStateHovered = getPinState(pinLabel) !== null;
+    
     return `label transition-all duration-300 ${
       isMobile 
         ? isActive 
           ? 'opacity-100 scale-110' 
           : 'opacity-0'
-        : 'opacity-0 group-hover:opacity-100 group-hover:scale-110'
+        : isStateHovered
+          ? 'opacity-100 scale-110'
+          : 'opacity-0 group-hover:opacity-100 group-hover:scale-110'
     }`;
   };
 
@@ -192,6 +296,7 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover }) => {
         />
       )}
 
+
       {/* FIXED Pins */}
       <div className="pins-overlay">
         {activePins.map((pin, idx) => (
@@ -209,7 +314,31 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover }) => {
             }}
           >
             <div className="dot" />
-            <div className={getLabelClass(idx)}>{pin.label}</div>
+            <div 
+              className={getLabelClass(idx, pin.label)}
+              style={(() => {
+                const offset = getLabelOffset(idx, pin.label);
+                const baseMargin = 8;
+                const spacingAdjustment = Math.abs(offset.y) > 0 ? Math.abs(offset.y) : 0;
+                
+                // Calculate z-index for proper stacking (higher labels should be on top)
+                const zIndex = offset.y < 0 ? 15 + Math.abs(Math.round(offset.y / 10)) : 15;
+                
+                if (offset.x === 0 && offset.y === 0) {
+                  return { zIndex: 15 };
+                }
+                
+                // Combine centering (-50%) with offset
+                // Ensure proper spacing between stacked labels
+                return { 
+                  transform: `translateX(calc(-50% + ${offset.x}px)) translateY(${offset.y}px)`,
+                  marginBottom: `${baseMargin + spacingAdjustment}px`,
+                  zIndex: zIndex
+                };
+              })()}
+            >
+              {pin.label}
+            </div>
           </div>
         ))}
       </div>

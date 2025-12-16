@@ -113,8 +113,8 @@
               
               {/* Map */}
               <div className="w-full md:flex-1">
-                {/* Passing callback to child */}
-                <IndiaMap onStateHover={handleStateHover} />
+                {/* Passing callback and state data to child */}
+                <IndiaMap onStateHover={handleStateHover} stateLocationData={STATE_LOCATION_DATA} />
               </div>
 
               {/* Legend */}
