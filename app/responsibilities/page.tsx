@@ -11,7 +11,7 @@ const ResponsibilitiesPage = () => {
   const brochures = [
     {
       title: "Corporate brochure",
-      filename: "PG Brochure.pdf",
+      filename: "PG Brochure .pdf",
       description: "Complete overview of Patil Group's services and capabilities",
       coverImage: "/Brochure/coverimage1.jpg",
       hasCoverImage: true
