@@ -30,10 +30,13 @@ export default function TrackTimeline({
 }: TrackTimelineProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const trackPatternRef = useRef<HTMLDivElement>(null);
   const trainRef = useRef<HTMLImageElement>(null);
+  const columnRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [maxTrainTravel, setMaxTrainTravel] = useState(0);
   const [trainWidth, setTrainWidth] = useState(150); // Default train width
+  const [markerPositions, setMarkerPositions] = useState<number[]>([]);
 
   const trainBaseX = useMotionValue(0);
   const trainX = useTransform(trainBaseX, (v) => v + trainXOffset);
@@ -99,8 +102,70 @@ export default function TrackTimeline({
     [items]
   );
 
+  // Calculate marker positions aligned to sleepers (24px grid)
+  useEffect(() => {
+    const SLEEPER_SPACING = 24; // Sleepers repeat every 24px
+    // Sleeper centers are at 24px, 48px, 72px, etc. (sleeper is 20-28px in each 24px cycle, center at 24px)
+    
+    const calculateMarkerPositions = () => {
+      if (!trackPatternRef.current || columnRefs.current.length === 0) return;
+
+      const trackRect = trackPatternRef.current.getBoundingClientRect();
+      const trackLeft = trackRect.left;
+      const positions: number[] = [];
+
+      columnRefs.current.forEach((colEl, index) => {
+        if (!colEl) return;
+
+        const colRect = colEl.getBoundingClientRect();
+        // Calculate column center position relative to the track's left edge
+        const colLeftRelative = colRect.left - trackLeft;
+        const colWidth = colRect.width;
+        const colCenter = colLeftRelative + colWidth / 2;
+
+        // Snap to nearest sleeper center (nearest multiple of 24px)
+        // Sleepers are centered at 24px, 48px, 72px, etc.
+        const nearestSleeper = Math.round(colCenter / SLEEPER_SPACING) * SLEEPER_SPACING;
+        
+        // Calculate offset relative to column center
+        // This tells us how much to shift the marker from center to align with sleeper
+        const offsetFromCenter = nearestSleeper - colCenter;
+        
+        // Store the offset (positive = shift right, negative = shift left)
+        positions[index] = offsetFromCenter;
+      });
+
+      setMarkerPositions(positions);
+    };
+
+    // Calculate on mount and resize
+    const timeoutId = setTimeout(calculateMarkerPositions, 100);
+    window.addEventListener('resize', calculateMarkerPositions);
+    
+    // Use ResizeObserver for more accurate tracking
+    const ro = new ResizeObserver(() => {
+      setTimeout(calculateMarkerPositions, 50);
+    });
+    
+    if (trackPatternRef.current) {
+      ro.observe(trackPatternRef.current);
+    }
+    if (trackRef.current) {
+      ro.observe(trackRef.current);
+    }
+    columnRefs.current.forEach(col => {
+      if (col) ro.observe(col);
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', calculateMarkerPositions);
+      ro.disconnect();
+    };
+  }, [normalizedItems.length]);
+
   return (
-    <section className="relative bg-white py-16 sm:py-24 md:py-28">
+    <section className="relative bg-white py-8 sm:py-12 md:py-6">
       {/* MOBILE – simple vertical timeline (no horizontal scroll) */}
       <div className="md:hidden px-4 sm:px-6">
         <div className="relative max-w-2xl mx-auto">
@@ -146,12 +211,12 @@ export default function TrackTimeline({
 
       {/* DESKTOP – horizontal like the office wall, clean alignment */}
       <div className="hidden md:block">
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+        <div className="relative max-w-full mx-auto px-2 md:px-4 lg:px-6">
           <div className="relative h-[500px] lg:h-[580px]">
             {/* Horizontal scroll container */}
             <div
               ref={scrollRef}
-              className="relative h-full overflow-x-auto overflow-y-visible scroll-smooth hide-scrollbar"
+              className="relative h-full overflow-x-auto overflow-y-visible scroll-smooth legacy-timeline-scroll"
             >
               {/* Wide strip that contains the track + columns */}
               <div
@@ -160,6 +225,7 @@ export default function TrackTimeline({
               >
                 {/* CENTRAL TRACK - Full width from start to end, train moves along it */}
                 <div
+                  ref={trackPatternRef}
                   className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-12 z-0"
                   style={{
                     backgroundImage:
@@ -181,7 +247,7 @@ export default function TrackTimeline({
                   className="pointer-events-none absolute h-24 w-auto select-none z-20"
                   style={{
                     x: trainX,
-                    top: "calc(68% - 152px)"
+                    top: "calc(68% - 151.5px)"
                   }}
                 />
 
@@ -193,20 +259,33 @@ export default function TrackTimeline({
                   // For first and last items: if content is below, image goes above, and vice versa
                   const shouldImageBeOpposite = (isFirst || isLast) && item.image;
                   
+                  // Get the calculated offset for this marker (defaults to 0 if not calculated yet)
+                  const markerOffset = markerPositions[index] ?? 0;
+                  
                   return (
                     <div
                       key={`${item.year}-${index}`}
-                      className="relative flex flex-col items-stretch px-1.5 h-full"
+                      ref={(el) => {
+                        columnRefs.current[index] = el;
+                      }}
+                      className="relative flex flex-col items-stretch px-6 h-full"
                       style={{
                         width: "33.3333vw", // ~3 columns per viewport
                         minWidth: "260px",
                         maxWidth: "380px",
                       }}
                     >
-                      {/* ------------- RAILWAY POINT MARKER - Alternating above/below track, smaller to avoid overlap ------------- */}
+                      {/* ------------- RAILWAY POINT MARKER - Alternating above/below track, aligned to sleepers ------------- */}
                       {index % 2 === 0 ? (
                         // Even indices: Marker ABOVE the track - with separation to avoid collision
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full z-10 flex flex-col justify-end items-center pointer-events-none" style={{ marginTop: '-18px' }}>
+                        <div 
+                          className="absolute top-1/2 z-10 flex flex-col justify-end items-center pointer-events-none" 
+                          style={{ 
+                            marginTop: '-18px',
+                            left: `calc(49.5% + ${markerOffset}px)`,
+                            transform: 'translateX(-50%) translateY(-100%)'
+                          }}
+                        >
                           {/* Railway point marker - smaller to avoid content overlap */}
                           <div className="w-4 h-4 bg-[#F2913F] rounded-full border-[2px] border-white shadow-md flex items-center justify-center mb-0.5">
                             {/* Inner dot for depth - smaller */}
@@ -217,7 +296,14 @@ export default function TrackTimeline({
                         </div>
                       ) : (
                         // Odd indices: Marker BELOW the track - closer to track
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-full z-10 flex flex-col justify-start items-center pointer-events-none" style={{ marginTop: '2px' }}>
+                        <div 
+                          className="absolute top-1/2 z-10 flex flex-col justify-start items-center pointer-events-none" 
+                          style={{ 
+                            marginTop: '-9px',
+                            left: `calc(49.5% + ${markerOffset}px)`,
+                            transform: 'translateX(-50%) translateY(100%)'
+                          }}
+                        >
                           {/* Vertical line extending up to track - shorter */}
                           <div className="w-0.5 h-2 bg-[#F2913F] mb-0.5" />
                           {/* Railway point marker - smaller to avoid content overlap */}
