@@ -625,6 +625,29 @@ h1, h2, h3, h4, h5, h6, p {
   display: none; /* Chrome, Safari, Opera */
 }
 
+/* Legacy timeline horizontal scrollbar - thin and grey */
+.legacy-timeline-scroll {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #9ca3af transparent; /* Firefox - grey thumb, transparent track */
+}
+
+.legacy-timeline-scroll::-webkit-scrollbar {
+  height: 4px; /* Thin horizontal scrollbar */
+}
+
+.legacy-timeline-scroll::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track */
+}
+
+.legacy-timeline-scroll::-webkit-scrollbar-thumb {
+  background: #9ca3af; /* Grey color */
+  border-radius: 2px;
+}
+
+.legacy-timeline-scroll::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; /* Slightly darker grey on hover */
+}
+
 /* Modern Mobile Navigation Enhancements */
 @media (max-width: 1024px) {
   /* Custom scrollbar for mobile navigation */
