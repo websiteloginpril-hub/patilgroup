@@ -100,7 +100,7 @@ export default function TrackTimeline({
   );
 
   return (
-    <section className="relative bg-white py-16 sm:py-24 md:py-28">
+    <section className="relative bg-white py-8 sm:py-12 md:py-6">
       {/* MOBILE – simple vertical timeline (no horizontal scroll) */}
       <div className="md:hidden px-4 sm:px-6">
         <div className="relative max-w-2xl mx-auto">
@@ -146,7 +146,7 @@ export default function TrackTimeline({
 
       {/* DESKTOP – horizontal like the office wall, clean alignment */}
       <div className="hidden md:block">
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+        <div className="relative max-w-full mx-auto px-2 md:px-4 lg:px-6">
           <div className="relative h-[500px] lg:h-[580px]">
             {/* Horizontal scroll container */}
             <div
@@ -181,7 +181,7 @@ export default function TrackTimeline({
                   className="pointer-events-none absolute h-24 w-auto select-none z-20"
                   style={{
                     x: trainX,
-                    top: "calc(68% - 152px)"
+                    top: "calc(68% - 151.5px)"
                   }}
                 />
 
@@ -196,7 +196,7 @@ export default function TrackTimeline({
                   return (
                     <div
                       key={`${item.year}-${index}`}
-                      className="relative flex flex-col items-stretch px-1.5 h-full"
+                      className="relative flex flex-col items-stretch px-6 h-full"
                       style={{
                         width: "33.3333vw", // ~3 columns per viewport
                         minWidth: "260px",
@@ -217,7 +217,7 @@ export default function TrackTimeline({
                         </div>
                       ) : (
                         // Odd indices: Marker BELOW the track - closer to track
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-full z-10 flex flex-col justify-start items-center pointer-events-none" style={{ marginTop: '2px' }}>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-full z-10 flex flex-col justify-start items-center pointer-events-none" style={{ marginTop: '-9px' }}>
                           {/* Vertical line extending up to track - shorter */}
                           <div className="w-0.5 h-2 bg-[#F2913F] mb-0.5" />
                           {/* Railway point marker - smaller to avoid content overlap */}
