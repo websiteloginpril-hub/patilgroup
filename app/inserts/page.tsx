@@ -14,7 +14,7 @@ const InsertsPage = () => {
       {/* Hero Section */}
       <div className="relative hero-section">
         {/* Mobile Layout */}
-        <div className="md:hidden h-screen relative">
+        <div className="md:hidden min-h-screen relative">
           <Image
             src="/insertshero1.jpg"
             alt="SGCI Inserts, Base Plates, and Other Engineering Castings"
@@ -24,7 +24,7 @@ const InsertsPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 z-10"></div>
           
-          <div className="relative z-20 h-full flex items-center justify-start hero-content px-6">
+          <div className="relative z-20 min-h-screen flex items-start justify-start hero-content px-6 pt-[120px] pb-12">
             <div className="text-left w-full max-w-2xl mx-auto">
               <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-3 drop-shadow-2xl">
                 SGCI Inserts, Base Plates <br/>and Other Engineering Castings
@@ -38,7 +38,7 @@ const InsertsPage = () => {
         </div>
         
         {/* Desktop Layout */}
-        <div className="hidden md:block relative h-screen">
+        <div className="hidden md:block relative min-h-screen">
           <Image
             src="/insertshero1.jpg"
             alt="SGCI Inserts, Base Plates, and Other Engineering Castings"
@@ -47,9 +47,9 @@ const InsertsPage = () => {
             className="z-0 hero-image"
           />
           <div className="absolute inset-0 bg-black bg-opacity-60 z-10" />
-          <div className="relative z-20 h-full flex items-center max-w-7xl mx-auto px-8 hero-content">
+          <div className="relative z-20 min-h-screen flex items-center justify-start max-w-7xl mx-auto px-8 hero-content pt-[103px] pb-12">
             <div className="w-2/3">
-              <h1 className="text-6xl lg:text-7xl font-bold text-white mt-2">
+              <h1 className="text-6xl lg:text-7xl font-bold text-white leading-[1.15]">
                 SGCI Inserts, Base Plates<br/>and Other Engineering Castings
               </h1>
             </div>
@@ -146,7 +146,7 @@ const InsertsPage = () => {
             <div className="hidden lg:grid grid-cols-3 gap-12 items-start">
               {/* Left side - Content */}
               <div className="col-span-1 relative">
-                <div className="flex items-center mb-6">
+                <div className="flex items-center mb-6 -mt-16">
                   <h2 className="fluid-h3 font-bold text-[#8A393B] leading-tight whitespace-nowrap">
                     SGCI Inserts
                   </h2>
@@ -495,4 +495,3 @@ const InsertsPage = () => {
 };
 
 export default InsertsPage;
-
