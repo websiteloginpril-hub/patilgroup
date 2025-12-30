@@ -397,7 +397,7 @@ export default function Home() {
             {/* Stat 3 */}
             <div className="flex flex-col items-center">
               <div className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-1">
-                {showText ? <CountUp end={400000} duration={2} separator="," suffix="+" delay={0.8} /> : '0+'}
+                {showText ? <CountUp end={4000000} duration={2} separator="," suffix="+" delay={0.8} /> : '0+'}
               </div>
               <div className="text-[#F2913F] text-sm sm:text-base font-medium">Safe Sleepers per year</div>
             </div>
