@@ -1,360 +1,627 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import './IndiaMap.css';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import "./IndiaMap.css";
+import { StateLocation } from "@/types/locations";
 
 type Pin = { x: number; y: number; label: string };
 
-type StateLocation = {
-  stateID: string;
-  state: string;
-  cities: string[];
-  color: string;
-};
-
 interface IndiaMapProps {
   onStateHover?: (stateId: string | null) => void;
-  stateLocationData?: StateLocation[];  // ⭐ Added: to show plant names on state hover
+  stateLocationData?: StateLocation[];
 }
 
+type Rect = { x: number; y: number; w: number; h: number };
+const intersects = (a: Rect, b: Rect) =>
+  a.x < b.x + b.w &&
+  a.x + a.w > b.x &&
+  a.y < b.y + b.h &&
+  a.y + a.h > b.y;
+
+const clamp = (v: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, v));
+
 const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover, stateLocationData = [] }) => {
-  const [svgMarkup, setSvgMarkup] = useState<string>('');
+  const [svgMarkup, setSvgMarkup] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
+
   const [hoveredStateId, setHoveredStateId] = useState<string | null>(null);
+  const [selectedStateId, setSelectedStateId] = useState<string | null>(null);
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile device
+  // desktop pin hover
+  const [hoveredPinIndex, setHoveredPinIndex] = useState<number | null>(null);
+
+  const [supportsHover, setSupportsHover] = useState(true);
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const isTapMode = !supportsHover || isCoarsePointer;
+
+  const [svgBounds, setSvgBounds] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  const calculationLockRef = useRef(false);
+  const rafIdRef = useRef<number | null>(null);
+  const lastBoundsRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
+
+  const hoverRafRef = useRef<number | null>(null);
+  const pendingHoverStateRef = useRef<string | null>(null);
+  const lastCommittedHoverRef = useRef<string | null>(null);
+
+  // store measured label sizes (per index)
+  const labelRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const [labelSizes, setLabelSizes] = useState<Map<number, { w: number; h: number }>>(
+    () => new Map()
+  );
+
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const hoverMq = window.matchMedia("(hover: hover)");
+    const coarseMq = window.matchMedia("(pointer: coarse)");
+
+    const apply = () => {
+      setSupportsHover(!!hoverMq.matches);
+      setIsCoarsePointer(!!coarseMq.matches);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
-  useEffect(() => {
-    let isMounted = true;
-    fetch('/india.svg')
-      .then((res) => res.text())
-      .then((text) => {
-        if (!isMounted) return;
-        setSvgMarkup(text);
-      });
+    apply();
+    hoverMq.addEventListener?.("change", apply);
+    coarseMq.addEventListener?.("change", apply);
+
     return () => {
-      isMounted = false;
+      hoverMq.removeEventListener?.("change", apply);
+      coarseMq.removeEventListener?.("change", apply);
     };
   }, []);
 
-  // Update SVG paths with active state attribute for mobile styling
+  useEffect(() => {
+    let mounted = true;
+    fetch("/india.svg")
+      .then((r) => r.text())
+      .then((t) => mounted && setSvgMarkup(t))
+      .catch((err) => console.error("Failed to load SVG:", err));
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const calculateSvgBounds = React.useCallback(() => {
+    if (calculationLockRef.current) return;
+    if (!containerRef.current) return;
+
+    const svg = containerRef.current.querySelector("svg");
+    if (!svg) return;
+
+    calculationLockRef.current = true;
+    if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!containerRef.current) {
+          calculationLockRef.current = false;
+          return;
+        }
+        const svg = containerRef.current.querySelector("svg");
+        if (!svg) {
+          calculationLockRef.current = false;
+          return;
+        }
+
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const svgRect = svg.getBoundingClientRect();
+
+        const x = svgRect.left - containerRect.left;
+        const y = svgRect.top - containerRect.top;
+        const width = svgRect.width;
+        const height = svgRect.height;
+
+        const newBounds = { x, y, width, height };
+        const newContainerSize = { width: containerRect.width, height: containerRect.height };
+        const last = lastBoundsRef.current;
+        const threshold = 0.5;
+
+        const changed =
+          Math.abs(newBounds.x - last.x) > threshold ||
+          Math.abs(newBounds.y - last.y) > threshold ||
+          Math.abs(newBounds.width - last.width) > threshold ||
+          Math.abs(newBounds.height - last.height) > threshold;
+
+        if (changed) {
+          setSvgBounds(newBounds);
+          setContainerSize(newContainerSize);
+          lastBoundsRef.current = newBounds;
+        }
+
+        calculationLockRef.current = false;
+        rafIdRef.current = null;
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!svgMarkup) return;
+    const t = setTimeout(() => calculateSvgBounds(), 150);
+
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => calculateSvgBounds(), 16);
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+
+    const vv = (window as any).visualViewport;
+    if (vv) {
+      vv.addEventListener("resize", handleResize);
+      vv.addEventListener("scroll", handleResize);
+    }
+
+    return () => {
+      clearTimeout(t);
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+      if (vv) {
+        vv.removeEventListener("resize", handleResize);
+        vv.removeEventListener("scroll", handleResize);
+      }
+    };
+  }, [svgMarkup, calculateSvgBounds]);
+
   useEffect(() => {
     if (!containerRef.current || !svgMarkup) return;
-    const svgEl = containerRef.current.querySelector('svg');
-    if (!svgEl) return;
+    const svg = containerRef.current.querySelector("svg");
+    if (!svg) return;
 
-    // Remove all active state attributes
-    const allPaths = svgEl.querySelectorAll('[id^="IN-"]');
-    allPaths.forEach((path) => {
-      path.removeAttribute('data-state-active');
+    calculateSvgBounds();
+
+    const ro = new ResizeObserver(() => {
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(() => {
+        calculateSvgBounds();
+        rafIdRef.current = null;
+      });
     });
 
-    // Add active state attribute to hovered state on mobile
-    if (isMobile && hoveredStateId) {
-      const activePath = svgEl.querySelector(`[id="${hoveredStateId}"]`);
+    ro.observe(svg);
+    ro.observe(containerRef.current);
+    const parent = svg.parentElement;
+    if (parent) ro.observe(parent);
+
+    return () => {
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+      ro.disconnect();
+    };
+  }, [svgMarkup, calculateSvgBounds]);
+
+  const highlightedStateId = isTapMode ? selectedStateId : hoveredStateId;
+
+  useEffect(() => {
+    if (!containerRef.current || !svgMarkup) return;
+    const svgEl = containerRef.current.querySelector("svg");
+    if (!svgEl) return;
+
+    const allPaths = svgEl.querySelectorAll('path[id^="IN-"]');
+    allPaths.forEach((p) => {
+      p.removeAttribute("data-state-active");
+      p.removeAttribute("data-state-hovered");
+    });
+
+    if (highlightedStateId) {
+      const activePath = svgEl.querySelector(`path[id="${highlightedStateId}"]`);
       if (activePath) {
-        activePath.setAttribute('data-state-active', 'true');
+        if (isTapMode) activePath.setAttribute("data-state-active", "true");
+        else activePath.setAttribute("data-state-hovered", "true");
       }
     }
-  }, [hoveredStateId, isMobile, svgMarkup]);
+  }, [highlightedStateId, isTapMode, svgMarkup]);
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const svgEl = containerRef.current.querySelector('svg');
-    if (!svgEl) return;
+    const el = containerRef.current;
 
-    const handleStateInteraction = (id: string | null) => {
-      setHoveredStateId(id);
-      if (onStateHover) onStateHover(id);
+    const commitHover = () => {
+      hoverRafRef.current = null;
+      if (hoveredPinIndex !== null) return;
+
+      const next = pendingHoverStateRef.current;
+      if (lastCommittedHoverRef.current === next) return;
+
+      lastCommittedHoverRef.current = next;
+      setHoveredStateId(next);
+      onStateHover?.(next);
     };
 
-    const onOver = (e: Event) => {
-      const target = e.target as Element | null;
-      if (!target) return;
-      const stateEl = target.closest('[id^="IN-"]');
-      const id = stateEl?.getAttribute('id') ?? null;
-      handleStateInteraction(id);
+    const scheduleCommit = () => {
+      // ✅ Block sidebar updates when pin is hovered
+      if (hoveredPinIndex !== null) return;
+      if (hoverRafRef.current != null) return;
+      hoverRafRef.current = requestAnimationFrame(commitHover);
     };
 
-    const onLeave = () => {
-      if (!isMobile) {
-        handleStateInteraction(null);
+    const handlePointerMove = (e: PointerEvent) => {
+      if (isTapMode) return;
+      // ✅ Block state hover detection if pin is currently hovered
+      if (hoveredPinIndex !== null) return;
+
+      const under = document.elementFromPoint(e.clientX, e.clientY) as Element | null;
+      if (!under) return;
+
+      if (under.closest(".pin")) return;
+
+      const statePath = under.closest('path[id^="IN-"]');
+      const stateId = statePath?.getAttribute("id") ?? null;
+
+      if (pendingHoverStateRef.current !== stateId) {
+        pendingHoverStateRef.current = stateId;
+        scheduleCommit();
       }
     };
 
-    // Desktop hover events
-    svgEl.addEventListener('pointerover', onOver);
-    svgEl.addEventListener('pointerleave', onLeave);
-
-    // Mobile tap/click events
-    const onTap = (e: Event) => {
-      if (!isMobile) return;
-      const target = e.target as Element | null;
-      if (!target) return;
-      const stateEl = target.closest('[id^="IN-"]');
-      const id = stateEl?.getAttribute('id') ?? null;
-      
-      // Toggle state selection on mobile
-      if (hoveredStateId === id) {
-        handleStateInteraction(null);
-      } else {
-        handleStateInteraction(id);
-      }
+    const handleLeave = () => {
+      if (isTapMode) return;
+      // ✅ Don't update sidebar when leaving if pin is hovered
+      if (hoveredPinIndex !== null) return;
+      pendingHoverStateRef.current = null;
+      scheduleCommit();
     };
 
-    svgEl.addEventListener('click', onTap);
-    svgEl.addEventListener('touchend', onTap);
+    const handleTap = (e: Event) => {
+      if (!isTapMode) return;
+      const target = e.target as Element | null;
+      if (!target) return;
 
-    // Close state selection when clicking outside on mobile
-    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
-      if (!isMobile) return;
+      const stateEl = target.closest('path[id^="IN-"]');
+      const id = stateEl?.getAttribute("id") ?? null;
+      const next = selectedStateId === id ? null : id;
+
+      setSelectedStateId(next);
+      onStateHover?.(next);
+    };
+
+    const handleOutsideTap = (e: MouseEvent | TouchEvent) => {
+      if (!isTapMode) return;
       const target = e.target as Element;
       if (!containerRef.current?.contains(target)) {
-        handleStateInteraction(null);
+        setSelectedStateId(null);
+        setActivePinIndex(null);
+        onStateHover?.(null);
       }
     };
 
-    if (isMobile) {
-      document.addEventListener('click', handleOutsideClick);
-      document.addEventListener('touchend', handleOutsideClick);
+    el.addEventListener("pointermove", handlePointerMove, { passive: true });
+    el.addEventListener("pointerleave", handleLeave, { passive: true });
+
+    const svg = el.querySelector("svg");
+    svg?.addEventListener("click", handleTap);
+    svg?.addEventListener("touchend", handleTap);
+
+    if (isTapMode) {
+      document.addEventListener("click", handleOutsideTap);
+      document.addEventListener("touchend", handleOutsideTap);
     }
 
     return () => {
-      svgEl.removeEventListener('pointerover', onOver);
-      svgEl.removeEventListener('pointerleave', onLeave);
-      svgEl.removeEventListener('click', onTap);
-      svgEl.removeEventListener('touchend', onTap);
-      document.removeEventListener('click', handleOutsideClick);
-      document.removeEventListener('touchend', handleOutsideClick);
-    };
-  }, [svgMarkup, onStateHover, isMobile, hoveredStateId]);
+      if (hoverRafRef.current != null) cancelAnimationFrame(hoverRafRef.current);
+      el.removeEventListener("pointermove", handlePointerMove);
+      el.removeEventListener("pointerleave", handleLeave);
 
+      svg?.removeEventListener("click", handleTap);
+      svg?.removeEventListener("touchend", handleTap);
+
+      document.removeEventListener("click", handleOutsideTap);
+      document.removeEventListener("touchend", handleOutsideTap);
+    };
+  }, [onStateHover, isTapMode, selectedStateId, hoveredPinIndex]);
+
+  // ✅ pins (same as yours)
   const activePins: Pin[] = useMemo(
     () => [
-      { label: 'Pathri', x: 28, y: 30 },
-      { label: 'Sholaka', x: 20, y: 31 },
-      { label: 'Delhi', x: 22, y: 32 },
-      { label: 'Roopangarh', x: 17, y: 40 },
-      { label: 'Bhopal', x: 22, y: 45 },
-      { label: 'Kargi', x: 35, y: 50 },
-      { label: 'Gaya', x: 41, y: 43 },
-      { label: 'Bokaro', x: 42, y: 48 },
-      { label: 'Anara', x: 48, y: 47 },
-      { label: 'Kaipadar', x: 40, y: 59 },
-      { label: 'Mirza', x: 53, y: 39 },
-      { label: 'Bongaigaon', x: 57, y: 39 },
-      { label: 'Udvada', x: 11, y: 55 },
-      { label: 'Medchal', x: 24, y: 68 },
-      { label: 'Kallakal', x: 26, y: 66.5 },
-      { label: 'Wadiyaram', x: 27, y: 68 },
-      { label: 'Bobbili', x: 35, y: 67 },
-      { label: 'Kovvur', x: 28, y: 73 },
-      { label: 'Hubli', x: 17, y: 75 },
-      { label: 'Tumkur', x: 20, y: 80 },
-      { label: 'Tirumangalam', x: 24, y: 92 },
-      { label: 'Burhwal', x: 28, y: 33 },
+      { label: "Pathri", x: 38.85, y: 27.35 },
+      { label: "Sholaka", x: 30.35, y: 32 },
+      { label: "Burhwal", x: 47.14, y: 35 },
+      { label: "Gaya", x: 58.25, y: 42.25 },
+      { label: "Mirza", x: 81, y: 38 },
+      { label: "Roopangarh", x: 22.35, y: 38.13 },
+      { label: "Bharatpur", x: 30.5, y: 35.5 },
+      { label: "Delhi", x: 29.35, y: 30 },
+      { label: "Bongaigaon", x: 78, y: 37.85 },
+      { label: "Bokaro", x: 59.63, y: 46.35 },
+      { label: "Anara", x: 64.89, y: 48.35 },
+      { label: "Kaipadar", x: 60.8, y: 56.97 },
+      { label: "Kargi", x: 49, y: 50 },
+      { label: "Udvada", x: 16.92, y: 55.78 },
+      { label: "Chandrapur", x: 39.85, y: 57.55 },
+      { label: "Kallakal", x: 35.35, y: 65.85 },
+      { label: "Wadiyaram", x: 36.12, y: 63.46 },
+      { label: "Medchal", x: 35.35, y: 68.5 },
+      { label: "Hyderabad", x: 35.5, y: 70.53 },
+      { label: "Kovvur", x: 51.44, y: 63.85 },
+      { label: "Bobili", x: 44.75, y: 70.55 },
+      { label: "Hubli", x: 24.05, y: 74 },
+      { label: "Tumkur", x: 27.55, y: 78.55 },
+      { label: "Bengaluru", x: 30.32, y: 81.35 },
+      { label: "Tirumangalam", x: 33.78, y: 88.64 },
+      { label: "Hosur", x: 34, y: 83.5 },
     ],
     []
   );
 
-  const handlePinClick = (index: number) => {
-    if (isMobile) {
-      // Toggle pin label on mobile
-      setActivePinIndex(activePinIndex === index ? null : index);
+  const pinPositions = useMemo(() => {
+    if (
+      svgBounds.width === 0 ||
+      svgBounds.height === 0 ||
+      containerSize.width === 0 ||
+      containerSize.height === 0
+    ) {
+      return activePins.map((pin) => ({ left: `${pin.x}%`, top: `${pin.y}%` }));
     }
+
+    const viewBoxWidth = 611.85999;
+    const viewBoxHeight = 695.70178;
+    const viewBoxAspectRatio = viewBoxWidth / viewBoxHeight;
+    const svgAspectRatio = svgBounds.width / svgBounds.height;
+
+    let scale: number;
+    let offsetX: number;
+    let offsetY: number;
+
+    if (svgAspectRatio > viewBoxAspectRatio) {
+      scale = svgBounds.height / viewBoxHeight;
+      const contentWidth = viewBoxWidth * scale;
+      offsetX = svgBounds.x + (svgBounds.width - contentWidth) / 2;
+      offsetY = svgBounds.y;
+    } else {
+      scale = svgBounds.width / viewBoxWidth;
+      const contentHeight = viewBoxHeight * scale;
+      offsetX = svgBounds.x;
+      offsetY = svgBounds.y + (svgBounds.height - contentHeight) / 2;
+    }
+
+    return activePins.map((pin) => {
+      const pinXInViewBox = (pin.x / 100) * viewBoxWidth;
+      const pinYInViewBox = (pin.y / 100) * viewBoxHeight;
+
+      const pinXInPixels = offsetX + pinXInViewBox * scale;
+      const pinYInPixels = offsetY + pinYInViewBox * scale;
+
+      const leftPercent = (pinXInPixels / containerSize.width) * 100;
+      const topPercent = (pinYInPixels / containerSize.height) * 100;
+
+      return { left: `${leftPercent}%`, top: `${topPercent}%` };
+    });
+  }, [activePins, svgBounds, containerSize]);
+
+  const getStateIdByPin = (pinLabel: string): string | null => {
+    const match = stateLocationData.find((s) =>
+      s.cities.some((city) => city.name === pinLabel)
+    );
+    return match?.stateID || null;
   };
 
-  // Get state for a pin label (to show label when state is hovered)
-  const getPinState = (pinLabel: string): string | null => {
-    if (!hoveredStateId || !stateLocationData.length) return null;
-    const stateData = stateLocationData.find(s => s.stateID === hoveredStateId);
-    if (stateData && stateData.cities.includes(pinLabel)) {
-      return hoveredStateId;
-    }
-    return null;
+  const handlePinTap = (index: number, pinLabel: string) => {
+    if (!isTapMode) return;
+
+    const nextIndex = activePinIndex === index ? null : index;
+    setActivePinIndex(nextIndex);
+
+    const stateId = getStateIdByPin(pinLabel);
+    const nextState = stateId && nextIndex !== null ? stateId : null;
+
+    setSelectedStateId(nextState);
+    onStateHover?.(nextState);
   };
 
-  // Calculate label offset to prevent overlap when multiple labels are visible
-  const getLabelOffset = (index: number, pinLabel: string): { x: number; y: number } => {
-    const currentPin = activePins[index];
-    if (!currentPin) return { x: 0, y: 0 };
+  const isPinInHoveredState = (pinLabel: string): boolean => {
+    if (!hoveredStateId) return false;
+    const stateData = stateLocationData.find((s) => s.stateID === hoveredStateId);
+    return !!(stateData && stateData.cities.some((city) => city.name === pinLabel));
+  };
 
-    // If state is hovered, handle labels in that state
-    if (hoveredStateId && stateLocationData.length) {
-      const stateData = stateLocationData.find(s => s.stateID === hoveredStateId);
-      if (stateData && stateData.cities.includes(pinLabel)) {
-        // Get all pins in this state (including current pin)
-        const statePins = activePins
-          .map((pin, idx) => ({ pin, idx }))
-          .filter(({ pin }) => stateData.cities.includes(pin.label))
-          .sort((a, b) => {
-            // Sort by y position (top to bottom), then x (left to right)
-            const yDiff = Math.abs(a.pin.y - b.pin.y);
-            if (yDiff < 3) {
-              // Same row - sort by x
-              return a.pin.x - b.pin.x;
-            }
-            return a.pin.y - b.pin.y;
-          });
-        
-        // Always apply offset if there are multiple pins in the state
-        if (statePins.length > 1) {
-          const pinIndex = statePins.findIndex(({ idx }) => idx === index);
-          if (pinIndex !== -1) {
-            // Use tighter spacing for Telangana (22px), standard spacing (30px) for other states
-            const spacing = hoveredStateId === "IN-TG" ? 22 : 30;
-            const offsetY = pinIndex * -spacing;
-            
-            return { x: 0, y: offsetY };
-          }
-        }
+  // ✅ Measure real label sizes after render
+  useLayoutEffect(() => {
+    const m = new Map<number, { w: number; h: number }>();
+    labelRefs.current.forEach((el, idx) => {
+      const r = el.getBoundingClientRect();
+      if (r.width && r.height) m.set(idx, { w: r.width, h: r.height });
+    });
+    setLabelSizes(m);
+  }, [containerSize.width, containerSize.height, svgMarkup]);
+
+  // ✅ Collision-free offsets using measured sizes
+  const labelOffsetMap = useMemo(() => {
+    const map = new Map<number, { dx: number; dy: number }>();
+
+    if (isTapMode) return map;
+    if (!hoveredStateId) return map;
+    if (hoveredPinIndex !== null) return map;
+
+    const indexes = activePins
+      .map((p, idx) => ({ idx, stateId: getStateIdByPin(p.label) }))
+      .filter((x) => x.stateId === hoveredStateId)
+      .map((x) => x.idx);
+
+    if (indexes.length <= 1) return map;
+
+    // Many candidate offsets (near pin first, then expand)
+    const slots: Array<{ dx: number; dy: number }> = [];
+    const rings = [0, 18, 30, 44, 60, 78, 96];
+    const angles = [270, 300, 240, 330, 210, 0, 180, 30, 150, 60, 120]; // bias upward
+
+    for (const r of rings) {
+      for (const a of angles) {
+        const rad = (a * Math.PI) / 180;
+        slots.push({ dx: Math.round(Math.cos(rad) * r), dy: Math.round(Math.sin(rad) * r) });
       }
     }
 
-    // For individual pin hovers or nearby pins, check for overlaps
-    // Find all pins that are close to this one (within 8% distance)
-    const nearbyPins = activePins
-      .map((pin, idx) => ({ pin, idx }))
-      .filter(({ pin, idx }) => {
-        if (idx === index) return false;
-        // Calculate distance
-        const dx = Math.abs(pin.x - currentPin.x);
-        const dy = Math.abs(pin.y - currentPin.y);
-        // Consider pins within 8% as potentially overlapping
-        return dx < 8 && dy < 8;
-      });
+    const pinPx = (idx: number) => {
+      const p =
+        pinPositions[idx] || {
+          left: `${activePins[idx].x}%`,
+          top: `${activePins[idx].y}%`,
+        };
+      const leftPct = parseFloat(p.left);
+      const topPct = parseFloat(p.top);
 
-    if (nearbyPins.length > 0) {
-      // Sort all nearby pins including current one
-      const allPins = [...nearbyPins, { pin: currentPin, idx: index }].sort((a, b) => {
-        const yDiff = Math.abs(a.pin.y - b.pin.y);
-        if (yDiff < 3) {
-          return a.pin.x - b.pin.x;
-        }
-        return a.pin.y - b.pin.y;
-      });
-      
-      const currentIndex = allPins.findIndex(({ idx }) => idx === index);
-      if (currentIndex > 0) {
-        // Calculate if pins are very close horizontally
-        const prevPin = allPins[currentIndex - 1].pin;
-        const horizontalDist = Math.abs(currentPin.x - prevPin.x);
-        
-        if (horizontalDist < 5) {
-          // Very close - stack vertically with tighter spacing
-          const offsetY = currentIndex * -20;
-          return { x: 0, y: offsetY };
-        } else {
-          // Further apart - slight offset to avoid overlap
-          const offsetY = currentIndex * -22;
-          const offsetX = currentIndex % 2 === 0 ? -12 : 12;
-          return { x: offsetX, y: offsetY };
+      return {
+        x: (leftPct / 100) * containerSize.width,
+        y: (topPct / 100) * containerSize.height,
+      };
+    };
+
+    const placed: Rect[] = [];
+    const GAP = 10;
+
+    for (const idx of indexes) {
+      const { x, y } = pinPx(idx);
+
+      const size = labelSizes.get(idx) || { w: 120, h: 40 };
+      const LW = size.w;
+      const LH = size.h;
+
+      let chosen = { dx: 0, dy: 0 };
+
+      for (const s of slots) {
+        // NOTE: label anchored above dot, so push box upward
+        let rect: Rect = {
+          x: x + s.dx - LW / 2,
+          y: y + s.dy - (LH + 22),
+          w: LW + GAP,
+          h: LH + GAP,
+        };
+
+        rect = {
+          ...rect,
+          x: clamp(rect.x, 6, containerSize.width - rect.w - 6),
+          y: clamp(rect.y, 6, containerSize.height - rect.h - 6),
+        };
+
+        const collision = placed.some((p) => intersects(rect, p));
+        if (!collision) {
+          // make offset relative to pin center (for transform translate)
+          chosen = { dx: rect.x + rect.w / 2 - x, dy: rect.y + rect.h / 2 - y };
+          placed.push(rect);
+          break;
         }
       }
+
+      map.set(idx, chosen);
     }
-    
-    return { x: 0, y: 0 };
-  };
+
+    return map;
+  }, [
+    isTapMode,
+    hoveredStateId,
+    hoveredPinIndex,
+    activePins,
+    pinPositions,
+    containerSize.width,
+    containerSize.height,
+    stateLocationData,
+    labelSizes,
+  ]);
 
   const getLabelClass = (index: number, pinLabel: string) => {
-    const isActive = isMobile ? activePinIndex === index : false;
-    const isStateHovered = getPinState(pinLabel) !== null;
-    
-    return `label transition-all duration-300 ${
-      isMobile 
-        ? isActive 
-          ? 'opacity-100 scale-110' 
-          : 'opacity-0'
-        : isStateHovered
-          ? 'opacity-100 scale-110'
-          : 'opacity-0 group-hover:opacity-100 group-hover:scale-110'
-    }`;
+    if (isTapMode) {
+      return `label ${activePinIndex === index ? "is-visible" : "is-hidden"}`;
+    }
+    if (hoveredPinIndex !== null) {
+      return `label ${hoveredPinIndex === index ? "is-visible" : "is-hidden"}`;
+    }
+    if (hoveredStateId) {
+      const show = isPinInHoveredState(pinLabel);
+      return `label ${show ? "is-visible" : "is-hidden"}`;
+    }
+    return "label is-hidden";
   };
 
   return (
-    <div className="map-container" aria-label="India map" ref={containerRef}>
-      <div className="md:hidden text-center mb-4">
-        <p className="text-xs text-gray-500 bg-gray-100 rounded-full px-3 py-1 inline-flex items-center gap-1">
-          <span className="w-2 h-2 bg-[#F2913F] rounded-full animate-pulse inline-block"></span>
-          Tap locations to explore
-        </p>
-      </div>
-
+    <div className="map-container" ref={containerRef} aria-label="India map">
       {svgMarkup && (
-        <div
-          className="map-inline-svg"
-          dangerouslySetInnerHTML={{ __html: svgMarkup }}
-        />
+        <div className="map-inline-svg" dangerouslySetInnerHTML={{ __html: svgMarkup }} />
       )}
 
-
-      {/* FIXED Pins */}
       <div className="pins-overlay">
-        {activePins.map((pin, idx) => (
-          <div
-            key={`${pin.label}-${idx}`}
-            className={`pin group ${isMobile && activePinIndex === idx ? 'pin-active' : ''}`}
-            style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-            role="button"
-            tabIndex={0}
-            aria-label={`Location: ${pin.label}`}
-            onClick={() => handlePinClick(idx)}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              handlePinClick(idx);
-            }}
-          >
-            <div className="dot" />
-            <div 
-              className={getLabelClass(idx, pin.label)}
-              style={(() => {
-                const offset = getLabelOffset(idx, pin.label);
-                const baseMargin = 8;
-                const spacingAdjustment = Math.abs(offset.y) > 0 ? Math.abs(offset.y) : 0;
-                
-                // Calculate z-index for proper stacking (higher labels should be on top)
-                const zIndex = offset.y < 0 ? 15 + Math.abs(Math.round(offset.y / 10)) : 15;
-                
-                if (offset.x === 0 && offset.y === 0) {
-                  return { zIndex: 15 };
-                }
-                
-                // Combine centering (-50%) with offset
-                // Ensure proper spacing between stacked labels
-                return { 
-                  transform: `translateX(calc(-50% + ${offset.x}px)) translateY(${offset.y}px)`,
-                  marginBottom: `${baseMargin + spacingAdjustment}px`,
-                  zIndex: zIndex
-                };
-              })()}
-            >
-              {pin.label}
-            </div>
-          </div>
-        ))}
-      </div>
+        {activePins.map((pin, idx) => {
+          const position =
+            pinPositions[idx] || { left: `${pin.x}%`, top: `${pin.y}%` };
 
-      <div className="md:hidden mt-6 flex justify-center">
-        <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#F2913F] rounded-full"></div>
-            <span className="text-xs text-gray-600 font-medium">Manufacturing Hub</span>
-          </div>
-          <div className="w-px h-4 bg-gray-300"></div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#8A393B] rounded-full"></div>
-            <span className="text-xs text-gray-600 font-medium">Project Site</span>
-          </div>
-        </div>
+          const off = labelOffsetMap.get(idx) || { dx: 0, dy: 0 };
+
+          return (
+            <div
+              key={`${pin.label}-${idx}`}
+              className={`pin ${isTapMode && activePinIndex === idx ? "pin-active" : ""}`}
+              style={{
+                left: position.left,
+                top: position.top,
+                opacity: 1, // ✅ ALWAYS show all pins
+              }}
+              role="button"
+              tabIndex={isTapMode ? 0 : -1}
+              aria-label={`Location: ${pin.label}`}
+              onPointerEnter={() => {
+                if (isTapMode) return;
+                setHoveredPinIndex(idx);
+                // ✅ Clear state hover to show all locations in sidebar
+                onStateHover?.(null);
+              }}
+              onPointerLeave={(e) => {
+                if (isTapMode) return;
+                setHoveredPinIndex(null);
+                
+                // ✅ Check if pointer is now over a state path when leaving pin
+                // Use requestAnimationFrame to ensure pointer has moved to the state
+                requestAnimationFrame(() => {
+                  const under = document.elementFromPoint(e.clientX, e.clientY) as Element | null;
+                  if (!under) return;
+                  
+                  // Skip if still over a pin
+                  if (under.closest(".pin")) return;
+                  
+                  // Check if over a state path
+                  const statePath = under.closest('path[id^="IN-"]');
+                  const stateId = statePath?.getAttribute("id") ?? null;
+                  
+                  if (stateId) {
+                    // Update pending hover state and commit immediately
+                    pendingHoverStateRef.current = stateId;
+                    lastCommittedHoverRef.current = stateId;
+                    setHoveredStateId(stateId);
+                    onStateHover?.(stateId);
+                  }
+                });
+              }}
+              onClick={() => handlePinTap(idx, pin.label)}
+              onTouchEnd={(e) => {
+                if (!isTapMode) return;
+                e.preventDefault();
+                handlePinTap(idx, pin.label);
+              }}
+            >
+              <div className="dot" />
+
+              <div
+                ref={(el) => {
+                  if (!el) {
+                    labelRefs.current.delete(idx);
+                    return;
+                  }
+                  labelRefs.current.set(idx, el);
+                }}
+                className={getLabelClass(idx, pin.label)}
+                // ✅ IMPORTANT: inline transform is what positions labels uniquely
+                style={{
+                  transform:
+                    hoveredPinIndex !== null
+                      ? "translateX(-50%) translateY(-2px) scale(1.04)"
+                      : `translateX(-50%) translate(${off.dx}px, ${off.dy}px)`,
+                }}
+              >
+                {pin.label}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,104 +1,92 @@
+/* ✅ FULL FILE: components/IndiaMap.css */
+
 .map-container {
   width: 100%;
-  height: auto;
   position: relative;
   overflow: hidden;
-  min-height: 400px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  min-height: 280px;
+  height: clamp(280px, 70vw, 440px);
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .map-container {
-    padding: 1rem;
-    min-height: 500px;
+    min-height: 420px;
+    height: clamp(420px, 52vw, 620px);
   }
 }
 
+@media (min-width: 1024px) {
+  .map-container {
+    min-height: 520px;
+    height: clamp(520px, 34vw, 720px);
+  }
+}
+
+.map-inline-svg,
+.map-inline-svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* States */
 .map-inline-svg path,
 #features path {
   fill: #F2913F;
   stroke: #8A393B;
   stroke-width: 1;
-  transition: all 0.3s ease;
+  transition: fill 0.12s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke-width 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  contain: layout style paint;
+  will-change: fill, stroke-width;
 }
 
-.map-inline-svg path:hover,
-#features path:hover {
-  fill: #8A393B;
-  stroke-width: 2;
-}
-
-/* Mobile map state hover/tap effects */
-@media (max-width: 768px) {
-  .map-inline-svg path,
-  #features path {
-    stroke-width: 1.5;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .map-inline-svg path:active,
-  #features path:active {
-    fill: #8A393B;
-    stroke-width: 2.5;
-    filter: drop-shadow(0 2px 4px rgba(138, 57, 59, 0.3));
-    transition: all 0.2s ease;
-  }
-
-  /* Active state styling for tapped states */
-  .map-inline-svg path[data-state-active="true"],
-  #features path[data-state-active="true"] {
-    fill: #8A393B;
-    stroke-width: 2.5;
-    filter: drop-shadow(0 2px 4px rgba(138, 57, 59, 0.3));
-  }
-
+/* Hover only when device supports hover */
+@media (hover: hover) {
   .map-inline-svg path:hover,
   #features path:hover {
     fill: #8A393B;
-    stroke-width: 2.5;
-    filter: drop-shadow(0 2px 4px rgba(138, 57, 59, 0.3));
+    stroke-width: 2;
   }
 }
 
-/* Pins overlay */
+/* JS hovered state (desktop) */
+.map-inline-svg path[data-state-hovered="true"],
+#features path[data-state-hovered="true"] {
+  fill: #8A393B !important;
+  stroke-width: 2;
+}
+
+/* Tap/Active state (mobile + tablet touch devices) */
+.map-inline-svg path[data-state-active="true"],
+#features path[data-state-active="true"] {
+  fill: #8A393B;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 2px 4px rgba(138, 57, 59, 0.25));
+}
+
+/* Pins */
 .pins-overlay {
   position: absolute;
   inset: 0;
-  pointer-events: none; /* overlay disabled */
   z-index: 10;
+  pointer-events: none; /* overlay doesn't block state hover */
 }
 
 .pin {
   position: absolute;
   transform: translate(-50%, -50%);
-  white-space: nowrap;
   z-index: 10;
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  pointer-events: auto; /* ✅ FIX: enables hover */
-}
-
-/* Mobile pin enhancements */
-@media (max-width: 768px) {
-  .pin {
-    transform: translate(-50%, -50%) scale(1.2);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .pin:active {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-
-  .pin.pin-active,
-  .pin:hover {
-    transform: translate(-50%, -50%) scale(1.4);
-    z-index: 20;
-  }
+  pointer-events: auto; /* pins can be hovered */
+  transition: opacity 0.2s ease-out;
 }
 
 .pin .dot {
@@ -107,36 +95,17 @@
   border-radius: 9999px;
   background: #8A393B;
   border: 2px solid #fff;
-  box-shadow: 0 0 0 2px #F2913F, 0 2px 4px rgba(0,0,0,0.3);
-  margin: 0 auto;
-  transition: all 0.3s ease;
+  box-shadow: 0 0 0 2px #F2913F, 0 2px 6px rgba(0, 0, 0, 0.22);
   animation: pinPulse 2s ease-in-out infinite;
 }
 
 @keyframes pinPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
-    box-shadow: 0 0 0 2px #F2913F, 0 2px 4px rgba(0,0,0,0.3);
   }
   50% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 4px rgba(242, 145, 63, 0.4), 0 4px 8px rgba(0,0,0,0.2);
-  }
-}
-
-/* Mobile dot enhancements */
-@media (max-width: 768px) {
-  .pin .dot {
-    width: 12px;
-    height: 12px;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 2px #F2913F, 0 3px 6px rgba(0,0,0,0.4);
-  }
-
-  .pin:hover .dot {
-    background: #F2913F;
-    transform: scale(1.2);
-    box-shadow: 0 0 0 3px rgba(242, 145, 63, 0.6), 0 4px 12px rgba(0,0,0,0.3);
   }
 }
 
@@ -144,89 +113,48 @@
   position: absolute;
   bottom: 100%;
   left: 50%;
-  transform: translateX(-50%);
   margin-bottom: 8px;
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 12px;
-  line-height: 1.2;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.82);
   color: #fff;
-  font-weight: 500;
-  text-align: center;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.1);
+  font-weight: 600;
   white-space: nowrap;
   pointer-events: none;
-  z-index: 15;
+
+  opacity: 0;
+  transform-origin: bottom center;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Mobile label enhancements */
+/* ✅ IMPORTANT FIX:
+   Do NOT force transform here — JS applies unique transforms to avoid overlap */
+.is-visible {
+  opacity: 1 !important;
+}
+
+.is-hidden {
+  opacity: 0 !important;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-  .pin .label {
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    background: rgba(0,0,0,0.9);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(242, 145, 63, 0.3);
-    font-weight: 600;
-    min-width: 60px;
+  .pin .dot {
+    width: 12px;
+    height: 12px;
+    border-width: 3px;
   }
 
-  /* Show label when pin is active (tapped) on mobile */
-  .pin.pin-active .label,
-  .pin:hover .label {
-    opacity: 1 !important;
-    background: linear-gradient(135deg, rgba(242, 145, 63, 0.95), rgba(138, 57, 59, 0.95));
-    color: white;
-    transform: translateY(-2px) scale(1.1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 20;
-  }
-
-  /* Active pin dot enhancement on mobile */
   .pin.pin-active .dot {
     background: #F2913F;
-    transform: scale(1.3);
-    box-shadow: 0 0 0 4px rgba(242, 145, 63, 0.6), 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 0 0 4px rgba(242, 145, 63, 0.35),
+      0 6px 14px rgba(0, 0, 0, 0.22);
   }
-}
 
-/* Extra small mobile devices */
-@media (max-width: 480px) {
   .pin .label {
-    font-size: 10px;
-    padding: 3px 6px;
-    min-width: 50px;
-  }
-
-  .pin .dot {
-    width: 10px;
-    height: 10px;
+    font-size: 11px;
+    padding: 5px 9px;
   }
 }
-
-/* Responsive map SVG */
-@media (max-width: 768px) {
-  .map-inline-svg {
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-    touch-action: pan-x pan-y;
-  }
-
-  .map-inline-svg svg {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    touch-action: pan-x pan-y;
-  }
-}
-
-/* Ensure pins overlay is interactive on mobile */
-@media (max-width: 768px) {
-  .pins-overlay {
-    pointer-events: auto;
-  }
-}
-
