@@ -565,31 +565,10 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover, stateLocationData = [
                 // ✅ Clear state hover to show all locations in sidebar
                 onStateHover?.(null);
               }}
-              onPointerLeave={(e) => {
+              onPointerLeave={() => {
                 if (isTapMode) return;
                 setHoveredPinIndex(null);
-                
-                // ✅ Check if pointer is now over a state path when leaving pin
-                // Use requestAnimationFrame to ensure pointer has moved to the state
-                requestAnimationFrame(() => {
-                  const under = document.elementFromPoint(e.clientX, e.clientY) as Element | null;
-                  if (!under) return;
-                  
-                  // Skip if still over a pin
-                  if (under.closest(".pin")) return;
-                  
-                  // Check if over a state path
-                  const statePath = under.closest('path[id^="IN-"]');
-                  const stateId = statePath?.getAttribute("id") ?? null;
-                  
-                  if (stateId) {
-                    // Update pending hover state and commit immediately
-                    pendingHoverStateRef.current = stateId;
-                    lastCommittedHoverRef.current = stateId;
-                    setHoveredStateId(stateId);
-                    onStateHover?.(stateId);
-                  }
-                });
+                // ✅ Keep showing all locations when leaving pin (don't restore state hover)
               }}
               onClick={() => handlePinTap(idx, pin.label)}
               onTouchEnd={(e) => {
