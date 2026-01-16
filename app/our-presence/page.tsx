@@ -16,7 +16,7 @@ const OurPresencePage = () => {
     { stateID: "IN-HR", state: "Haryana", cities: [{ name: "Sholaka", plantType: "SLEEPER PLANT" }], color: "#F2913F" },
     { stateID: "IN-UP", state: "Uttar Pradesh", cities: [{ name: "Burhwal", plantType: "SLEEPER PLANT" }], color: "#F2913F" },
     { stateID: "IN-RJ", state: "Rajasthan", cities: [{ name: "Roopangarh", plantType: "WIRE PLANT" }, { name: "Bharatpur", plantType: "PRECAST" }], color: "#F2913F" },
-    { stateID: "IN-DL", state: "Delhi", cities: [{ name: "Delhi", plantType: "BR.OFFICE" }], color: "#F2913F" },
+    { stateID: "IN-DL", state: "Delhi", cities: [{ name: "Delhi", plantType: "BRANCH OFFICE" }], color: "#F2913F" },
 
     { stateID: "IN-CT", state: "Chhattisgarh", cities: [{ name: "Kargi", plantType: "SLEEPER PLANT" }], color: "#F2913F" },
 
@@ -36,7 +36,7 @@ const OurPresencePage = () => {
         { name: "Kallakal", plantType: "FOUNDRY" },
         { name: "Wadiyaram", plantType: "SLEEPER PLANT" },
         { name: "Medchal", plantType: "FASTENING PLANT" },
-        { name: "Hyderabad", plantType: "OFFICE REG." },
+        { name: "Hyderabad", plantType: "HEAD OFFICE" },
       ],
       color: "#F2913F",
     },
