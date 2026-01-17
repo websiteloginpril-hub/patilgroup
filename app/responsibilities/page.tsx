@@ -1,12 +1,27 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import { Download } from 'lucide-react';
+import { Download, ChevronDown, Folder, FileText } from 'lucide-react';
 import Image from 'next/image';
+
+interface PDFDocument {
+  name: string;
+  filename: string;
+  path: string;
+}
+
+interface DocumentCategory {
+  id: string;
+  title: string;
+  pdfs: PDFDocument[];
+}
 
 const ResponsibilitiesPage = () => {
   useGSAPAnimations();
+
+  const [isExploreExpanded, setIsExploreExpanded] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
 
   const brochures = [
     {
@@ -25,11 +40,72 @@ const ResponsibilitiesPage = () => {
     }
   ];
 
-  const handleDownload = (filename: string, title: string) => {
+  // Document categories with their PDFs
+  // To add PDFs:
+  // 1. Create folder structure: public/documents/[category-name]/
+  // 2. Upload your PDF files to the appropriate folder
+  // 3. Add them below in the pdfs array for each category
+  // Format: { name: "Display Name", filename: "actual-filename.pdf", path: "/documents/category-name/actual-filename.pdf" }
+  const documentCategories: DocumentCategory[] = [
+    {
+      id: "annual-return",
+      title: "Annual Return",
+      pdfs: [
+        { name: "Annual Return FY 2023-24", filename: "Annual-Return_FY-2023-24.pdf", path: "/documents/annual-return/Annual-Return_FY-2023-24.pdf" },
+        { name: "Annual Return FY 2022-23", filename: "Annual-Return_FY-2022-23.pdf", path: "/documents/annual-return/Annual-Return_FY-2022-23.pdf" },
+        { name: "Annual Return FY 2021-22", filename: "Annual-Return_FY_2021-22.pdf", path: "/documents/annual-return/Annual-Return_FY_2021-22.pdf" },
+      ]
+    },
+    {
+      id: "csr",
+      title: "CSR",
+      pdfs: [
+        { name: "CSR Policy", filename: "CSR-Policy.pdf", path: "/documents/csr/CSR-Policy.pdf" },
+        { name: "CSR Annual Action Plan FY 2024-25", filename: "CSR-Annual-Action-Plan_FY-2024-25.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2024-25.pdf" },
+        { name: "CSR Annual Action Plan FY 2023-24", filename: "CSR-Annual-Action-Plan_FY-2023-24.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2023-24.pdf" },
+        { name: "CSR Annual Action Plan FY 2022-23", filename: "CSR-Annual-Action-Plan_FY-2022-23.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2022-23.pdf" },
+        { name: "Composition of CSR Committee", filename: "Composition-of-CSR-Committee.pdf", path: "/documents/csr/Composition-of-CSR-Committee.pdf" },
+      ]
+    },
+    {
+      id: "notices",
+      title: "Notices",
+      pdfs: [
+        { name: "27th AGM Notice", filename: "27th-AGM-Notice.pdf", path: "/documents/notices/27th-AGM-Notice.pdf" },
+        { name: "1st EGM Notice FY 2023-24", filename: "1st-EGM-Notice_FY-2023-24.pdf", path: "/documents/notices/1st-EGM-Notice_FY-2023-24.pdf" },
+        { name: "2nd EGM Notice FY 2023-24", filename: "2nd-EGM-Notice_FY-2023-24.pdf", path: "/documents/notices/2nd-EGM-Notice_FY-2023-24.pdf" },
+      ]
+    },
+    {
+      id: "other-documents",
+      title: "Other Documents",
+      pdfs: [
+        { name: "Terms and Conditions of Appointment of the Independent Directors", filename: "Terms-and-Conditions-of-appointment-of-the-Independent-Directors.pdf", path: "/documents/other-documents/Terms-and-Conditions-of-appointment-of-the-Independent-Directors.pdf" },
+        { name: "Whistle Blower Policy", filename: "WHISTLE-BLOWER-POLICY.pdf", path: "/documents/other-documents/WHISTLE-BLOWER-POLICY.pdf" },
+      ]
+    },
+    {
+      id: "resignation-letter",
+      title: "Resignation Letter",
+      pdfs: [
+        { name: "Resignation Letter of Mr. Durga Prasad Subramanyam Anapindi - 14th May 2024", filename: "Resignation-Letter-of-Mr-Durga-Prasad-Subramanyam-Anapindi_14th-May-2024.pdf", path: "/documents/resignation-letter/Resignation-Letter-of-Mr-Durga-Prasad-Subramanyam-Anapindi_14th-May-2024.pdf" },
+        { name: "Resignation Letter of Mr. Kokkonda Subrahmaniyam - 18th July 2024", filename: "Resignation-Letter-of-Mr-Kokkonda-Subrahmaniyam_18th-July-2024.pdf", path: "/documents/resignation-letter/Resignation-Letter-of-Mr-Kokkonda-Subrahmaniyam_18th-July-2024.pdf" },
+      ]
+    }
+  ];
+
+  const handleDownload = (filename: string, title: string, path?: string) => {
     const link = document.createElement('a');
-    link.href = `/Brochure/${filename}`;
+    link.href = path || `/Brochure/${filename}`;
     link.download = filename;
     link.click();
+  };
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId]
+    }));
   };
 
   return (
@@ -127,6 +203,73 @@ const ResponsibilitiesPage = () => {
                 </div>
               ))}
           </div>
+        </div>
+
+        {/* Explore More Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+          <div className="flex justify-center">
+            <button
+              onClick={() => setIsExploreExpanded(!isExploreExpanded)}
+              className="flex items-center gap-2 px-6 py-3 bg-[#F2913F] text-white rounded-lg font-medium hover:bg-[#E6822B] transition-colors duration-200"
+            >
+              <span>Explore More</span>
+              <ChevronDown 
+                className={`w-5 h-5 transition-transform duration-300 ${isExploreExpanded ? 'rotate-180' : ''}`} 
+              />
+            </button>
+          </div>
+
+          {/* Expandable Document Categories */}
+          {isExploreExpanded && (
+            <div className="mt-8 max-w-4xl mx-auto">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                {documentCategories.map((category, index) => (
+                  <div key={category.id} className="border-b border-gray-200 last:border-b-0">
+                    {/* Category Header */}
+                    <button
+                      onClick={() => toggleCategory(category.id)}
+                      className="w-full flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors duration-200 text-left"
+                    >
+                      <Folder className="w-6 h-6 text-gray-600 flex-shrink-0" />
+                      <span className="flex-1 text-gray-800 font-medium text-lg">
+                        {category.title}
+                      </span>
+                      <ChevronDown 
+                        className={`w-5 h-5 text-gray-600 transition-transform duration-300 flex-shrink-0 ${
+                          expandedCategories[category.id] ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </button>
+
+                    {/* Category Content - PDFs List */}
+                    {expandedCategories[category.id] && (
+                      <div className="bg-gray-50 px-6 py-4">
+                        {category.pdfs.length > 0 ? (
+                          <div className="space-y-2">
+                            {category.pdfs.map((pdf, pdfIndex) => (
+                              <div
+                                key={pdfIndex}
+                                className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                                onClick={() => handleDownload(pdf.filename, pdf.name, pdf.path)}
+                              >
+                                <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+                                <span className="flex-1 text-gray-700">{pdf.name}</span>
+                                <Download className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-gray-500 text-sm py-2">
+                            No documents available. Upload PDFs for this category.
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
