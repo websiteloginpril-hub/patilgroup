@@ -37,6 +37,13 @@ const ResponsibilitiesPage = () => {
       description: "Comprehensive guide to our precast concrete solutions",
       coverImage: "/Brochure/coverimage2.jpg",
       hasCoverImage: true
+    },
+    {
+      title: "Steel Wire",
+      filename: "Patil Group Steel Wire.pdf",
+      description: "ABOUT OUR FACILITY",
+      coverImage: "/Brochure/coverimage3.jpg",
+      hasCoverImage: true
     }
   ];
 
@@ -101,6 +108,10 @@ const ResponsibilitiesPage = () => {
     link.click();
   };
 
+  const handleView = (path: string) => {
+    window.open(path, '_blank');
+  };
+
   const toggleCategory = (categoryId: string) => {
     setExpandedCategories(prev => ({
       ...prev,
@@ -139,21 +150,25 @@ const ResponsibilitiesPage = () => {
 
         {/* Brochures Content - Centered Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-7xl mx-auto">
               {brochures.map((brochure, index) => (
                 <div key={index} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-300 sm:hover:scale-105">
                   {/* Card Header with Cover Image or PDF Preview */}
-                  <div className="relative h-60 sm:h-72 lg:h-80 bg-white overflow-hidden">
+                  <div className="relative w-full bg-white overflow-hidden">
                     {brochure.hasCoverImage && brochure.coverImage ? (
                       <>
-                        <Image
-                          src={brochure.coverImage}
-                          alt={`${brochure.title} Cover`}
-                          fill
-                          className="object-cover object-center"
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                        <div className="relative w-full">
+                          <Image
+                            src={brochure.coverImage}
+                            alt={`${brochure.title} Cover`}
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            className="w-full h-auto object-contain object-center"
+                            style={{ width: '100%', height: 'auto' }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                        </div>
                       </>
                     ) : (
                       <>
@@ -221,7 +236,7 @@ const ResponsibilitiesPage = () => {
 
           {/* Expandable Document Categories */}
           {isExploreExpanded && (
-            <div className="mt-8 max-w-4xl mx-auto">
+            <div className="mt-8 max-w-7xl mx-auto">
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 {documentCategories.map((category, index) => (
                   <div key={category.id} className="border-b border-gray-200 last:border-b-0">
@@ -249,12 +264,25 @@ const ResponsibilitiesPage = () => {
                             {category.pdfs.map((pdf, pdfIndex) => (
                               <div
                                 key={pdfIndex}
-                                className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-                                onClick={() => handleDownload(pdf.filename, pdf.name, pdf.path)}
+                                className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
                               >
                                 <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                <span className="flex-1 text-gray-700">{pdf.name}</span>
-                                <Download className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                                <span 
+                                  className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+                                  onClick={() => handleView(pdf.path)}
+                                >
+                                  {pdf.name}
+                                </span>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDownload(pdf.filename, pdf.name, pdf.path);
+                                  }}
+                                  className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
+                                  aria-label={`Download ${pdf.name}`}
+                                >
+                                  <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+                                </button>
                               </div>
                             ))}
                           </div>
