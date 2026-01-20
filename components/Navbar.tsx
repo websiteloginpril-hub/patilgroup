@@ -20,7 +20,7 @@ const Navbar = () => {
     { href: '/our-vision', label: 'Our Values' },
     { href: '/legacy', label: 'Our Legacy' },
     { href: '/management', label: 'Management' },
-    { href: '/responsibilities', label: 'Our Resources' },
+    { href: '/our-resources', label: 'Our Resources' },
     { href: '/our-presence', label: 'Our Presence' },
     { href: '/sustainability', label: 'Sustainability' },
     { href: '/our-clientele', label: 'Our Clientele' },
@@ -517,7 +517,7 @@ const Navbar = () => {
                        Management
                      </Link>
                      <Link 
-                       href="/responsibilities" 
+                       href="/our-resources" 
                        onClick={() => setIsMobileMenuOpen(false)}
                       className="block py-3 text-gray-700 hover:text-[#F2913F] transition-colors duration-200 text-base"
                      >
