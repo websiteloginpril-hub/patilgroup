@@ -17,7 +17,7 @@ interface DocumentCategory {
   pdfs: PDFDocument[];
 }
 
-const ResponsibilitiesPage = () => {
+const OurResourcesPage = () => {
   useGSAPAnimations();
 
   const [isExploreExpanded, setIsExploreExpanded] = useState(false);
@@ -122,19 +122,19 @@ const ResponsibilitiesPage = () => {
   return (
     <div className="bg-white pt-[103px]">
       {/* CSR Resources Section */}
-      <section className="bg-white text-black py-16 md:py-24">
+      <section className="bg-white text-black py-4 md:py-6">
         {/* Brochures Section - Full Width Header */}
-        <div className="w-screen overflow-hidden mb-12">
+        <div className="w-screen overflow-hidden mb-4">
           {/* Brochure heading with gradient lines from screen edges */}
           <div className="flex items-center">
             <div className="flex-1" style={{
-              height: '28px',
+              height: '20px',
                 background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
               }}></div>
-            <div className="px-8 flex-shrink-0">
+            <div className="px-6 flex-shrink-0">
               <h2 className="font-bold text-[#8A393B] leading-tight whitespace-nowrap" style={{
                 fontFamily: '"Helvetica Neue"',
-                fontSize: '64px',
+                fontSize: '48px',
                 fontWeight: 700,
                 lineHeight: '75%'
               }}>
@@ -142,7 +142,7 @@ const ResponsibilitiesPage = () => {
                 </h2>
                 </div>
             <div className="flex-1" style={{
-              height: '28px',
+              height: '20px',
                 background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
               }}></div>
           </div>
@@ -150,7 +150,7 @@ const ResponsibilitiesPage = () => {
 
         {/* Brochures Content - Centered Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
               {brochures.map((brochure, index) => (
                 <div key={index} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-300 sm:hover:scale-105">
                   {/* Card Header with Cover Image or PDF Preview */}
@@ -164,8 +164,8 @@ const ResponsibilitiesPage = () => {
                             width={0}
                             height={0}
                             sizes="100vw"
-                            className="w-full h-auto object-contain object-center"
-                            style={{ width: '100%', height: 'auto' }}
+                            className="w-full h-auto object-contain object-center max-h-[180px]"
+                            style={{ width: '100%', height: 'auto', maxHeight: '180px' }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
                         </div>
@@ -188,18 +188,18 @@ const ResponsibilitiesPage = () => {
                   </div>
                   
                   {/* Card Content */}
-                  <div className="p-6 sm:p-8 bg-white">
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 leading-tight text-gray-800">
+                  <div className="p-3 sm:p-4 bg-white">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 leading-tight text-gray-800">
                       {brochure.title}
                     </h3>
-                    <p className="text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed text-gray-600">
+                    <p className="text-xs sm:text-sm mb-2 leading-relaxed text-gray-600 line-clamp-2">
                       {brochure.description}
                     </p>
                     
                     {/* File Info */}
-                    <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500">
-                      <span className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[#F2913F]"></div>
+                    <div className="flex items-center gap-2 sm:gap-3 mb-3 text-xs text-gray-500">
+                      <span className="flex items-center gap-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#F2913F]"></div>
                         PDF Format
                       </span>
                       <span>•</span>
@@ -209,9 +209,9 @@ const ResponsibilitiesPage = () => {
                     {/* Download Button */}
                     <button
                       onClick={() => handleDownload(brochure.filename, brochure.title)}
-                      className="flex w-full items-center justify-center gap-2 sm:gap-3 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-medium transition-colors duration-200 text-base sm:text-lg bg-[#F2913F] hover:bg-[#E6822B]"
+                      className="flex w-full items-center justify-center gap-2 text-white px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base bg-[#F2913F] hover:bg-[#E6822B]"
                     >
-                      <Download size={18} className="sm:w-5 sm:h-5" />
+                      <Download size={16} className="sm:w-4 sm:h-4" />
                       <span>Download PDF</span>
                     </button>
                   </div>
@@ -304,4 +304,4 @@ const ResponsibilitiesPage = () => {
   );
 };
 
-export default ResponsibilitiesPage;
+export default OurResourcesPage;

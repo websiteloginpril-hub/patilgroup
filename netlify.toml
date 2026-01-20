@@ -324,6 +324,11 @@
   to = "/projects"
   status = 301
 
+[[redirects]]
+  from = "/responsibilities"
+  to = "/our-resources"
+  status = 301
+
 # ========================================
 # COMPRESSION & OPTIMIZATION
 # ========================================
