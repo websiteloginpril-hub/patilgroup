@@ -80,8 +80,8 @@ const leadershipData = [
     post: 'Director - Sleeper Operations',
   },
   {
-    image: '/management/arjyakumarsir.jpg',
-    name: 'Mr. Arjya Kumar Mishra',
+    image: '/management/Janardhanan Narayanaswamy.jpg',
+    name: 'Mr. Janardhanan Narayanaswamy',
     post: 'Group CHRO',
   },
   {
