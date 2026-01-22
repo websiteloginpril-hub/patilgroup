@@ -98,6 +98,13 @@ const OurResourcesPage = () => {
         { name: "Resignation Letter of Mr. Durga Prasad Subramanyam Anapindi - 14th May 2024", filename: "Resignation-Letter-of-Mr-Durga-Prasad-Subramanyam-Anapindi_14th-May-2024.pdf", path: "/documents/resignation-letter/Resignation-Letter-of-Mr-Durga-Prasad-Subramanyam-Anapindi_14th-May-2024.pdf" },
         { name: "Resignation Letter of Mr. Kokkonda Subrahmaniyam - 18th July 2024", filename: "Resignation-Letter-of-Mr-Kokkonda-Subrahmaniyam_18th-July-2024.pdf", path: "/documents/resignation-letter/Resignation-Letter-of-Mr-Kokkonda-Subrahmaniyam_18th-July-2024.pdf" },
       ]
+    },
+    {
+      id: "annual-reports",
+      title: "Annual Reports",
+      pdfs: [
+        { name: "Patil Group Annual Report 2025", filename: "Patil Group AR 2025 web file.pdf", path: "/documents/annual-reports/Patil Group AR 2025 web file.pdf" },
+      ]
     }
   ];
 
