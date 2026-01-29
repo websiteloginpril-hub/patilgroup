@@ -120,7 +120,7 @@ const AboutUsPage = () => {
             </p>
             <p className="mt-2 text-[#8A393B] font-semibold text-lg sm:text-2xl md:text-3xl leading-snug">
               Today, we supply track components to railways and
-              <br className="hidden sm:block" /> metros across Indi.
+              <br className="hidden sm:block" /> metros across India.
             </p>
           </div>
         </div>
