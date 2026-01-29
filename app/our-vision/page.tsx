@@ -90,7 +90,7 @@ const OurVisionPage = () => {
                 lineHeight: '110%',
               }}
             >
-              Observation
+              Vision
             </h2>
           </div>
 
