@@ -80,7 +80,7 @@ const leadershipData = [
     post: 'Director - Sleeper Operations',
   },
   {
-    image: '/management/Janardhanan Narayanaswamy.jpg',
+    image: '/management/Janardhanan Narayanaswamy.png',
     name: 'Mr. Janardhanan Narayanaswamy',
     post: 'Group CHRO',
   },
@@ -111,9 +111,9 @@ const ManagementPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
-  
+
   // Desktop carousel with smooth animations
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     slidesToScroll: 1,
     containScroll: 'trimSnaps',
     skipSnaps: false,
@@ -122,9 +122,9 @@ const ManagementPage = () => {
     loop: false,
     align: 'start'
   });
-  
+
   // Mobile carousel with optimized performance
-  const [mobileEmblaRef, mobileEmblaApi] = useEmblaCarousel({ 
+  const [mobileEmblaRef, mobileEmblaApi] = useEmblaCarousel({
     align: 'center',
     containScroll: 'trimSnaps',
     dragFree: false,
@@ -140,19 +140,19 @@ const ManagementPage = () => {
       emblaApi.scrollPrev();
     }
   };
-  
+
   const scrollNext = () => {
     if (emblaApi && canScrollNext) {
       emblaApi.scrollNext();
     }
   };
-  
+
   const mobileScrollPrev = () => {
     if (mobileEmblaApi) {
       mobileEmblaApi.scrollPrev();
     }
   };
-  
+
   const mobileScrollNext = () => {
     if (mobileEmblaApi) {
       mobileEmblaApi.scrollNext();
@@ -191,7 +191,7 @@ const ManagementPage = () => {
       mobileEmblaApi.off('reInit', onMobileSelect);
     };
   }, [mobileEmblaApi]);
-  
+
   return (
     <div className="bg-[#1E1E1E] text-white pt-[103px]">
       {/* Responsive Our Leadership Section */}
@@ -206,30 +206,30 @@ const ManagementPage = () => {
                 height: '16px',
                 background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
               }}></div>
-              
+
               {/* Heading */}
               <div className="px-4 sm:px-6 flex-shrink-0">
                 <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-clash font-bold text-[#8A393B] leading-tight whitespace-nowrap">
                   Legacy in Rail
                 </h2>
               </div>
-              
+
               {/* Right gradient to right edge of screen */}
               <div className="flex-1" style={{
                 height: '16px',
                 background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
               }}></div>
             </div>
-            
+
             {/* Subtitle */}
             <div className="text-center">
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[#F2913F] font-semibold">Led by Experience</p>
             </div>
           </div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Mobile Layout - Swipeable Carousel */}
           <div className="md:hidden relative">
             <div className="overflow-hidden" ref={mobileEmblaRef}>
@@ -251,7 +251,7 @@ const ManagementPage = () => {
                           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                         />
                       </div>
-                      
+
                       {/* Designation and Name Below Photo */}
                       <div className="p-2 sm:p-3 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
                         <p className="text-[10px] sm:text-xs text-white font-bold mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">
@@ -273,16 +273,15 @@ const ManagementPage = () => {
                 <button
                   key={index}
                   onClick={() => mobileEmblaApi && mobileEmblaApi.scrollTo(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === selectedIndex 
-                      ? 'bg-[#F2913F] scale-125' 
-                      : 'bg-gray-400 opacity-50 hover:opacity-75'
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${index === selectedIndex
+                    ? 'bg-[#F2913F] scale-125'
+                    : 'bg-gray-400 opacity-50 hover:opacity-75'
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
             </div>
-            
+
             {/* Mobile Swipe Hint */}
             <div className="text-center mt-1.5 sm:mt-2">
               <p className="text-[10px] sm:text-xs text-gray-600 font-medium">
@@ -290,7 +289,7 @@ const ManagementPage = () => {
               </p>
             </div>
           </div>
-          
+
           {/* Desktop Layout - Original Carousel */}
           <div className="hidden md:block relative">
             <div className="overflow-hidden" ref={emblaRef}>
@@ -303,25 +302,23 @@ const ManagementPage = () => {
               </div>
             </div>
 
-            <button 
-              onClick={scrollPrev} 
+            <button
+              onClick={scrollPrev}
               disabled={!canScrollPrev}
-              className={`absolute top-1/2 -left-16 transform -translate-y-1/2 p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-gray-400/30 ${
-                canScrollPrev 
-                  ? 'bg-gray-200/80 hover:bg-gray-300/80 active:bg-gray-400/80 hover:scale-105 active:scale-95 cursor-pointer' 
-                  : 'bg-gray-100/50 cursor-not-allowed opacity-50'
-              }`}
+              className={`absolute top-1/2 -left-16 transform -translate-y-1/2 p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-gray-400/30 ${canScrollPrev
+                ? 'bg-gray-200/80 hover:bg-gray-300/80 active:bg-gray-400/80 hover:scale-105 active:scale-95 cursor-pointer'
+                : 'bg-gray-100/50 cursor-not-allowed opacity-50'
+                }`}
             >
               <ArrowLeft className={`h-6 w-6 ${canScrollPrev ? 'text-[#F2913F]' : 'text-gray-400'}`} />
             </button>
-            <button 
-              onClick={scrollNext} 
+            <button
+              onClick={scrollNext}
               disabled={!canScrollNext}
-              className={`absolute top-1/2 -right-16 transform -translate-y-1/2 p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-gray-400/30 ${
-                canScrollNext 
-                  ? 'bg-gray-200/80 hover:bg-gray-300/80 active:bg-gray-400/80 hover:scale-105 active:scale-95 cursor-pointer' 
-                  : 'bg-gray-100/50 cursor-not-allowed opacity-50'
-              }`}
+              className={`absolute top-1/2 -right-16 transform -translate-y-1/2 p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-gray-400/30 ${canScrollNext
+                ? 'bg-gray-200/80 hover:bg-gray-300/80 active:bg-gray-400/80 hover:scale-105 active:scale-95 cursor-pointer'
+                : 'bg-gray-100/50 cursor-not-allowed opacity-50'
+                }`}
             >
               <ArrowRight className={`h-6 w-6 ${canScrollNext ? 'text-[#F2913F]' : 'text-gray-400'}`} />
             </button>

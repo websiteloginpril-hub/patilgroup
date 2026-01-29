@@ -7,11 +7,11 @@ import Link from 'next/link';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 
-const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }: { 
-  end: number; 
-  duration: number; 
-  suffix?: string; 
-  prefix?: string; 
+const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }: {
+  end: number;
+  duration: number;
+  suffix?: string;
+  prefix?: string;
   className?: string;
 }) => {
   const [ref, inView] = useInView({
@@ -22,12 +22,12 @@ const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }
 
   return (
     <span ref={ref} className={className}>
-      <CountUp 
+      <CountUp
         start={0}
-        end={inView ? end : 0} 
-        duration={duration} 
-        separator="," 
-        suffix={suffix} 
+        end={inView ? end : 0}
+        duration={duration}
+        separator=","
+        suffix={suffix}
         prefix={prefix}
         preserveValue={true}
       />
@@ -52,37 +52,37 @@ const AboutUsPage = () => {
     const loadGSAPAnimation = async () => {
       const { default: gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      
+
       gsap.registerPlugin(ScrollTrigger);
       const philosophySection = document.getElementById('philosophy-section');
       if (!philosophySection) return;
 
       const items = gsap.utils.toArray('.philosophy-item');
       if (items.length === 0) return;
-      
+
       gsap.set(items, { opacity: 0, y: 30 });
 
       const tl = gsap.timeline({
-          scrollTrigger: {
-              trigger: philosophySection,
-              start: 'top 60%',
-              toggleActions: 'play none none none',
-          }
+        scrollTrigger: {
+          trigger: philosophySection,
+          start: 'top 60%',
+          toggleActions: 'play none none none',
+        }
       });
 
       tl.to(items, {
-          opacity: 1,
-          y: 0,
-          stagger: 0.4,
-          duration: 0.8,
-          ease: 'power2.out',
+        opacity: 1,
+        y: 0,
+        stagger: 0.4,
+        duration: 0.8,
+        ease: 'power2.out',
       });
 
       return () => {
-          if (tl.scrollTrigger) {
-              tl.scrollTrigger.kill();
-          }
-          tl.kill();
+        if (tl.scrollTrigger) {
+          tl.scrollTrigger.kill();
+        }
+        tl.kill();
       };
     };
 
@@ -94,22 +94,22 @@ const AboutUsPage = () => {
       {/* New About - Track background header */}
       <section className="bg-white overflow-hidden pt-32 sm:pt-24 md:pt-28 pb-4 sm:pb-6 md:pb-8">
         <div className="flex items-center justify-center w-full">
-            {/* Left track - hide on mobile to prevent crowding */}
-            <div className="hidden sm:block flex-1 min-w-0 h-40 sm:h-48 md:h-56 relative" style={{ WebkitMaskImage: 'linear-gradient(to left, transparent 10%, black 100%)', maskImage: 'linear-gradient(to left, transparent 10%, black 100%)' }}>
-                <Image src="/trackkkk.png" alt="Rail track left" fill className="object-cover object-right scale-x-[-1]" priority />
-            </div>
+          {/* Left track - hide on mobile to prevent crowding */}
+          <div className="hidden sm:block flex-1 min-w-0 h-40 sm:h-48 md:h-56 relative" style={{ WebkitMaskImage: 'linear-gradient(to left, transparent 10%, black 100%)', maskImage: 'linear-gradient(to left, transparent 10%, black 100%)' }}>
+            <Image src="/trackkkk.png" alt="Rail track left" fill className="object-cover object-right scale-x-[-1]" priority />
+          </div>
 
-            {/* Centered heading */}
-            <h1 className="flex-shrink-0 text-[#8A393B] font-extrabold leading-tight text-center px-4 sm:px-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl whitespace-normal sm:whitespace-nowrap break-words max-w-[90vw]">
-                Through the tracks of time
-            </h1>
+          {/* Centered heading */}
+          <h1 className="flex-shrink-0 text-[#8A393B] font-extrabold leading-tight text-center px-4 sm:px-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl whitespace-normal sm:whitespace-nowrap break-words max-w-[90vw]">
+            Through the tracks of time
+          </h1>
 
-            {/* Right track - hide on mobile to prevent crowding */}
-            <div className="hidden sm:block flex-1 min-w-0 h-40 sm:h-48 md:h-56 relative" style={{ WebkitMaskImage: 'linear-gradient(to right, transparent 10%, black 100%)', maskImage: 'linear-gradient(to right, transparent 10%, black 100%)' }}>
-                <Image src="/trackkkk.png" alt="Rail track right" fill className="object-cover object-left" priority />
-            </div>
+          {/* Right track - hide on mobile to prevent crowding */}
+          <div className="hidden sm:block flex-1 min-w-0 h-40 sm:h-48 md:h-56 relative" style={{ WebkitMaskImage: 'linear-gradient(to right, transparent 10%, black 100%)', maskImage: 'linear-gradient(to right, transparent 10%, black 100%)' }}>
+            <Image src="/trackkkk.png" alt="Rail track right" fill className="object-cover object-left" priority />
+          </div>
         </div>
-    </section>
+      </section>
 
       {/* Legacy blurb card */}
       <section className="bg-white py-4 sm:py-5 md:py-6 mt-6 sm:-mt-14 md:-mt-16">
@@ -120,7 +120,7 @@ const AboutUsPage = () => {
             </p>
             <p className="mt-2 text-[#8A393B] font-semibold text-lg sm:text-2xl md:text-3xl leading-snug">
               Today, we supply track components to railways and
-              <br className="hidden sm:block" /> metros across India.
+              <br className="hidden sm:block" /> metros across Indi.
             </p>
           </div>
         </div>
@@ -129,7 +129,7 @@ const AboutUsPage = () => {
       {/* Zero Bad Section */}
       <section className="bg-white py-8 sm:py-10 md:py-12 relative fade-in-section" data-delay="0.1" data-duration="0.9">
         {/* Left Edge Gradient Line */}
-        <div 
+        <div
           className="absolute hidden lg:block reveal-line-left gradient-line-ltr gradient-line-md"
           style={{
             height: '28px',
@@ -138,9 +138,9 @@ const AboutUsPage = () => {
             transform: 'translateY(-50%)'
           }}
         />
-        
+
         {/* Right Edge Gradient Line */}
-        <div 
+        <div
           className="absolute hidden lg:block reveal-line-right gradient-line-rtl gradient-line-md"
           style={{
             height: '28px',
@@ -149,7 +149,7 @@ const AboutUsPage = () => {
             transform: 'translateY(-50%)'
           }}
         />
-        
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
           {/* Title */}
           <div className="text-center mb-8 fade-heading" data-delay="0.15" data-duration="0.9">
@@ -158,7 +158,7 @@ const AboutUsPage = () => {
               <span className="text-[#F2913F]">Making Principles</span>
             </h2>
           </div>
-          
+
           {/* Three Boxes */}
           <div className="space-y-3 sm:space-y-4 max-w-md mx-auto stagger-children" data-stagger="0.15" data-duration="0.7">
             {/* Country 1st */}
@@ -167,14 +167,14 @@ const AboutUsPage = () => {
                 Country <span className="text-[#F2913F]">1<sup className="fluid-small">st</sup></span>
               </h3>
             </div>
-            
+
             {/* Customer 2nd */}
             <div className="bg-[#8A393B] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl shadow-lg stagger-item">
               <h3 className="text-base sm:text-lg font-bold text-center">
                 Customer <span className="text-[#F2913F]">2<sup className="fluid-small">nd</sup></span>
               </h3>
             </div>
-            
+
             {/* Company & Employees 3rd */}
             <div className="bg-[#8A393B] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl shadow-lg stagger-item">
               <h3 className="text-base sm:text-lg font-bold text-center">
@@ -188,15 +188,15 @@ const AboutUsPage = () => {
       {/* Responsive Philosophy Section (minimized) */}
       <section id="philosophy-section" className="py-4 sm:py-6 md:py-8 bg-white relative overflow-hidden">
         <div className="relative z-10">
-            {/* Desktop Layout - text removed as requested */}
-            <div className="hidden md:block">
-              
+          {/* Desktop Layout - text removed as requested */}
+          <div className="hidden md:block">
 
-              <div className="philosophy-item"></div>
 
-              <div className="philosophy-item"></div>
-              <div className="philosophy-item"></div>
-            </div>
+            <div className="philosophy-item"></div>
+
+            <div className="philosophy-item"></div>
+            <div className="philosophy-item"></div>
+          </div>
         </div>
       </section>
 
@@ -241,9 +241,9 @@ const AboutUsPage = () => {
 
       {/* Responsive In Service Section */}
       <section className="py-10 sm:py-16 md:py-24 bg-white text-center relative fade-in-section">
-        <div 
+        <div
           className="absolute inset-0 opacity-90"
-          style={{ 
+          style={{
             backgroundImage: "url('/worldmap.png')",
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
@@ -266,7 +266,7 @@ const AboutUsPage = () => {
             </p>
             <p className="text-base font-medium text-[#8A393B]">Approved across systems</p>
           </div>
-          
+
           {/* Desktop Layout - Styled to match reference */}
           <div className="hidden md:block">
             <h2 className="text-6xl font-extrabold text-[#8A393B]">In Service</h2>
@@ -301,7 +301,7 @@ const AboutUsPage = () => {
             />
           </div>
         </div>
-        
+
         {/* Desktop Layout - Original */}
         <div className="hidden md:block">
           <div className="flex justify-center items-center max-w-7xl mx-auto max-w-full w-auto">
@@ -321,7 +321,7 @@ const AboutUsPage = () => {
           </div>
         </div>
       </section>
-      
+
     </div>
   );
 };
