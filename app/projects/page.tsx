@@ -94,11 +94,11 @@ const projectsData = [
     showcaseImage: '/projectrailway.jpg'
   },
   {
-    title: 'Mumbai Line 7X',
+    title: 'Mumbai Line 5',
     image: '/mumbai metro.png',
     description: `Patil Group supplied fastening systems for the extension of Mumbai Metro Line 7, connecting Gundavali to the Chhatrapati Shivaji International Airport (CSIA). This strategic link enhances airport connectivity via the western suburbs. We delivered over 85,000 fastening assemblies, engineered for durability in high-traffic urban transit.`,
     client: 'Paras Railtech Pvt. Ltd.',
-    principalClient: 'DMRC',
+    principalClient: 'MMRD',
     specs: [
       'Fastener Types: 2&4 Bolts elastic systems',
       'Quantities Supplied: 56,420 (2-hole) + 29,800 (4-hole) sets',
@@ -106,21 +106,6 @@ const projectsData = [
       'Standards: Conforms to RDSO and DMRC metro infrastructure guidelines',
     ],
     conclusion: 'This project marks our continued involvement in Mumbai\'s next-generation urban mobility solutions.',
-    showcaseImage: '/projectrailway.jpg'
-  },
-  {
-    title: 'Nagpur Metro',
-    image: '/nagpurmetrohero.png',
-    description: `Patil Group supplied fastening systems for Nagpur Metro, a critical infrastructure project connecting key areas of the city. We delivered over 100,000 fastening assemblies, designed for high-traffic, elevated urban infrastructure to support Maharashtra's expanding metro network.`,
-    client: 'SEW-VSE Joint Venture',
-    principalClient: 'Maharashtra Metro Rail Corporation Ltd. (Maha Metro)',
-    specs: [
-      'Fastener Types: 2&4 Bolts clip-based systems',
-      'Quantities Supplied: 88,000 (2-hole) + 12,500 (4-hole) sets',
-      'Application: Elevated viaduct and station track structures',
-      'Standards: Designed and supplied as per Maha Metro and RDSO guidelines',
-    ],
-    conclusion: 'This partnership extended our footprint across Maharashtra\'s expanding metro infrastructure.',
     showcaseImage: '/projectrailway.jpg'
   },
   {
