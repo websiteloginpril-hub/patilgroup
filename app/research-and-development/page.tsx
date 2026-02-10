@@ -54,16 +54,16 @@ const ResearchAndDevelopmentPage = () => {
         </div>
       </section>
 
-      {/* 1. Patil I-Labs: The Intelligence Engine - exactly one viewport */}
-      <section className="bg-gray-100 text-black h-screen flex flex-col overflow-hidden fade-in-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col flex-1 min-h-0 w-full py-3 sm:py-4">
+      {/* 1. Patil I-Labs: The Intelligence Engine */}
+      <section className="bg-gray-100 text-black flex flex-col py-6 sm:py-8 lg:py-10 overflow-hidden fade-in-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col w-full">
           {/* Overview: heading (bold black, two lines) + logo placeholder (right) */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-2 sm:mb-3 shrink-0">
             <div className="text-left">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-black leading-tight">
+              <h2 className="fluid-h2 font-extrabold text-[#8A393B] leading-tight">
                 Patil I-Labs: The Intelligence Engine of Patil Group
               </h2>
-              <p className="mt-0.5 text-sm sm:text-base md:text-lg font-bold text-black">
+              <p className="mt-0.5 text-lg sm:text-xl md:text-2xl font-bold text-black leading-snug max-w-2xl">
                 Intelligent Systems, Smarter Insights.
               </p>
             </div>
@@ -73,29 +73,26 @@ const ResearchAndDevelopmentPage = () => {
             </div>
           </div>
 
-          {/* Two-column layout: left = two stacked boxes, right = one tall box (flex-1 fills viewport) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 flex-1 min-h-0 content-stretch items-stretch mb-4 sm:mb-5">
-            {/* Left column: two boxes, same width, even spacing - padding keeps text inside border */}
-            <div className="flex flex-col gap-4 sm:gap-5 min-h-0">
-              <div className="border-2 border-[#F2913F] rounded-lg p-6 sm:p-7 flex-1 min-h-0 flex flex-col justify-center bg-white overflow-visible shadow-sm box-border">
-                <p className="text-sm sm:text-base text-black leading-relaxed text-left break-words pt-0.5 pb-0.5">
-                  Patil I-Labs is the dedicated <strong className="text-black">Research & Innovation</strong> arm of <strong className="text-black">Patil Group</strong>, driving intelligent systems, diagnostics, and digital transformation for <strong className="text-black">railways and allied infrastructure sectors</strong>.
-                </p>
-              </div>
-              <div className="border-2 border-[#F2913F] rounded-lg p-6 sm:p-7 flex-1 min-h-0 flex flex-col justify-center bg-white overflow-visible shadow-sm box-border">
-                <p className="text-sm sm:text-base text-black leading-relaxed text-left break-words pt-0.5 pb-0.5">
-                  Built on <strong className="text-black">Patil Group&apos;s decades of leadership</strong> in railway track engineering and manufacturing, Patil I-Labs extends the Group&apos;s capabilities from <strong className="text-black">physical infrastructure to data-driven intelligence</strong>, enabling smarter, safer, and more reliable rail operations.
-                </p>
-              </div>
+          {/* Three-box layout: two text cards on left, insight card on right (same overall height on large screens) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-4 sm:gap-5 mb-4 sm:mb-5 items-stretch">
+            {/* Top-left card */}
+            <div className="border-2 border-[#F2913F] rounded-lg px-4 sm:px-5 py-2 sm:py-2.5 flex flex-col bg-white overflow-visible shadow-sm box-border">
+              <p className="text-base sm:text-lg text-black leading-snug text-left break-words">
+                Patil I-Labs is the dedicated <strong className="text-black">Research & Innovation</strong> arm of <strong className="text-black">Patil Group</strong>, driving intelligent systems, diagnostics, and digital transformation for <strong className="text-black">railways and allied infrastructure sectors</strong>.
+              </p>
             </div>
-            {/* Right column: single box - no scrollbar; typography sized to fit */}
-            <div className="border-2 border-[#F2913F] rounded-lg p-6 sm:p-7 min-h-0 flex flex-col overflow-visible bg-white shadow-sm box-border">
-              <h3 className="text-xs sm:text-sm font-bold text-black mb-1.5 shrink-0 text-left">From Monitoring to Intelligent Insights</h3>
-              <p className="text-xs sm:text-sm text-black leading-snug mb-1.5 shrink-0 text-left break-words">
+            {/* Insight card: spans both rows on large screens so height matches combined left cards */}
+            <div className="border-2 border-[#F2913F] rounded-lg px-4 sm:px-5 py-2 sm:py-2.5 flex flex-col overflow-visible bg-white shadow-sm box-border lg:row-span-2">
+              <h3 className="text-sm sm:text-base md:text-lg font-bold text-black mb-1 shrink-0 text-left">
+                From Monitoring to Intelligent Insights
+              </h3>
+              <p className="text-sm sm:text-base text-black leading-snug mb-1.5 shrink-0 text-left break-words">
                 As rail systems grow faster, heavier, and more complex, performance depends not just on monitoring, but on intelligent insights and decision support systems.
               </p>
-              <p className="text-xs sm:text-sm text-black leading-snug mb-1 shrink-0 text-left">Patil I-Labs enables:</p>
-              <ul className="space-y-0.5 text-xs sm:text-sm text-black leading-snug list-disc list-inside text-left break-words pr-1 pb-0.5">
+              <p className="text-sm sm:text-base text-black leading-snug mb-1 shrink-0 text-left">
+                Patil I-Labs enables:
+              </p>
+              <ul className="space-y-0.5 text-sm sm:text-base text-black leading-snug list-disc list-inside text-left break-words pr-1 pb-0">
                 <li><strong className="text-black">Monitoring to intelligent insights</strong>: converting operational data into decisions</li>
                 <li><strong className="text-black">Trend analysis and degradation behaviour</strong> across assets and networks</li>
                 <li><strong className="text-black">Multi-parameter risk models</strong> instead of single-threshold alarms</li>
@@ -103,18 +100,27 @@ const ResearchAndDevelopmentPage = () => {
                 <li>Predictive and preventive maintenance through <strong className="text-black">frugal intelligence</strong></li>
               </ul>
             </div>
+            {/* Bottom-left card */}
+            <div className="border-2 border-[#F2913F] rounded-lg px-4 sm:px-5 py-2 sm:py-2.5 flex flex-col bg-white overflow-visible shadow-sm box-border">
+              <p className="text-base sm:text-lg text-black leading-snug text-left break-words">
+                Built on <strong className="text-black">Patil Group&apos;s decades of leadership</strong> in railway track engineering and manufacturing, Patil I-Labs extends the Group&apos;s capabilities from <strong className="text-black">physical infrastructure to data-driven intelligence</strong>, enabling smarter, safer, and more reliable rail operations.
+              </p>
+            </div>
           </div>
 
           {/* Quote and gradient bar - clear gap so bar never overlaps text */}
           <div className="mt-4 sm:mt-5 shrink-0 space-y-4 sm:space-y-5">
-            <p className="text-sm sm:text-base font-bold text-black text-center max-w-4xl mx-auto leading-relaxed pb-1">
+            <p className="text-base sm:text-lg md:text-xl font-bold text-black text-center max-w-4xl mx-auto leading-relaxed pb-1">
               This approach shifts rail operations from reactive responses to data-to-decision intelligence.
             </p>
-            <div
-              className="h-4 w-full"
-              style={{ background: 'linear-gradient(to right, #8A393B 0%, #4f46e5 45%, #F2913F 75%, #fef3c7 100%)' }}
-              aria-hidden="true"
-            />
+            {/* Full-width gradient bar aligned with container edges (no inner horizontal gap) */}
+            <div className="-mx-4 sm:-mx-6 md:-mx-8 lg:-mx-12">
+              <div
+                className="h-4 w-full"
+                style={{ background: 'linear-gradient(to right, #8A393B 0%, #4f46e5 45%, #F2913F 75%, #fef3c7 100%)' }}
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -130,7 +136,7 @@ const ResearchAndDevelopmentPage = () => {
           </div>
 
           {/* Four capability circles (2–5) in 2x2 grid - logo placeholders + descriptions with hover-highlight on bold */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 sm:gap-y-8 gap-x-8 sm:gap-x-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 sm:gap-y-8 gap-x-8 sm:gap-x-16 -mt-2 sm:-mt-3">
             <div
               className="flex flex-col items-center text-center group cursor-pointer"
               onMouseEnter={() => setHoveredCircle(1)}
@@ -140,7 +146,7 @@ const ResearchAndDevelopmentPage = () => {
                 <Image src="/core-tech-machine-vision.png" alt="Machine vision systems" width={200} height={200} className="w-full h-auto object-contain" />
               </div>
               <p className="fluid-body text-black leading-relaxed">
-                <strong className={`transition-colors duration-200 ${hoveredCircle === 1 ? 'text-[#F2913F]' : 'text-black'}`}>Machine vision systems</strong> for automated inspection of track, rolling stock, and wayside assets
+                <strong className={`transition-colors duration-200 ${hoveredCircle === 1 ? 'text-[#F2913F]' : 'text-[#8A393B]'}`}>Machine vision systems</strong> for automated inspection of track, rolling stock, and wayside assets
               </p>
             </div>
             <div
@@ -152,7 +158,7 @@ const ResearchAndDevelopmentPage = () => {
                 <Image src="/core-tech-llm-diagnostics.png" alt="LLM-based advanced diagnostics" width={200} height={200} className="w-full h-auto object-contain" />
               </div>
               <p className="fluid-body text-black leading-relaxed">
-                <strong className={`transition-colors duration-200 ${hoveredCircle === 2 ? 'text-[#F2913F]' : 'text-black'}`}>LLM-based advanced diagnostics</strong> guiding engineers from alert to resolution
+                <strong className={`transition-colors duration-200 ${hoveredCircle === 2 ? 'text-[#F2913F]' : 'text-[#8A393B]'}`}>LLM-based advanced diagnostics</strong> guiding engineers from alert to resolution
               </p>
             </div>
             <div
@@ -164,7 +170,7 @@ const ResearchAndDevelopmentPage = () => {
                 <Image src="/core-tech-iot-ml.png" alt="IoT, AI & ML capacity building" width={200} height={200} className="w-full h-auto object-contain" />
               </div>
               <p className="fluid-body text-black leading-relaxed max-w-[200px] text-center">
-                <strong className={`transition-colors duration-200 ${hoveredCircle === 3 ? 'text-[#F2913F]' : 'text-black'}`}>IoT, AI & ML capacity building</strong> for sensing, analytics, and prediction
+                <strong className={`transition-colors duration-200 ${hoveredCircle === 3 ? 'text-[#F2913F]' : 'text-[#8A393B]'}`}>IoT, AI & ML capacity building</strong> for sensing, analytics, and prediction
               </p>
             </div>
             <div
@@ -176,7 +182,7 @@ const ResearchAndDevelopmentPage = () => {
                 <Image src="/core-tech-network-platforms.png" alt="Network-wide, integrated platforms" width={200} height={200} className="w-full h-auto object-contain" />
               </div>
               <p className="fluid-body text-black leading-relaxed max-w-[200px] text-center">
-                <strong className={`transition-colors duration-200 ${hoveredCircle === 4 ? 'text-[#F2913F]' : 'text-black'}`}>Network-wide, integrated platforms</strong> delivering asset-level and corridor-level insights
+                <strong className={`transition-colors duration-200 ${hoveredCircle === 4 ? 'text-[#F2913F]' : 'text-[#8A393B]'}`}>Network-wide, integrated platforms</strong> delivering asset-level and corridor-level insights
               </p>
             </div>
           </div>
@@ -193,7 +199,7 @@ const ResearchAndDevelopmentPage = () => {
       {/* 3. Driving Digital Transformation - heading spans both columns; left = two orange-bordered blocks, right = image placeholder (purple border) */}
       <section className="bg-gray-50 text-black pt-5 sm:pt-8 md:pt-10 lg:pt-12 pb-8 sm:pb-12 md:pb-16 lg:pb-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <h2 className="fluid-h2 font-extrabold text-black mb-4 w-full">Driving Digital Transformation</h2>
+          <h2 className="fluid-h2 font-extrabold text-[#8A393B] mb-4 w-full">Driving Digital Transformation</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch">
             {/* Left column: two stacked text blocks, orange border, white bg, black text */}
             <div className="flex flex-col gap-4 sm:gap-5">
