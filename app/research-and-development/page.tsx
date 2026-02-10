@@ -77,6 +77,7 @@ const ResearchAndDevelopmentPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-4 sm:gap-5 mb-4 sm:mb-5 items-stretch">
             {/* Top-left card */}
             <div className="border-2 border-[#F2913F] rounded-lg px-4 sm:px-5 py-2 sm:py-2.5 flex flex-col bg-white overflow-visible shadow-sm box-border">
+              <br />
               <p className="text-base sm:text-lg text-black leading-snug text-left break-words">
                 Patil I-Labs is the dedicated <strong className="text-black">Research & Innovation</strong> arm of <strong className="text-black">Patil Group</strong>, driving intelligent systems, diagnostics, and digital transformation for <strong className="text-black">railways and allied infrastructure sectors</strong>.
               </p>
