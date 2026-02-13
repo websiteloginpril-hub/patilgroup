@@ -8,6 +8,24 @@ import HLSVideo from '@/components/HLSVideo';
 
 const cards = [
   {
+    image: '/bharath_fastening.jpeg',
+    title: 'Patil Group Selected for Bharat Fastening Initiative by Indian Railways',
+    paragraphs: [
+      "Patil Group has been selected under the Bharat Fastening Initiative led by the Ministry of Railways and RDSO for the development of an indigenous modern rail fastening system for Indian Railways.",
+      "Only seven Indian manufacturers have been shortlisted under this programme, which focuses on Make in India development of high-performance fastening systems meeting stringent RDSO requirements.",
+      "The initiative targets fastening systems designed for mixed traffic conditions:",
+      "The programme mandates in-India design and manufacturing, FEM analysis, endurance testing, and compliance with international standards EN 13481 and EN 13146, adapted to Indian railway operating conditions for mixed traffic conditions.",
+      "Patil Group's selection reflects its five-decade legacy in railway track engineering, backward-integrated manufacturing, and proven expertise in rail fastening systems, aligned with Indian Railways' vision of self-reliant, future-ready rail infrastructure. Patil Group is now considered a consultant to Indian Railway.",
+    ],
+    bullets: [],
+    paragraphBullets: [
+      "25T axle load, speeds up to 200 kmph for passenger traffic",
+      "Ballasted track infrastructure",
+      "Enhanced safety, durability, and lifecycle reliability",
+    ],
+    paragraphBulletsAfterIndex: 2,
+  },
+  {
     image: '/indianrailways.jpg',
     title: 'Honoured by CII for our top railway innovation',
     paragraphs: [
@@ -184,7 +202,11 @@ const NewsPage = () => {
                       key={`image-${index}`}
                       src={card.image} 
                       alt={card.title} 
-                      className="w-full h-48 sm:h-56 object-cover transition-all duration-500 group-hover:scale-105" 
+                      className={`w-full transition-all duration-500 group-hover:scale-105 ${
+                        card.image.includes("bharath_fastening")
+                          ? "h-52 sm:h-64 object-contain bg-[#F8F6F4]"
+                          : "h-48 sm:h-56 object-cover"
+                      }`}
                     />
                     {/* Image overlay with gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -204,9 +226,23 @@ const NewsPage = () => {
                     {/* Scrollable content area */}
                     <div className="max-h-36 sm:max-h-44 overflow-y-auto custom-scrollbar pr-2">
                       {card.paragraphs.map((p, i) => (
-                        <p key={`para-${index}-${i}`} className="text-gray-700 text-sm sm:text-base leading-relaxed mb-3">
-                          {p}
-                        </p>
+                        <React.Fragment key={`para-${index}-${i}`}>
+                          <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-3">
+                            {p}
+                          </p>
+                          {(card as { paragraphBulletsAfterIndex?: number }).paragraphBulletsAfterIndex === i &&
+                            card.paragraphBullets &&
+                            card.paragraphBullets.length > 0 && (
+                            <ul className="mb-3 ml-4 space-y-1.5 text-gray-700 text-sm">
+                              {card.paragraphBullets.map((b, bi) => (
+                                <li key={`pbullet-${index}-${bi}`} className="flex items-start">
+                                  <span className="mt-1.5 mr-2 block h-1.5 w-1.5 rounded-full bg-[#F2913F] flex-shrink-0" />
+                                  <span>{b}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </React.Fragment>
                       ))}
                       
                       {card.bullets.length > 0 && (
@@ -345,7 +381,9 @@ const NewsPage = () => {
                         alt={newsCard.title}
                         loading="lazy"
                         className={
-                            newsCard.image.includes("indianrailways")
+                            newsCard.image.includes("bharath_fastening")
+                              ? "w-full h-[360px] md:h-[500px] object-contain bg-[#F8F6F4] transition-transform duration-400 group-hover:scale-105 group-hover:brightness-110"
+                              : newsCard.image.includes("indianrailways")
                               ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-90 group-hover:brightness-110"
                               : "w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
                           }
@@ -362,12 +400,23 @@ const NewsPage = () => {
                       
                       <div className="space-y-3">
                         {newsCard.paragraphs.map((paragraph, paragraphIndex) => (
-                          <p 
-                            key={paragraphIndex} 
-                            className="text-gray-700 text-base md:text-lg leading-relaxed fade-paragraph"
-                          >
-                            {paragraph}
-                          </p>
+                          <React.Fragment key={paragraphIndex}>
+                            <p className="text-gray-700 text-base md:text-lg leading-relaxed fade-paragraph">
+                              {paragraph}
+                            </p>
+                            {(newsCard as { paragraphBulletsAfterIndex?: number }).paragraphBulletsAfterIndex === paragraphIndex &&
+                              newsCard.paragraphBullets &&
+                              newsCard.paragraphBullets.length > 0 && (
+                              <ul className="ml-4 mt-2 space-y-2 text-gray-700 text-base md:text-lg">
+                                {newsCard.paragraphBullets.map((bullet, bulletIndex) => (
+                                  <li key={bulletIndex} className="flex items-start fade-paragraph">
+                                    <span className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0" />
+                                    <span>{bullet}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </React.Fragment>
                         ))}
                         
                         {newsCard.bullets.length > 0 && (
@@ -382,10 +431,10 @@ const NewsPage = () => {
                                   <span className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0" />
                                   <span>{bullet}</span>
                                 </li>
-                      ))}
-                    </ul>
+                              ))}
+                            </ul>
                           </div>
-                )}
+                        )}
                       </div>
                     </div>
               </div>
