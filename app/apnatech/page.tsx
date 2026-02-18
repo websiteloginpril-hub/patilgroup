@@ -49,6 +49,18 @@ const ApnaTechPage = () => {
               </p>
             ))}
           </div>
+
+          <div className="mt-8 sm:mt-10 md:mt-12 flex justify-center">
+            <a
+              href="https://apnatech.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-base sm:text-lg rounded-lg transition-colors"
+            >
+              Explore more about Apna Tech
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </section>
     </div>
