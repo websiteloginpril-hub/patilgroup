@@ -20,7 +20,6 @@ const cards = [
 const ApnaTechPage = () => {
   useGSAPAnimations();
   const card = cards[0];
-
   return (
     <div className="bg-[#F1EFF0] text-gray-800 overflow-hidden min-h-screen">
       {/* Hero: HLS video (Cloudflare Stream) */}
