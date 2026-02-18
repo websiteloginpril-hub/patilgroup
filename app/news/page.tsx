@@ -15,7 +15,7 @@ const cards = [
       "Only seven Indian manufacturers have been shortlisted under this programme, which focuses on Make in India development of high-performance fastening systems meeting stringent RDSO requirements.",
       "The initiative targets fastening systems designed for mixed traffic conditions:",
       "The programme mandates in-India design and manufacturing, FEM analysis, endurance testing, and compliance with international standards EN 13481 and EN 13146, adapted to Indian railway operating conditions for mixed traffic conditions.",
-      "Patil Group's selection reflects its five-decade legacy in railway track engineering, backward-integrated manufacturing, and proven expertise in rail fastening systems, aligned with Indian Railways' vision of self-reliant, future-ready rail infrastructure. Patil Group is now considered a consultant to Indian Railway.",
+      "Patil Group's selection reflects its five-decade legacy in railway track engineering, backward-integrated manufacturing, and proven expertise in rail fastening systems, aligned with Indian Railways' vision of self-reliant, future-ready rail infrastructure.",
     ],
     bullets: [],
     paragraphBullets: [
