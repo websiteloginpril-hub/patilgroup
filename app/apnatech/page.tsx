@@ -2,10 +2,13 @@
 
 import React from "react";
 import { useGSAPAnimations } from "@/hooks/useGSAPAnimations";
+import HLSVideo from "@/components/HLSVideo";
+
+const HERO_VIDEO_SRC =
+  "https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/c0e620a9217bc6d863a6d4b7e04963e6/manifest/video.m3u8";
 
 const cards = [
   {
-    image: "/atheader.jpg",
     title:
       "Integrated Railway Diagnostics. Engineered for Safer, Smarter Rail Networks",
     paragraphs: [
@@ -20,13 +23,17 @@ const ApnaTechPage = () => {
 
   return (
     <div className="bg-[#F1EFF0] text-gray-800 overflow-hidden min-h-screen">
-      {/* Hero: image pinned to top so full head is visible (reference framing) */}
-      <section className="relative w-full overflow-hidden bg-white">
+      {/* Hero: HLS video (Cloudflare Stream) */}
+      <section className="relative w-full overflow-hidden bg-black">
         <div className="relative w-full aspect-[16/9] sm:aspect-[2/1] min-h-[300px] sm:min-h-[360px]">
-          <img
-            src={card.image}
-            alt={card.title}
+          <HLSVideo
+            src={HERO_VIDEO_SRC}
+            autoPlay
+            loop
+            muted
+            playsInline
             className="absolute inset-0 w-full h-full object-cover object-[38%_0%]"
+            aria-label={card.title}
           />
         </div>
       </section>
