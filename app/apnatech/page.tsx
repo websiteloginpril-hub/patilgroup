@@ -9,7 +9,8 @@ const HERO_VIDEO_SRC =
 
 const cards = [
   {
-    title:
+    title: "Apna Technologies & Solutions",
+    tagline:
       "Integrated Railway Diagnostics. Engineered for Safer, Smarter Rail Networks",
     paragraphs: [
       "Apna Technologies & Solutions (ApnaTech) is Patil Group's dedicated railway diagnostics arm, delivering integrated, OEM-grade solutions that enhance safety, reliability, and operational efficiency across rail and metro networks. Established in 2004, ApnaTech designs, develops, manufactures, delivers, and maintains intelligent wayside and on-board diagnostic systems, seamlessly integrating hardware, embedded systems, and proprietary software into scalable, data-driven platforms. With deep expertise in IoT, AI/ML, machine vision, sensors, and control technologies, ApnaTech moves railways from threshold-based monitoring to predictive, insight-led decision-making. Its portfolio includes Wheel Impact Load Detectors, Hot Axle Box & Hot Wheel Detection Systems, Rail Stress Monitoring, and many more, supported by centralized analytics for actionable intelligence. Backed by Patil Group's five-decade railway legacy, ApnaTech delivers “Made in India, Made for India” full-packaged diagnostic ecosystems built for modern, high-speed, and heavy-haul rail infrastructure.",
@@ -32,7 +33,7 @@ const ApnaTechPage = () => {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover object-[38%_0%]"
-            aria-label={card.title}
+            aria-label={`${card.title} ${card.tagline}`}
           />
         </div>
       </section>
@@ -40,12 +41,14 @@ const ApnaTechPage = () => {
       {/* Title and description section – aligned to R&D template style */}
       <section className="bg-transparent text-black py-8 sm:py-12 md:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <h1 className="fluid-h2 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] text-left">
-            {card.title}
-          </h1>
-
-          {/* Thin divider under title, like template */}
-          <div className="mt-4 sm:mt-6 h-px w-full bg-gray-200" />
+          <div className="text-center">
+            <h1 className="fluid-h2 font-extrabold text-black">
+              {card.title}
+            </h1>
+            <p className="mt-2 sm:mt-3 text-[#F2913F] text-lg sm:text-xl md:text-2xl font-medium">
+              {card.tagline}
+            </p>
+          </div>
 
           {/* Paragraph block styled like template description */}
           <div className="mt-6 sm:mt-8 md:mt-10 space-y-4 sm:space-y-6 text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed">
