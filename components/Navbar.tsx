@@ -233,6 +233,13 @@ const Navbar = () => {
             }} className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F]">
               News & Events
             </Link>
+             <Link href="/apnatech" onMouseEnter={() => {
+              setIsAboutMenuOpen(false);
+              setIsProductsMenuOpen(false);
+              setIsSystemsMenuOpen(false);
+            }} className="transition-all duration-300 font-medium text-gray-800 hover:text-[#F2913F]">
+              ApnaTech
+            </Link>
             </div>
 
             {/* Right side navigation items */}
