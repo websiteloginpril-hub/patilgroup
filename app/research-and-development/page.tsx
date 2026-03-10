@@ -127,7 +127,7 @@ const ResearchAndDevelopmentPage = () => {
       </section>
 
       {/* 2. Core Technology Capabilities - 5 circles with logo placeholders, hover highlights bold text */}
-      <section className="bg-gray-50 text-black pt-4 sm:pt-6 md:pt-8 lg:pt-10 pb-5 sm:pb-8 md:pb-10 lg:pb-12 fade-in-section">
+      <section className="bg-gray-50 text-black pt-4 sm:pt-4 md:pt-4 lg:pt-4 pb-0 sm:pb-0 md:pb-0 lg:pb-0 fade-in-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           {/* Central logo: add core-tech-central.png to public – original image, no circle */}
           <div className="flex justify-center mb-5 sm:mb-6" onMouseEnter={() => setHoveredCircle(0)} onMouseLeave={() => setHoveredCircle(null)}>
@@ -198,9 +198,9 @@ const ResearchAndDevelopmentPage = () => {
       </section>
 
       {/* 3. Driving Digital Transformation - heading spans both columns; left = two orange-bordered blocks, right = image placeholder (purple border) */}
-      <section className="bg-gray-50 text-black pt-5 sm:pt-8 md:pt-10 lg:pt-12 pb-8 sm:pb-12 md:pb-16 lg:pb-20 fade-in-section">
+      <section className="bg-gray-50 text-black pt-1 sm:pt-1 md:pt-2 lg:pt-2 pb-8 sm:pb-12 md:pb-16 lg:pb-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <h2 className="fluid-h2 font-extrabold text-[#8A393B] mb-4 w-full">Driving Digital Transformation</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#8A393B] mb-4 w-full">Driving Digital Transformation</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch">
             {/* Left column: two stacked text blocks, orange border, white bg, black text */}
             <div className="flex flex-col gap-4 sm:gap-5">
@@ -226,7 +226,13 @@ const ResearchAndDevelopmentPage = () => {
       {/* Alternate Material - CMA */}
       <section className="bg-gray-50 text-black pt-5 sm:pt-8 md:pt-10 lg:pt-12 pb-8 sm:pb-12 md:pb-16 lg:pb-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <h2 className="fluid-h2 font-extrabold text-[#8A393B]">
+          {/* Gradient bars above heading */}
+          <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
+            <div className="h-1.5 sm:h-2 w-1/3 bg-gradient-to-r from-[#8A393B] via-[#F2913F] to-transparent rounded-full" />
+            <div className="h-1.5 sm:h-2 w-1/3 bg-gradient-to-r from-transparent via-[#F2913F] to-[#8A393B] rounded-full" />
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#F2913F]">
             Alternate material: CMA
           </h2>
           <div className="mt-3 sm:mt-4 h-px w-full bg-gray-200"></div>
@@ -234,8 +240,7 @@ const ResearchAndDevelopmentPage = () => {
           <div className="mt-4 sm:mt-5 md:mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
             {/* Left column */}
             <div>
-              <div className="h-1.5 sm:h-2 w-3/4 bg-gradient-to-r from-[#8A393B] via-[#F2913F] to-transparent rounded-full"></div>
-              <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4 fluid-body text-black leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 fluid-body text-black leading-relaxed mt-0 sm:mt-0">
                 <p className="text-black">
                   Extensive research by the research and development team led to a composite mineral admixture (CMA), a fly-ash-based product. Fly ash not only reduces cost but also significantly enhances concrete durability.
                 </p>
@@ -247,8 +252,7 @@ const ResearchAndDevelopmentPage = () => {
 
             {/* Right column */}
             <div>
-              <div className="h-1.5 sm:h-2 w-3/4 ml-auto bg-gradient-to-r from-transparent via-[#F2913F] to-[#8A393B] rounded-full"></div>
-              <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4 fluid-body text-black leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 fluid-body text-black leading-relaxed mt-0 sm:mt-0">
                 <p className="text-black">
                   CMA has successfully replaced 20% of the cement.
                 </p>
