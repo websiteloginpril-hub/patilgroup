@@ -200,7 +200,7 @@ const ResearchAndDevelopmentPage = () => {
       {/* 3. Driving Digital Transformation - heading spans both columns; left = two orange-bordered blocks, right = image placeholder (purple border) */}
       <section className="bg-gray-50 text-black pt-1 sm:pt-1 md:pt-2 lg:pt-2 pb-8 sm:pb-12 md:pb-16 lg:pb-20 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#8A393B] mb-4 w-full">Driving Digital Transformation</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold text-[#8A393B] mb-4 w-full">Driving Digital Transformation</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch">
             {/* Left column: two stacked text blocks, orange border, white bg, black text */}
             <div className="flex flex-col gap-4 sm:gap-5">
