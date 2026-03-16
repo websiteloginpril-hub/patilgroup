@@ -57,7 +57,8 @@ const OurResourcesPage = () => {
     {
       id: "annual-return",
       title: "Annual Return",
-      pdfs: [
+      pdfs: [        
+        { name: "Annual Return FY 2024-25", filename: "Annual-Return_FY_2024-25.pdf", path: "/documents/annual-return/Annual-Return_FY_2024-25.pdf" },
         { name: "Annual Return FY 2023-24", filename: "Annual-Return_FY-2023-24.pdf", path: "/documents/annual-return/Annual-Return_FY-2023-24.pdf" },
         { name: "Annual Return FY 2022-23", filename: "Annual-Return_FY-2022-23.pdf", path: "/documents/annual-return/Annual-Return_FY-2022-23.pdf" },
         { name: "Annual Return FY 2021-22", filename: "Annual-Return_FY_2021-22.pdf", path: "/documents/annual-return/Annual-Return_FY_2021-22.pdf" },
@@ -68,6 +69,7 @@ const OurResourcesPage = () => {
       title: "CSR",
       pdfs: [
         { name: "CSR Policy", filename: "CSR-Policy.pdf", path: "/documents/csr/CSR-Policy.pdf" },
+        { name: "CSR Annual Action Plan FY 2025-26", filename: "CSR-Annual-Action-Plan_FY-2025-26.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2025-26.pdf" },
         { name: "CSR Annual Action Plan FY 2024-25", filename: "CSR-Annual-Action-Plan_FY-2024-25.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2024-25.pdf" },
         { name: "CSR Annual Action Plan FY 2023-24", filename: "CSR-Annual-Action-Plan_FY-2023-24.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2023-24.pdf" },
         { name: "CSR Annual Action Plan FY 2022-23", filename: "CSR-Annual-Action-Plan_FY-2022-23.pdf", path: "/documents/csr/CSR-Annual-Action-Plan_FY-2022-23.pdf" },
@@ -78,11 +80,23 @@ const OurResourcesPage = () => {
       id: "notices",
       title: "Notices",
       pdfs: [
+        { name: "28th AGM Notice", filename: "28th-AGM-Notice.pdf", path: "/documents/csr/28th-AGM-Notice.pdf" },
         { name: "27th AGM Notice", filename: "27th-AGM-Notice.pdf", path: "/documents/notices/27th-AGM-Notice.pdf" },
         { name: "1st EGM Notice FY 2023-24", filename: "1st-EGM-Notice_FY-2023-24.pdf", path: "/documents/notices/1st-EGM-Notice_FY-2023-24.pdf" },
         { name: "2nd EGM Notice FY 2023-24", filename: "2nd-EGM-Notice_FY-2023-24.pdf", path: "/documents/notices/2nd-EGM-Notice_FY-2023-24.pdf" },
       ]
     },
+    {
+      id: "notices-2025-26",
+      title: "2025-26",
+      pdfs: [
+        { name: "01st EGM FY 2025-26", filename: "01st-EGM_FY-2025-26.pdf", path: "/documents/notices/2025-26/01st-EGM_FY-2025-26.pdf" },
+        { name: "2nd EGM Notice 2025-26", filename: "2nd-EGM-Notice_2025-26.pdf", path: "/documents/notices/2025-26/2nd-EGM-Notice_2025-26.pdf" },
+        { name: "3rd EGM Notice 2025-26", filename: "3rd-EGM-Notice_2025-26.pdf", path: "/documents/notices/2025-26/3rd-EGM-Notice_2025-26.pdf" },
+        { name: "29th AGM Notice", filename: "29th-AGM-Notice.pdf", path: "/documents/notices/2025-26/29th-AGM-Notice.pdf" },
+      ]
+    },
+   
     {
       id: "other-documents",
       title: "Other Documents",
@@ -246,6 +260,7 @@ const OurResourcesPage = () => {
             <div className="mt-8 max-w-7xl mx-auto">
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 {documentCategories.map((category, index) => (
+                  category.id === "notices-2025-26" ? null : (
                   <div key={category.id} className="border-b border-gray-200 last:border-b-0">
                     {/* Category Header */}
                     <button
@@ -263,10 +278,82 @@ const OurResourcesPage = () => {
                       />
                     </button>
 
-                    {/* Category Content - PDFs List */}
+                    {/* Category Content - PDFs List (with special nesting for Notices - 2025-26) */}
                     {expandedCategories[category.id] && (
                       <div className="bg-gray-50 px-6 py-4">
-                        {category.pdfs.length > 0 ? (
+                        {category.id === "notices" ? (
+                          <>
+                            {category.pdfs.length > 0 && (
+                              <div className="space-y-2 mb-4">
+                                {category.pdfs.map((pdf, pdfIndex) => (
+                                  <div
+                                    key={pdfIndex}
+                                    className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                                  >
+                                    <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+                                    <span 
+                                      className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+                                      onClick={() => handleView(pdf.path)}
+                                    >
+                                      {pdf.name}
+                                    </span>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDownload(pdf.filename, pdf.name, pdf.path);
+                                      }}
+                                      className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
+                                      aria-label={`Download ${pdf.name}`}
+                                    >
+                                      <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Nested Notices - 2025-26 inside Notices */}
+                            {(() => {
+                              const nestedCategory = documentCategories.find(cat => cat.id === "notices-2025-26");
+                              if (!nestedCategory || nestedCategory.pdfs.length === 0) {
+                                return null;
+                              }
+                              return (
+                                <div>
+                                  <div className="text-sm font-semibold text-gray-800 mb-2">
+                                    {nestedCategory.title}
+                                  </div>
+                                  <div className="space-y-2">
+                                    {nestedCategory.pdfs.map((pdf, pdfIndex) => (
+                                      <div
+                                        key={pdfIndex}
+                                        className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                                      >
+                                        <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+                                        <span 
+                                          className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+                                          onClick={() => handleView(pdf.path)}
+                                        >
+                                          {pdf.name}
+                                        </span>
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDownload(pdf.filename, pdf.name, pdf.path);
+                                          }}
+                                          className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
+                                          aria-label={`Download ${pdf.name}`}
+                                        >
+                                          <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+                                        </button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </>
+                        ) : category.pdfs.length > 0 ? (
                           <div className="space-y-2">
                             {category.pdfs.map((pdf, pdfIndex) => (
                               <div
@@ -301,6 +388,7 @@ const OurResourcesPage = () => {
                       </div>
                     )}
                   </div>
+                  )
                 ))}
               </div>
             </div>
