@@ -55,10 +55,10 @@ const Footer = () => {
               <a href="mailto:info@patilgroup.com" className="hover:text-orange-400 transition-colors">info@patilgroup.com</a>
               </p>
               <p className="text-sm sm:text-base">
-              <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors whitespace-nowrap">Telphone Number:+91 40 3955 6700/6800</a>
+              <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors whitespace-nowrap">Tel No:+91 40 3955 6700/6800</a>
               </p>
               <p className="text-sm sm:text-base">
-              <a href="tel:+914039556750" className="hover:text-orange-400 transition-colors">Fax Number :+91 40 3955 6750</a>
+              <a href="tel:+914039556750" className="hover:text-orange-400 transition-colors">Fax No:+91 40 3955 6750</a>
               </p>
             <div className="flex space-x-3 sm:space-x-4">
               <a 
