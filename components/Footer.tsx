@@ -19,10 +19,10 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <address className="not-italic">
               <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold">
-                6-3-1342/4 Raj Bhavan Rd,<br />
+              6-3-1239/B/111 Raj Bhavan Rd,<br />
                 Raj Bhavan Quarters Colony,<br />
-                Somajiguda, Hyderabad,<br />
-                Telangana 500082, India
+                Somajiguda, Hyderabad,<br />  
+                Telangana India, 500082
               </p>
             </address>
             <div className="flex items-center gap-4 mt-6">
@@ -55,7 +55,10 @@ const Footer = () => {
               <a href="mailto:info@patilgroup.com" className="hover:text-orange-400 transition-colors">info@patilgroup.com</a>
               </p>
               <p className="text-sm sm:text-base">
-              <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors">+91 40 3955 6700</a>
+              <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors whitespace-nowrap">Telphone Number:+91 40 3955 6700/6800</a>
+              </p>
+              <p className="text-sm sm:text-base">
+              <a href="tel:+914039556750" className="hover:text-orange-400 transition-colors">Fax Number :+91 40 3955 6750</a>
               </p>
             <div className="flex space-x-3 sm:space-x-4">
               <a 
