@@ -113,6 +113,9 @@ const Footer = () => {
           <p className="text-gray-400 text-sm text-center">
             CIN: U60100TG1996PTC023894 | © 2025 Patil Rail Infrastructure Pvt. Ltd. (PRIL) | <strong>All rights reserved.</strong>
           </p>
+          <p className="text-gray-400 text-sm text-center mt-2">
+            Mr. Santosh Sinha, General Manager - Compliance, Mobile: +91 9930495226
+          </p>
         </div>
       </div>
     </footer>
