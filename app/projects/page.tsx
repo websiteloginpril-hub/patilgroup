@@ -181,7 +181,7 @@ const ProjectsPage = () => {
             muted
             playsInline
             className="w-full h-full object-cover"
-            preload="metadata"
+            preload="auto"
           >
             Your browser does not support the video tag.
           </video>
@@ -205,7 +205,7 @@ const ProjectsPage = () => {
               muted
               playsInline
               className="object-cover w-full h-full"
-              preload="metadata"
+              preload="auto"
             />
           </div>
           <div className="w-full md:w-1/2 flex items-center p-6 sm:p-8 md:p-16">

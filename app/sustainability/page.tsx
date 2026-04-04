@@ -18,9 +18,9 @@ export default function SustainabilityPage() {
             muted
             playsInline
             className="w-full h-full object-cover"
-            preload="metadata"
+            preload="auto"
           >
-            <source src="/sustainhero.webm" type="video/webm" />
+            <source src="/sustainhero.webm" />
             Your browser does not support the video tag.
           </video>
         </div>

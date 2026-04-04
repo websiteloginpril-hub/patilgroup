@@ -17,7 +17,9 @@ const ExploreSolutions = () => {
           src="/herovideo.mp4" 
           autoPlay 
           loop 
-          muted 
+          muted
+          playsInline
+          preload="auto"
         />
       </div>
 

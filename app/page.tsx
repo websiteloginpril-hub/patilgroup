@@ -354,7 +354,7 @@ export default function Home() {
             muted
             playsInline
             className="w-full h-full object-cover"
-            preload="metadata"
+            preload="auto"
             poster="/pg.png"
           />
           {/* Dark overlay for better text readability */}
