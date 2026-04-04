@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
 import { ArrowRight } from 'lucide-react';
-import HLSVideo from '@/components/HLSVideo';
+import Image from 'next/image';
 import {
   Carousel,
   CarouselContent,
@@ -26,7 +26,7 @@ const CMEPage = () => {
       if (autoPlayRef.current) {
         clearInterval(autoPlayRef.current);
       }
-      
+
       autoPlayRef.current = setInterval(() => {
         if (isAutoPlaying) {
           api.scrollNext();
@@ -56,32 +56,41 @@ const CMEPage = () => {
 
   return (
     <div className="bg-white">
-      <section className="relative h-screen hero-section">
-        <div className="absolute inset-0 hero-video">
-          <HLSVideo
-            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/a0536fc38f3e4f9f77a222e3c785c7c7/manifest/video.m3u8"
-            fallbackSrc="/cmeherovideo.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-            preload="metadata"
-          />
-          <div className="absolute inset-0 bg-black opacity-50"></div>
+      <section className="relative hero-section">
+        {/* Mobile Layout */}
+        <div className="md:hidden relative h-screen bg-black flex items-center justify-start p-4 sm:p-8">
+          <div className="absolute inset-0 opacity-50 hero-image">
+            <Image src="/CME Header (2).png" alt="CME Hero" fill className="object-cover" priority sizes="100vw" />
+          </div>
+          <div className="relative z-10 hero-content">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-clash leading-tight text-white fade-in-section">
+              Centre for<br />Manufacturing<br />Excellence
+            </h1>
+          </div>
         </div>
-        <div className="relative z-10 h-full flex items-center justify-start p-4 sm:p-8 md:p-16 hero-content">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-bold font-clash leading-tight text-white fade-in-section">
-            Centre for<br />Manufacturing<br />Excellence
-          </h1>
+
+        {/* Desktop Layout */}
+        <div className="hidden md:block relative h-screen hero-section">
+          <div className="absolute inset-0 hero-image">
+            <Image src="/CME Header (2).png" alt="CME Hero" fill className="object-cover z-0" priority sizes="100vw" />
+          </div>
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+          
+          {/* Content */}
+          <div className="relative h-full flex flex-col justify-center items-start text-left z-20 hero-content p-16">
+            <h1 className="text-5xl lg:text-7xl font-bold font-clash leading-tight text-white fade-in-section">
+              Centre for<br />Manufacturing<br />Excellence
+            </h1>
+          </div>
         </div>
       </section>
 
-      
-      
-      
 
-	  
+
+
+
+
 
       {/* Intro Section (post-hero) */}
       <section className="bg-black text-white py-6 sm:py-8 md:py-12 lg:py-16 fade-in-section">
@@ -201,7 +210,7 @@ const CMEPage = () => {
           </div>
         </div>
       </section>
-      
+
       {/* DOJO Centers Section */}
       <section className="bg-black text-white py-8 sm:py-12 md:py-16 lg:py-24 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 items-center">
@@ -309,8 +318,8 @@ const CMEPage = () => {
                   <span className="text-[#F2913F] mr-2 sm:mr-3 transition-colors duration-300 group-hover:text-[#ffb366]">•</span>
                   In-house training programs for continuous learning and skill enhancement
                 </li>
-            </ul>
-          </div>
+              </ul>
+            </div>
 
             {/* Card 2 - Current Training Modules */}
             <div className="rounded-2xl sm:rounded-3xl bg-[#F2913F] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#F2913F]/30 hover:bg-[#ff9f4a] group">
@@ -339,8 +348,8 @@ const CMEPage = () => {
                   <span className="text-[#8A393B] mr-2 sm:mr-3 transition-colors duration-300 group-hover:text-[#6d2f32]">•</span>
                   Railway Welding Technique
                 </li>
-            </ul>
-          </div>
+              </ul>
+            </div>
 
             {/* Card 3 - State-of-the-art Facilities */}
             <div className="rounded-2xl sm:rounded-3xl bg-[#8A393B] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#8A393B]/30 hover:bg-[#9d4447] group">
@@ -369,7 +378,7 @@ const CMEPage = () => {
                   <span className="text-[#F2913F] mr-2 sm:mr-3 transition-colors duration-300 group-hover:text-[#ffb366]">•</span>
                   Computer Lab for digital learning and simulation-based training
                 </li>
-            </ul>
+              </ul>
             </div>
           </div>
 
@@ -380,7 +389,7 @@ const CMEPage = () => {
           </p>
         </div>
       </section>
-      
+
       {/* First certificate from quality forum of India (Footer section) */}
       <section className="bg-black text-white py-8 sm:py-12 md:py-16 lg:py-24 fade-in-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10 items-center">
@@ -410,37 +419,37 @@ const CMEPage = () => {
                 <CarouselContent className="h-full">
                   <CarouselItem className="h-full">
                     <div className="w-full h-full rounded-full overflow-hidden">
-                      <img 
-                        src="/awardcme.jpg" 
-                        alt="Quality recognition award from QCFI" 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+                      <img
+                        src="/awardcme.jpg"
+                        alt="Quality recognition award from QCFI"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="h-full">
                     <div className="w-full h-full rounded-full overflow-hidden">
-                      <img 
-                        src="/award2.jpg" 
-                        alt="Award 2 - Quality Excellence" 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+                      <img
+                        src="/award2.jpg"
+                        alt="Award 2 - Quality Excellence"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="h-full">
                     <div className="w-full h-full rounded-full overflow-hidden">
-                      <img 
-                        src="/award3.jpg" 
-                        alt="Award 3 - Manufacturing Excellence" 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+                      <img
+                        src="/award3.jpg"
+                        alt="Award 3 - Manufacturing Excellence"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   </CarouselItem>
                   <CarouselItem className="h-full">
                     <div className="w-full h-full rounded-full overflow-hidden">
-                      <img 
-                        src="/award4.jpg" 
-                        alt="Award 4 - Industry Recognition" 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+                      <img
+                        src="/award4.jpg"
+                        alt="Award 4 - Industry Recognition"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   </CarouselItem>
