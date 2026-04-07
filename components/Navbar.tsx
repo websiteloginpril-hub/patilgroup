@@ -715,6 +715,15 @@ const Navbar = () => {
                 <span className="text-lg font-medium">News & Events</span>
                </Link>
 
+              {/* ApnaTech */}
+              <Link 
+                href="/apnatech" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block py-4 border-b border-gray-200 text-black hover:text-[#F2913F] transition-colors duration-200"
+              >
+                <span className="text-lg font-medium">ApnaTech</span>
+               </Link>
+
               {/* Sustainability (moved out of About for mobile) */}
               <Link 
                 href="/sustainability" 
