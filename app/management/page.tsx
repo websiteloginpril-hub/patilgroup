@@ -75,6 +75,11 @@ const leadershipData = [
     post: 'Executive Director - Corporate Affairs',
   },
   {
+    image: '/management/sujeet.png',
+    name: 'Mr. Sujeeth Ramakrishnan',
+    post: 'CEO - Wire Business',
+  },
+  {
     image: '/management/princesir.jpg',
     name: 'Mr. D. Prince',
     post: 'Director - Sleeper Operations',
@@ -130,7 +135,7 @@ const ManagementPage = () => {
     dragFree: false,
     loop: false,
     skipSnaps: false,
-    duration: 20,
+    duration: 25,
     startIndex: 0,
     slidesToScroll: 1
   });
@@ -195,7 +200,7 @@ const ManagementPage = () => {
   return (
     <div className="bg-[#1E1E1E] text-white pt-[103px]">
       {/* Responsive Our Leadership Section */}
-      <section className="min-h-[calc(100vh-103px)] flex flex-col justify-center py-2 sm:py-3 md:py-4 bg-white text-black" style={{ backgroundColor: '#ffffff' }}>
+      <section className="md:min-h-[calc(100vh-103px)] flex flex-col md:justify-center py-2 sm:py-3 md:py-4 pb-0 md:pb-4 bg-white text-black" style={{ backgroundColor: '#ffffff' }}>
         {/* Legacy in Rail Header - Full Width */}
         <div className="w-screen overflow-hidden mb-2 sm:mb-3 relative">
           {/* Heading with gradient lines from screen edges */}
@@ -228,14 +233,14 @@ const ManagementPage = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 
           {/* Mobile Layout - Swipeable Carousel */}
-          <div className="md:hidden relative">
-            <div className="overflow-hidden" ref={mobileEmblaRef}>
-              <div className="flex touch-pan-y" style={{ backfaceVisibility: 'hidden', perspective: '1000px' }}>
+          <div className="md:hidden relative px-0 mb-0">
+            <div className="overflow-hidden snap-x snap-mandatory" ref={mobileEmblaRef}>
+              <div className="flex gap-4 touch-pan-y" style={{ backfaceVisibility: 'hidden', perspective: '1000px' }}>
                 {leadershipData.map((leader, i) => (
-                  <div key={i} className="flex-shrink-0 w-[90%] sm:w-[80%] pl-4 first:pl-6 last:pr-6 will-change-transform" style={{ transform: 'translateZ(0)' }}>
+                  <div key={i} className="flex-shrink-0 w-[85vw] sm:w-[80%] pl-0 will-change-transform snap-center" style={{ transform: 'translateZ(0)' }}>
                     <div className="group leadership-card-mobile rounded-2xl border border-gray-300/30 backdrop-blur-sm bg-white overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl will-change-transform" style={{ backgroundColor: '#ffffff' }}>
                       {/* Full Photo Container */}
                       <div className="relative h-[180px] sm:h-[200px] bg-white overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
@@ -268,7 +273,7 @@ const ManagementPage = () => {
             </div>
 
             {/* Mobile Scroll Indicator */}
-            <div className="flex justify-center mt-2 sm:mt-3 space-x-2">
+            <div className="flex justify-center -mt-1 sm:mt-2 space-x-2 py-0">
               {leadershipData.map((_, index) => (
                 <button
                   key={index}
@@ -283,7 +288,7 @@ const ManagementPage = () => {
             </div>
 
             {/* Mobile Swipe Hint */}
-            <div className="text-center mt-1.5 sm:mt-2">
+            <div className="text-center mt-0 sm:mt-1 mb-0 py-0">
               <p className="text-[10px] sm:text-xs text-gray-600 font-medium">
                 ← Swipe to explore →
               </p>

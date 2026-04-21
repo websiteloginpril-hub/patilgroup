@@ -8,22 +8,17 @@ import HLSVideo from '@/components/HLSVideo';
 
 const cards = [
   {
-    image: '/bharath_fastening.jpeg',
-    title: 'Patil Group Selected for Bharat Fastening Initiative by Indian Railways',
+    image: '/IIT Tirupati.jpg',
+    title: 'Patil Group Signs MoU with IIT Tirupati',
     paragraphs: [
-      "Patil Group has been selected under the Bharat Fastening Initiative led by the Ministry of Railways and RDSO for the development of an indigenous modern rail fastening system for Indian Railways.",
-      "Only seven Indian manufacturers have been shortlisted under this programme, which focuses on Make in India development of high-performance fastening systems meeting stringent RDSO requirements.",
-      "The initiative targets fastening systems designed for mixed traffic conditions:",
-      "The programme mandates in-India design and manufacturing, FEM analysis, endurance testing, and compliance with international standards EN 13481 and EN 13146, adapted to Indian railway operating conditions for mixed traffic conditions.",
-      "Patil Group's selection reflects its five-decade legacy in railway track engineering, backward-integrated manufacturing, and proven expertise in rail fastening systems, aligned with Indian Railways' vision of self-reliant, future-ready rail infrastructure.",
+      "Patil Group has been recognised by the Confederation of Indian Industry (CII) as one of the top 10 Indian innovations in the railway sector for its indigenous Stricter Tolerance Track Fastening System, designed to enhance safety and ride comfort on semi-high-speed corridors including Vande Bharat routes.",
     ],
-    bullets: [],
-    paragraphBullets: [
-      "25T axle load, speeds up to 200 kmph for passenger traffic",
-      "Ballasted track infrastructure",
-      "Enhanced safety, durability, and lifecycle reliability",
+    bullets: [
+      'Research Collaboration: Joint work on real-world challenges across civil engineering, AI/ML and allied domains.',
+      'Advanced Testing Facility: Co-developing a first-of-its-kind lab capable of sting track systems and slab structures up to 24 metres.',
+      'Talent Development: Shaping the next generation of infrastructure leaders through live industry exposure and technical engagement.'
     ],
-    paragraphBulletsAfterIndex: 2,
+    afterText: 'Building enduring value for Indian rail infrastructure "Make in Bharat for the World."',
   },
   {
     image: '/indianrailways.jpg',
@@ -60,6 +55,24 @@ const cards = [
       'With Indian Railways as a key customer, the foundry features a Disa high-pressure automatic molding line, auto pouring, and sand testing facilities. Focused on quality, it aims for global market leadership.',
     ],
     bullets: [],
+  },
+  {
+    image: '/bharath_fastening.jpeg',
+    title: 'Patil Group Selected for Bharat Fastening Initiative by Indian Railways',
+    paragraphs: [
+      "Patil Group has been selected under the Bharat Fastening Initiative led by the Ministry of Railways and RDSO for the development of an indigenous modern rail fastening system for Indian Railways.",
+      "Only seven Indian manufacturers have been shortlisted under this programme, which focuses on Make in India development of high-performance fastening systems meeting stringent RDSO requirements.",
+      "The initiative targets fastening systems designed for mixed traffic conditions:",
+      "The programme mandates in-India design and manufacturing, FEM analysis, endurance testing, and compliance with international standards EN 13481 and EN 13146, adapted to Indian railway operating conditions for mixed traffic conditions.",
+      "Patil Group's selection reflects its five-decade legacy in railway track engineering, backward-integrated manufacturing, and proven expertise in rail fastening systems, aligned with Indian Railways' vision of self-reliant, future-ready rail infrastructure.",
+    ],
+    bullets: [],
+    paragraphBullets: [
+      "25T axle load, speeds up to 200 kmph for passenger traffic",
+      "Ballasted track infrastructure",
+      "Enhanced safety, durability, and lifecycle reliability",
+    ],
+    paragraphBulletsAfterIndex: 2,
   },
   {
     image: '/whistleblowerpolicynews.jpg',
@@ -121,11 +134,11 @@ const NewsPage = () => {
       setProgress(0);
       return;
     }
-    
+
     const duration = 2500; // 2.5 seconds
     const interval = 50; // Update every 50ms
     const increment = (interval / duration) * 100;
-    
+
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -143,7 +156,7 @@ const NewsPage = () => {
 
   return (
     <div className="bg-[#F1EFF0] text-gray-800 overflow-hidden">
-      
+
       <section className="relative h-[50vh] sm:h-[60vh] overflow-hidden hero-section">
         {/* Background Video wrapped for parallax */}
         <div className="absolute inset-0 w-full h-full hero-video">
@@ -178,12 +191,12 @@ const NewsPage = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-clash font-bold mb-6 sm:mb-8 md:mb-10 text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] text-center lg:text-left fade-in-section">
-            Our Latest 
+            Our Latest
           </h2>
 
           {/* Mobile Auto Carousel */}
           <div className="lg:hidden">
-            <div 
+            <div
               className="relative overflow-hidden rounded-2xl"
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
@@ -192,37 +205,36 @@ const NewsPage = () => {
             >
               {/* Enhanced Card Container with Key-based Re-rendering */}
               <div className="relative min-h-[600px] sm:min-h-[650px]">
-                <div 
+                <div
                   key={`card-${index}`}
                   className="carousel-card bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-500 ease-in-out"
                 >
                   {/* Enhanced Mobile Image */}
                   <div className="mb-6 relative overflow-hidden rounded-lg group">
-                    <img 
+                    <img
                       key={`image-${index}`}
-                      src={card.image} 
-                      alt={card.title} 
-                      className={`w-full transition-all duration-500 group-hover:scale-105 ${
-                        card.image.includes("bharath_fastening")
-                          ? "h-52 sm:h-64 object-contain bg-[#F8F6F4]"
-                          : "h-48 sm:h-56 object-cover"
-                      }`}
+                      src={card.image}
+                      alt={card.title}
+                      className={`w-full transition-all duration-500 group-hover:scale-105 ${card.image.includes("bharath_fastening") || card.image.includes("IIT Tirupati")
+                        ? "h-52 sm:h-64 object-contain bg-[#F8F6F4]"
+                        : "h-48 sm:h-56 object-cover"
+                        }`}
                     />
                     {/* Image overlay with gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
+
                     {/* Image loading indicator */}
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
                       <span className="text-xs font-medium text-gray-600">{index + 1}/{cards.length}</span>
                     </div>
                   </div>
-                  
+
                   {/* Enhanced Mobile Content with Key for Re-render */}
                   <div key={`content-${index}`} className="space-y-4 carousel-content-enter">
                     <h3 className="text-lg sm:text-xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#8A393B] to-[#F2913F]">
                       {card.title}
                     </h3>
-                    
+
                     {/* Scrollable content area */}
                     <div className="max-h-36 sm:max-h-44 overflow-y-auto custom-scrollbar pr-2">
                       {card.paragraphs.map((p, i) => (
@@ -233,18 +245,18 @@ const NewsPage = () => {
                           {(card as { paragraphBulletsAfterIndex?: number }).paragraphBulletsAfterIndex === i &&
                             card.paragraphBullets &&
                             card.paragraphBullets.length > 0 && (
-                            <ul className="mb-3 ml-4 space-y-1.5 text-gray-700 text-sm">
-                              {card.paragraphBullets.map((b, bi) => (
-                                <li key={`pbullet-${index}-${bi}`} className="flex items-start">
-                                  <span className="mt-1.5 mr-2 block h-1.5 w-1.5 rounded-full bg-[#F2913F] flex-shrink-0" />
-                                  <span>{b}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+                              <ul className="mb-3 ml-4 space-y-1.5 text-gray-700 text-sm">
+                                {card.paragraphBullets.map((b, bi) => (
+                                  <li key={`pbullet-${index}-${bi}`} className="flex items-start">
+                                    <span className="mt-1.5 mr-2 block h-1.5 w-1.5 rounded-full bg-[#F2913F] flex-shrink-0" />
+                                    <span>{b}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
                         </React.Fragment>
                       ))}
-                      
+
                       {card.bullets.length > 0 && (
                         <div className="mt-4">
                           <p className="text-gray-900 font-semibold text-sm sm:text-base mb-3">Key innovations include:</p>
@@ -259,7 +271,7 @@ const NewsPage = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Enhanced Progress bar for current article */}
                     <div className="mt-4 pt-4 border-t border-gray-100">
                       <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
@@ -281,12 +293,12 @@ const NewsPage = () => {
                           )}
                         </span>
                       </div>
-                      
+
                       {/* Enhanced Progress Bar */}
                       <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
-                        <div 
+                        <div
                           className="progress-bar h-1.5 rounded-full transition-all duration-75 ease-linear"
-                          style={{ 
+                          style={{
                             width: `${progress}%`,
                             transform: `translateZ(0)` // GPU acceleration
                           }}
@@ -296,7 +308,7 @@ const NewsPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Enhanced Auto Carousel Indicators */}
               <div className="flex justify-center items-center gap-2 mt-6">
                 {cards.map((_, i) => (
@@ -308,16 +320,15 @@ const NewsPage = () => {
                       setIsPaused(true);
                       setTimeout(() => setIsPaused(false), 3000);
                     }}
-                    className={`carousel-indicator transition-all duration-300 rounded-full touch-manipulation ${
-                      i === index 
-                        ? 'w-8 h-2 bg-[#F2913F] active shadow-lg' 
-                        : 'w-2 h-2 bg-gray-300 hover:bg-gray-400 hover:scale-125'
-                    }`}
+                    className={`carousel-indicator transition-all duration-300 rounded-full touch-manipulation ${i === index
+                      ? 'w-8 h-2 bg-[#F2913F] active shadow-lg'
+                      : 'w-2 h-2 bg-gray-300 hover:bg-gray-400 hover:scale-125'
+                      }`}
                     aria-label={`Go to article ${i + 1}: ${cards[i].title.substring(0, 30)}...`}
                   />
                 ))}
               </div>
-              
+
               {/* Enhanced Auto-play Control */}
               <div className="text-center mt-4">
                 <div className="flex items-center justify-center gap-4">
@@ -333,7 +344,7 @@ const NewsPage = () => {
                   >
                     <ArrowLeft className="h-4 w-4 text-gray-600" />
                   </button>
-                  
+
                   {/* Auto-play control */}
                   <button
                     onClick={() => {
@@ -342,12 +353,11 @@ const NewsPage = () => {
                     }}
                     className="text-xs text-gray-500 hover:text-gray-700 transition-all duration-200 flex items-center gap-2 px-4 py-2 rounded-full hover:bg-gray-100 touch-manipulation border border-gray-200"
                   >
-                    <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                      isAutoPlaying ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
-                    }`} />
+                    <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${isAutoPlaying ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
+                      }`} />
                     <span className="font-medium">{isAutoPlaying ? 'Auto-playing' : 'Paused'}</span>
                   </button>
-                  
+
                   {/* Manual navigation */}
                   <button
                     onClick={() => {
@@ -369,35 +379,35 @@ const NewsPage = () => {
           <div className="hidden lg:block">
             <div className="space-y-8 stagger-children">
               {cards.map((newsCard, cardIndex) => (
-                <div 
+                <div
                   key={cardIndex}
                   className="bg-white rounded-xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden cursor-pointer group stagger-item transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 items-start">
                     {/* Left image with hover effects */}
                     <div className="md:col-span-1 overflow-hidden relative">
-                      <img 
-                        src={newsCard.image} 
+                      <img
+                        src={newsCard.image}
                         alt={newsCard.title}
                         loading="lazy"
                         className={
-                            newsCard.image.includes("bharath_fastening")
-                              ? "w-full h-[360px] md:h-[500px] object-contain bg-[#F8F6F4] transition-transform duration-400 group-hover:scale-105 group-hover:brightness-110"
-                              : newsCard.image.includes("indianrailways")
+                          newsCard.image.includes("bharath_fastening")
+                            ? "w-full h-[360px] md:h-[500px] object-contain bg-[#F8F6F4] transition-transform duration-400 group-hover:scale-105 group-hover:brightness-110"
+                            : newsCard.image.includes("indianrailways")
                               ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-90 group-hover:brightness-110"
                               : "w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
-                          }
+                        }
                       />
                       {/* Overlay gradient that appears on hover */}
                       <div className="absolute inset-0 bg-gradient-to-r from-[#F2913F]/20 to-[#8A393B]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                    
+
                     {/* Right content with staggered text animations */}
                     <div className="md:col-span-2 p-6 md:p-8">
                       <h3 className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-[#F2913F] to-[#8A393B] mb-4 fade-text">
                         {newsCard.title}
                       </h3>
-                      
+
                       <div className="space-y-3">
                         {newsCard.paragraphs.map((paragraph, paragraphIndex) => (
                           <React.Fragment key={paragraphIndex}>
@@ -407,25 +417,25 @@ const NewsPage = () => {
                             {(newsCard as { paragraphBulletsAfterIndex?: number }).paragraphBulletsAfterIndex === paragraphIndex &&
                               newsCard.paragraphBullets &&
                               newsCard.paragraphBullets.length > 0 && (
-                              <ul className="ml-4 mt-2 space-y-2 text-gray-700 text-base md:text-lg">
-                                {newsCard.paragraphBullets.map((bullet, bulletIndex) => (
-                                  <li key={bulletIndex} className="flex items-start fade-paragraph">
-                                    <span className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0" />
-                                    <span>{bullet}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
+                                <ul className="ml-4 mt-2 space-y-2 text-gray-700 text-base md:text-lg">
+                                  {newsCard.paragraphBullets.map((bullet, bulletIndex) => (
+                                    <li key={bulletIndex} className="flex items-start fade-paragraph">
+                                      <span className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0" />
+                                      <span>{bullet}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                           </React.Fragment>
                         ))}
-                        
+
                         {newsCard.bullets.length > 0 && (
                           <div className="mt-4">
                             <p className="text-gray-900 font-semibold text-base md:text-lg mb-3">Key innovations include:</p>
                             <ul className="space-y-2 text-gray-700 text-base md:text-lg">
                               {newsCard.bullets.map((bullet, bulletIndex) => (
-                                <li 
-                                  key={bulletIndex} 
+                                <li
+                                  key={bulletIndex}
                                   className="flex items-start fade-paragraph"
                                 >
                                   <span className="mt-2 mr-3 block h-2 w-2 rounded-full bg-[#F2913F] flex-shrink-0" />
@@ -435,9 +445,14 @@ const NewsPage = () => {
                             </ul>
                           </div>
                         )}
+                        {newsCard.afterText && (
+                          <p className="text-gray-700 text-base md:text-lg leading-relaxed fade-paragraph">
+                            {newsCard.afterText}
+                          </p>
+                        )}
                       </div>
                     </div>
-              </div>
+                  </div>
                 </div>
               ))}
             </div>
