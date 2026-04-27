@@ -45,11 +45,6 @@ const leadershipData = [
     post: 'Group Director & CEO',
   },
   {
-    image: '/management/manishsir.jpg',
-    name: 'Mr. Manish Ishwarlal Panchal',
-    post: 'Executive Director',
-  },
-  {
     image: '/management/ajayrajputsir.jpg',
     name: 'Dr. Ajay Rajput',
     post: 'MD - Marketing',
@@ -63,11 +58,6 @@ const leadershipData = [
     image: '/management/avchandrasir.jpg',
     name: 'Mr. A. V. Chandra Gupta',
     post: 'CEO - Growth Centre',
-  },
-  {
-    image: '/management/jawaharsir.jpg',
-    name: 'Mr. Jawahar Lal Sinhari',
-    post: 'Group CFO',
   },
   {
     image: '/management/bnsajjansir.jpg',
