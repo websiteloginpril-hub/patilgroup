@@ -8,7 +8,7 @@ import HLSVideo from '@/components/HLSVideo';
 
 const cards = [
   {
-    image: '/IIT Tirupati.jpg',
+    image: '/IIT Tirupati.png',
     title: 'Patil Group Signs MoU with IIT Tirupati',
     paragraphs: [
       "Patil Group has been recognised by the Confederation of Indian Industry (CII) as one of the top 10 Indian innovations in the railway sector for its indigenous Stricter Tolerance Track Fastening System, designed to enhance safety and ride comfort on semi-high-speed corridors including Vande Bharat routes.",
@@ -57,7 +57,7 @@ const cards = [
     bullets: [],
   },
   {
-    image: '/bharath_fastening.jpeg',
+    image: '/Bharat fastening1.png',
     title: 'Patil Group Selected for Bharat Fastening Initiative by Indian Railways',
     paragraphs: [
       "Patil Group has been selected under the Bharat Fastening Initiative led by the Ministry of Railways and RDSO for the development of an indigenous modern rail fastening system for Indian Railways.",
@@ -215,9 +215,11 @@ const NewsPage = () => {
                       key={`image-${index}`}
                       src={card.image}
                       alt={card.title}
-                      className={`w-full transition-all duration-500 group-hover:scale-105 ${card.image.includes("bharath_fastening") || card.image.includes("IIT Tirupati")
-                        ? "h-52 sm:h-64 object-contain bg-[#F8F6F4]"
-                        : "h-48 sm:h-56 object-cover"
+                      className={`w-full transition-all duration-500 group-hover:scale-105 ${card.image.includes("Bharat fastening")
+                        ? "h-52 sm:h-64 object-cover object-top bg-white"
+                        : card.image.includes("IIT Tirupati")
+                          ? "h-52 sm:h-64 object-contain bg-[#F8F6F4]"
+                          : "h-48 sm:h-56 object-cover"
                         }`}
                     />
                     {/* Image overlay with gradient */}
@@ -383,7 +385,7 @@ const NewsPage = () => {
                   key={cardIndex}
                   className="bg-white rounded-xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden cursor-pointer group stagger-item transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-3 items-start">
+                  <div className="grid grid-cols-1 md:grid-cols-3 items-stretch">
                     {/* Left image with hover effects */}
                     <div className="md:col-span-1 overflow-hidden relative">
                       <img
@@ -391,11 +393,13 @@ const NewsPage = () => {
                         alt={newsCard.title}
                         loading="lazy"
                         className={
-                          newsCard.image.includes("bharath_fastening")
-                            ? "w-full h-[360px] md:h-[500px] object-contain bg-[#F8F6F4] transition-transform duration-400 group-hover:scale-105 group-hover:brightness-110"
-                            : newsCard.image.includes("indianrailways")
-                              ? "w-full h-[340px] md:h-[460px] object-cover transition-transform duration-400 group-hover:scale-90 group-hover:brightness-110"
-                              : "w-full h-[200px] md:h-[240px] object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
+                          newsCard.image.includes("Bharat fastening")
+                            ? "w-full h-full object-cover object-top bg-white transition-transform duration-400 group-hover:scale-105 group-hover:brightness-110"
+                            : newsCard.image.includes("IIT Tirupati")
+                              ? "w-full h-full object-contain bg-[#F8F6F4] transition-transform duration-400 group-hover:scale-105 group-hover:brightness-110"
+                              : newsCard.image.includes("indianrailways")
+                                ? "w-full h-full object-cover transition-transform duration-400 group-hover:scale-90 group-hover:brightness-110"
+                                : "w-full h-full object-cover transition-transform duration-400 group-hover:scale-110 group-hover:brightness-110"
                         }
                       />
                       {/* Overlay gradient that appears on hover */}

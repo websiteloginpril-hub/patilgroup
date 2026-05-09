@@ -12,45 +12,50 @@ const InsertsPage = () => {
   return (
     <div className="bg-black text-white">
       {/* Hero Section */}
-      <div className="relative hero-section">
+      <div className="relative hero-section overflow-hidden">
         {/* Mobile Layout */}
-        <div className="md:hidden min-h-screen relative">
-          <Image
-            src="/insertshero1.jpg"
-            alt="SGCI Inserts, Base Plates, and Other Engineering Castings"
-            layout="fill"
-            objectFit="cover"
-            className="z-0 hero-image"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 z-10"></div>
-          
-          <div className="relative z-20 min-h-screen flex items-start justify-start hero-content px-6 pt-[120px] pb-12">
-            <div className="text-left w-full max-w-2xl mx-auto">
-              <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-3 drop-shadow-2xl">
-                SGCI Inserts, Base Plates <br/>and Other Engineering Castings
-              </h1>
-              <div className="w-24 h-1.5 bg-gradient-to-r from-[#F2913F] to-[#8A393B] mt-6 rounded-full shadow-lg"></div>
-              <p className="text-white text-xl sm:text-2xl mt-6 font-medium drop-shadow-xl leading-relaxed">
-                Precision Engineering for Railway Infrastructure
-              </p>
-            </div>
+        <div className="md:hidden h-screen bg-black flex items-center justify-center text-center hero-section overflow-hidden">
+          <div className="absolute inset-0 opacity-50 hero-image">
+            <Image
+              src="/insertshero1.jpg"
+              alt="SGCI Inserts, Base Plates, and Other Engineering Castings"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          </div>
+          <div className="relative z-10 p-4 hero-content text-left max-w-2xl">
+            <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-6 drop-shadow-2xl">
+              SGCI Inserts, Base Plates <br />and Other Engineering Castings
+            </h1>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-[#F2913F] to-[#8A393B] rounded-full shadow-lg mb-6"></div>
+            <p className="text-white text-lg sm:text-xl font-medium drop-shadow-xl leading-relaxed">
+              Precision Engineering for Railway Infrastructure
+            </p>
           </div>
         </div>
-        
+
         {/* Desktop Layout */}
-        <div className="hidden md:block relative min-h-screen">
-          <Image
-            src="/insertshero1.jpg"
-            alt="SGCI Inserts, Base Plates, and Other Engineering Castings"
-            layout="fill"
-            objectFit="cover"
-            className="z-0 hero-image"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-60 z-10" />
-          <div className="relative z-20 min-h-screen flex items-center justify-start max-w-7xl mx-auto px-8 hero-content pt-[103px] pb-12">
+        <div className="hidden md:block relative h-screen hero-section">
+          <div className="absolute inset-0 hero-image">
+            <Image
+              src="/insertshero1.jpg"
+              alt="SGCI Inserts, Base Plates, and Other Engineering Castings"
+              fill
+              className="object-cover z-0"
+              priority
+              sizes="100vw"
+            />
+          </div>
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black opacity-60 z-10"></div>
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col justify-center items-start z-20 hero-content max-w-7xl mx-auto px-8">
             <div className="w-2/3">
-              <h1 className="text-6xl lg:text-7xl font-bold text-white leading-[1.15]">
-                SGCI Inserts, Base Plates<br/>and Other Engineering Castings
+              <h1 className="text-6xl lg:text-7xl font-bold text-white leading-[1.15] mb-6">
+                SGCI Inserts, Base Plates<br />and Other Engineering Castings
               </h1>
             </div>
           </div>
@@ -58,12 +63,12 @@ const InsertsPage = () => {
       </div>
 
       {/* Precision Castings Section */}
-      <div className="bg-white text-black py-8 sm:py-12 md:py-16">
+      <div className="bg-white text-black pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <div className="fade-in-section">
             {/* Section Heading - inline title and subtitle */}
-            <div className="text-left mb-6 sm:mb-8 md:mb-10">
-              <div className="flex flex-wrap items-baseline gap-x-3">
+            <div className="text-left mb-8 sm:mb-12 md:mb-16">
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
                 <h2 className="fluid-h2 font-bold text-[#8A393B]">Precision Castings</h2>
                 <span className="fluid-h3 font-bold text-[#F2913F] whitespace-nowrap">for Modern Mobility</span>
               </div>
@@ -84,7 +89,7 @@ const InsertsPage = () => {
       <section className="bg-white py-8 sm:py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="fade-in-section">
-            
+
             {/* Mobile-First Layout */}
             <div className="lg:hidden">
               {/* Mobile Header */}
@@ -97,19 +102,19 @@ const InsertsPage = () => {
                   Patil Group produces SGCI inserts for all sleeper types, with our Bokaro plant housing the country's largest facility, with a capacity of 1.3 million inserts per month.
                 </p>
               </div>
-              
+
               {/* Mobile Product Grid */}
               <div className="space-y-8">
                 {/* SGCI Insert RT 6901 */}
                 <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                     <div className="flex-shrink-0">
-                      <Image 
-                        src="/inserts45.png" 
-                        alt="SGCI Insert RT 6901" 
-                        width={200} 
-                        height={200} 
-                        className="object-contain h-32 sm:h-40 w-auto rounded-lg" 
+                      <Image
+                        src="/inserts45.png"
+                        alt="SGCI Insert RT 6901"
+                        width={200}
+                        height={200}
+                        className="object-contain h-32 sm:h-40 w-auto rounded-lg"
                       />
                     </div>
                     <div className="text-center sm:text-left">
@@ -124,12 +129,12 @@ const InsertsPage = () => {
                 <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                     <div className="flex-shrink-0">
-                      <Image 
-                        src="/insertss69.png" 
-                        alt="SGCI Insert RT 3705" 
-                        width={200} 
-                        height={200} 
-                        className="object-contain h-32 sm:h-40 w-auto rounded-lg" 
+                      <Image
+                        src="/insertss69.png"
+                        alt="SGCI Insert RT 3705"
+                        width={200}
+                        height={200}
+                        className="object-contain h-32 sm:h-40 w-auto rounded-lg"
                       />
                     </div>
                     <div className="text-center sm:text-left">
@@ -205,10 +210,10 @@ const InsertsPage = () => {
 
       {/* Base Plates Section */}
       <section className="bg-white py-8 sm:py-10 md:py-12">
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="fade-in-section">
-            
+
             {/* Mobile Layout */}
             <div className="lg:hidden">
               {/* Mobile Header */}
@@ -221,17 +226,17 @@ const InsertsPage = () => {
                   We manufacture two-hole and four-hole base plates for metro projects, supplying directly to MMRDA and DMRC to support reliable urban transit.
                 </p>
               </div>
-              
+
               {/* Mobile Product Card */}
               <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-xs">
                     <Image
                       src="/baseplates.png"
-                      alt="MMRDA project coated four-hole base plate" 
-                      width={300} 
+                      alt="MMRDA project coated four-hole base plate"
+                      width={300}
                       height={300}
-                      className="w-full h-48 sm:h-56 object-contain rounded-lg" 
+                      className="w-full h-48 sm:h-56 object-contain rounded-lg"
                     />
                   </div>
                   <div className="text-center">
@@ -290,7 +295,7 @@ const InsertsPage = () => {
       <section className="bg-white py-8 sm:py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="fade-in-section">
-            
+
             {/* Mobile Layout */}
             <div className="lg:hidden">
               {/* Mobile Header */}
@@ -303,7 +308,7 @@ const InsertsPage = () => {
                   Our foundries deliver critical castings for railway braking assemblies, including lining holders, double eyes, hinges, levers, connectors, covers, and cylinders—ensuring safety and durability in service.
                 </p>
               </div>
-              
+
               {/* Mobile Product Grid */}
               <div className="space-y-6">
                 {/* Hinge Component */}
@@ -312,10 +317,10 @@ const InsertsPage = () => {
                     <div className="flex-shrink-0">
                       <Image
                         src="/bsytem1.png"
-                        alt="DAKO-CZ India Pvt Ltd hinge" 
-                        width={150} 
-                        height={150} 
-                        className="object-contain h-24 sm:h-32 w-auto rounded-lg" 
+                        alt="DAKO-CZ India Pvt Ltd hinge"
+                        width={150}
+                        height={150}
+                        className="object-contain h-24 sm:h-32 w-auto rounded-lg"
                       />
                     </div>
                     <div className="text-center sm:text-left flex-1">
@@ -333,10 +338,10 @@ const InsertsPage = () => {
                     <div className="flex-shrink-0">
                       <Image
                         src="/bsystem2.png"
-                        alt="DAKO-CZ India Pvt Ltd lining holder" 
-                        width={150} 
-                        height={150} 
-                        className="object-contain h-24 sm:h-32 w-auto rounded-lg" 
+                        alt="DAKO-CZ India Pvt Ltd lining holder"
+                        width={150}
+                        height={150}
+                        className="object-contain h-24 sm:h-32 w-auto rounded-lg"
                       />
                     </div>
                     <div className="text-center sm:text-left flex-1">
@@ -408,10 +413,10 @@ const InsertsPage = () => {
 
       {/* Railway Suspension System Section */}
       <section className="bg-white py-8 sm:py-10 md:py-12">
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="fade-in-section">
-            
+
             {/* Mobile Layout */}
             <div className="lg:hidden">
               {/* Mobile Header */}
@@ -424,17 +429,17 @@ const InsertsPage = () => {
                   We supply precision castings for suspension assemblies, covering eight labyrinth ring types and suspension tubes, engineered for stability and long service life.
                 </p>
               </div>
-              
+
               {/* Mobile Product Card */}
               <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-full max-w-xs">
                     <Image
                       src="/suspension.png"
-                      alt="Indore Nitriders lining labyrinth ring" 
-                      width={250} 
-                      height={250} 
-                      className="w-full h-48 sm:h-56 object-contain rounded-lg" 
+                      alt="Indore Nitriders lining labyrinth ring"
+                      width={250}
+                      height={250}
+                      className="w-full h-48 sm:h-56 object-contain rounded-lg"
                     />
                   </div>
                   <div className="text-center">

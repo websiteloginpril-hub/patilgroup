@@ -19,9 +19,9 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <address className="not-italic">
               <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold">
-              6-3-1239/B/111 Raj Bhavan Rd,<br />
+                6-3-1239/B/111 Raj Bhavan Rd,<br />
                 Raj Bhavan Quarters Colony,<br />
-                Somajiguda, Hyderabad,<br />  
+                Somajiguda, Hyderabad,<br />
                 Telangana India, 500082
               </p>
             </address>
@@ -31,7 +31,7 @@ const Footer = () => {
                   Contact Us
                 </button>
               </Link>
-              <button 
+              <button
                 onClick={() => window.open('https://maps.app.goo.gl/Hyms5ZonVwVXRy6t7?g_st=aw', '_blank')}
                 className="bg-[#F2913F] text-black p-2 sm:p-3 rounded-full hover:bg-orange-400 transition-colors"
                 aria-label="View location on Google Maps"
@@ -49,19 +49,20 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
 
           {/* About & Socials */}
-            <div className="space-y-6">
-            
-            <p className="text-xs sm:text-sm">
-              <a href="mailto:info@patilgroup.com" className="hover:text-orange-400 transition-colors">info@patilgroup.com</a>
+          <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-0">
+              <p className="text-xs sm:text-sm">
+                <a href="mailto:info@patilgroup.com" className="hover:text-orange-400 transition-colors">info@patilgroup.com</a>
               </p>
               <p className="text-sm sm:text-base">
-              <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors whitespace-nowrap">Tel No:+91 40 3955 6700/6800</a>
+                <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors whitespace-nowrap">Tel No:+91 40 3955 6700/6800</a>
               </p>
               <p className="text-sm sm:text-base">
-              <a href="tel:+914039556750" className="hover:text-orange-400 transition-colors">Fax No:+91 40 3955 6750</a>
+                <a href="tel:+914039556750" className="hover:text-orange-400 transition-colors">Fax No:+91 40 3955 6750</a>
               </p>
+            </div>
             <div className="flex space-x-3 sm:space-x-4">
-              <a 
+              <a
                 href="https://www.linkedin.com/company/patil-group/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -75,21 +76,47 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-3 text-gray-400">
-              <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link href="/products" className="hover:text-white transition-colors">Products</Link></li>
-              <li><Link href="/systems" className="hover:text-white transition-colors">Systems</Link></li>
-              <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
-              <li><Link href="/cme" className="hover:text-white transition-colors">CME</Link></li>
-              <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
-            </ul>
+            <div className="flex items-stretch justify-between gap-4 md:block">
+              <div>
+                <h4 className="font-bold mb-4">Quick Links</h4>
+                <ul className="space-y-3 text-gray-400">
+                  <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                  <li><Link href="/products" className="hover:text-white transition-colors">Products</Link></li>
+                  <li><Link href="/systems" className="hover:text-white transition-colors">Systems</Link></li>
+                  <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
+                  <li><Link href="/cme" className="hover:text-white transition-colors">CME</Link></li>
+                  <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
+                </ul>
+              </div>
+
+              <div className="flex shrink-0 flex-col items-end justify-between md:hidden">
+                <div className="flex flex-col items-end gap-3">
+                  <Link href="/whistleblower" className="inline-block">
+                    <span className="inline-block bg-[#F2913F] text-black font-bold py-2 px-3 rounded-full text-[10px] text-right hover:bg-orange-400 transition-colors">
+                      WHISTLEBLOWER POLICY
+                    </span>
+                  </Link>
+                  <Link href="/privacy-policy" className="inline-block">
+                    <span className="inline-block bg-[#F2913F] text-black font-bold py-2 px-3 rounded-full text-[10px] text-right hover:bg-orange-400 transition-colors">
+                      PRIVACY POLICY
+                    </span>
+                  </Link>
+                </div>
+                <button
+                  onClick={scrollToTop}
+                  className="flex h-10 w-10 items-center justify-center self-end rounded-full bg-[#F2913F] text-black transition-colors hover:bg-orange-400"
+                  aria-label="Scroll to top"
+                >
+                  <ArrowUp size={20} />
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="md:col-span-2">
-            <div className="flex justify-between items-center mt-6 sm:mt-8">
-              <div className="flex flex-wrap gap-4">
+          <div className="hidden md:col-span-2 md:block">
+            <div className="mt-6 flex justify-end md:mt-8 md:items-center md:justify-between">
+              <div className="hidden md:flex md:flex-wrap md:items-center md:gap-4">
                 <Link href="/whistleblower" className="inline-block">
                   <span className="inline-block bg-[#F2913F] text-black font-bold py-3 px-6 rounded-full text-sm hover:bg-orange-400 transition-colors">WHISTLEBLOWER POLICY</span>
                 </Link>
@@ -97,19 +124,19 @@ const Footer = () => {
                   <span className="inline-block bg-[#F2913F] text-black font-bold py-3 px-6 rounded-full text-sm hover:bg-orange-400 transition-colors">PRIVACY POLICY</span>
                 </Link>
               </div>
-             <button 
-                onClick={scrollToTop} 
-                className="bg-[#F2913F] w-12 h-12 rounded-full flex items-center justify-center text-black hover:bg-orange-400 transition-colors"
+              <button
+                onClick={scrollToTop}
+                className="hidden h-12 w-12 items-center justify-center rounded-full bg-[#F2913F] text-black transition-colors hover:bg-orange-400 md:flex"
                 aria-label="Scroll to top"
               >
                 <ArrowUp size={24} />
-             </button>
+              </button>
             </div>
           </div>
         </div>
-        
+
         {/* CIN Information */}
-        <div className="border-t border-gray-800 pt-6 mt-8">
+        <div className="mt-2 border-t border-gray-800 pt-6 sm:mt-8">
           <p className="text-gray-400 text-sm text-center">
             CIN: U60100TG1996PTC023894 | © 2025 Patil Rail Infrastructure Pvt. Ltd. (PRIL) | <strong>All rights reserved.</strong>
           </p>
@@ -123,4 +150,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

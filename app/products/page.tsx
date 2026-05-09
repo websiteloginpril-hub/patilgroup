@@ -8,37 +8,37 @@ import { GridLines } from '@/components/GridLines';
 import HLSVideo from '@/components/HLSVideo';
 
 const products = [
-    {
-      name: "Sleepers",
-      description: "Concrete units for mainlines, metros, and turnouts",
-      link: "/sleepers",
-      image: "/sleepersslider.jpg",
-    },
-    {
-      name: "Fasteners",
-      description: "Clips, clamps, and insulators for securing rails",
-      link: "/fasteners",
-      image: "/fastenerslider.webp",
-    },
-    {
-      name: "Wires",
-      description: "Prestressed steel strands for sleeper reinforcement",
-      link: "/wires",
-      image: "/htswireslider.jpg",
-    },
-    {
-      name: "Inserts",
-      description: "SGCI castings and base plates for fastening systems",
-      link: "/inserts",
-      image: "/insertsslider.jpg",
-      },
-      {
-        name: "Precast",
-        description: "Precast plinth units for rapid installation and uniform geometry",
-        link: "/precast",
-        image: "/precastslider.jpg",
-      },
-  ];
+  {
+    name: "Sleepers",
+    description: "Concrete units for mainlines, metros, and turnouts",
+    link: "/sleepers",
+    image: "/sleepersslider.jpg",
+  },
+  {
+    name: "Fasteners",
+    description: "Clips, clamps, and insulators for securing rails",
+    link: "/fasteners",
+    image: "/fastenerslider.webp",
+  },
+  {
+    name: "Wires",
+    description: "Prestressed steel strands for sleeper reinforcement",
+    link: "/wires",
+    image: "/htswireslider.jpg",
+  },
+  {
+    name: "Inserts",
+    description: "SGCI castings and base plates for fastening systems",
+    link: "/inserts",
+    image: "/insertsslider.jpg",
+  },
+  {
+    name: "Precast",
+    description: "Precast plinth units for rapid installation and uniform geometry",
+    link: "/precast",
+    image: "/precastslider.jpg",
+  },
+];
 
 const ProductsPage = () => {
   useGSAPAnimations();
@@ -49,7 +49,7 @@ const ProductsPage = () => {
         {/* Background Video for parallax */}
         <div className="absolute inset-0 w-full h-full hero-video">
           <HLSVideo
-            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/b85fa33f9ac6e10de8a968e15e4f6467/manifest/video.m3u8"
+            src="https://customer-bowidoym2wl882qb.cloudflarestream.com/b2f7695b5c9647a332e3472ecd63858f/manifest/video.m3u8"
             fallbackSrc="/productherovideo.mp4"
             autoPlay
             loop
@@ -68,7 +68,7 @@ const ProductsPage = () => {
           <div className="md:hidden h-full flex items-center justify-start py-8">
             <div className="text-left px-6 w-full max-w-lg">
               <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-2xl animate-fadeInUp">
-                Track<br/>Components
+                Track<br />Components
               </h1>
               <div className="w-24 h-1.5 bg-gradient-to-r from-[#F2913F] to-[#8A393B] mt-6 rounded-full animate-pulse shadow-lg"></div>
               <p className="text-white text-lg sm:text-xl mt-6 font-medium tracking-wide drop-shadow-xl leading-relaxed">
@@ -80,7 +80,7 @@ const ProductsPage = () => {
           {/* Desktop Layout */}
           <div className="hidden md:flex h-full items-center justify-start p-8 sm:p-12 lg:p-16">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white animate-fadeInUp">
-              Track<br/>Components
+              Track<br />Components
             </h1>
           </div>
         </div>
@@ -104,10 +104,10 @@ const ProductsPage = () => {
                         <ArrowRight size={14} className="transform transition-transform group-hover/link:translate-x-1" />
                       </span>
                     </a>
-                    <div 
-                      className="mt-4 h-1.5 w-full max-w-xs" 
-                      style={{ 
-                        background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)' 
+                    <div
+                      className="mt-4 h-1.5 w-full max-w-xs"
+                      style={{
+                        background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
                       }}
                     ></div>
                   </div>
@@ -116,9 +116,9 @@ const ProductsPage = () => {
 
               {/* Desktop Layout */}
               <div className="hidden md:block h-56">
-                <div 
+                <div
                   className="absolute top-0 left-0 h-full bg-gray-100 w-5/12 bg-cover bg-center"
-                  style={{ 
+                  style={{
                     clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0% 100%)',
                     backgroundImage: `url(${p.image})`
                   }}
@@ -134,10 +134,10 @@ const ProductsPage = () => {
                           <ArrowRight size={16} className="transform transition-transform group-hover/link:translate-x-1" />
                         </span>
                       </a>
-                      <div 
-                        className="mt-3 h-1.5 w-full max-w-sm" 
-                        style={{ 
-                          background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)' 
+                      <div
+                        className="mt-3 h-1.5 w-full max-w-sm"
+                        style={{
+                          background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
                         }}
                       ></div>
                     </div>
@@ -153,7 +153,7 @@ const ProductsPage = () => {
       <section className="bg-white text-black py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1]">
-            <span className="text-[#8A393B]">Get in touch for</span><br/>
+            <span className="text-[#8A393B]">Get in touch for</span><br />
             <span className="text-[#F2913F]">specifications or supply.</span>
           </h2>
           <div

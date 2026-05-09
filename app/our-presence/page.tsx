@@ -112,7 +112,7 @@ const OurPresencePage = () => {
     <div className="bg-white">
       <section className="relative h-[38vh] sm:h-[46vh] lg:h-[45vh] overflow-hidden bg-black">
         <HLSVideo
-          src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/cddaadc3ac995f95130f9ad7e2c9e17b/manifest/video.m3u8"
+          src="https://customer-bowidoym2wl882qb.cloudflarestream.com/caf0e4e6cb0da655fcf6007b7717b034/manifest/video.m3u8"
           fallbackSrc="/lppatil.mp4"
           autoPlay
           muted
@@ -160,9 +160,8 @@ const OurPresencePage = () => {
                     return (
                       <div
                         key={location.stateID}
-                        className={`flex items-start gap-3 p-3 rounded-lg transition-all duration-300 ease-out ${
-                          isHovered ? "bg-[#F2913F]/10" : "hover:bg-gray-50"
-                        }`}
+                        className={`flex items-start gap-3 p-3 rounded-lg transition-all duration-300 ease-out ${isHovered ? "bg-[#F2913F]/10" : "hover:bg-gray-50"
+                          }`}
                       >
                         <div
                           className="w-3 h-3 rounded-full mt-1 flex-shrink-0"

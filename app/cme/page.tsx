@@ -76,7 +76,7 @@ const CMEPage = () => {
           </div>
           {/* Overlay */}
           <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
-          
+
           {/* Content */}
           <div className="relative h-full flex flex-col justify-center items-start text-left z-20 hero-content p-16">
             <h1 className="text-5xl lg:text-7xl font-bold font-clash leading-tight text-white fade-in-section">
@@ -300,7 +300,7 @@ const CMEPage = () => {
           {/* 3 Cards in Responsive Layout */}
           <div className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Card 1 - Program Highlights */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#8A393B] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#8A393B]/30 hover:bg-[#9d4447] group">
+            <div className="rounded-2xl sm:rounded-3xl bg-[#8A393B] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-auto sm:min-h-[400px] md:min-h-[450px] lg:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#8A393B]/30 hover:bg-[#9d4447] group">
               <div className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F2913F] mb-3 sm:mb-4 transition-all duration-300 group-hover:text-[#ffb366] group-hover:scale-110"></div>
               <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#F2913F] mb-4 sm:mb-6 transition-colors duration-300 group-hover:text-[#ffb366]">
                 Program Highlights
@@ -322,7 +322,7 @@ const CMEPage = () => {
             </div>
 
             {/* Card 2 - Current Training Modules */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#F2913F] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#F2913F]/30 hover:bg-[#ff9f4a] group">
+            <div className="rounded-2xl sm:rounded-3xl bg-[#F2913F] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-auto sm:min-h-[400px] md:min-h-[450px] lg:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#F2913F]/30 hover:bg-[#ff9f4a] group">
               <div className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#8A393B] mb-3 sm:mb-4 transition-all duration-300 group-hover:text-[#6d2f32] group-hover:scale-110"></div>
               <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#8A393B] mb-4 sm:mb-6 transition-colors duration-300 group-hover:text-[#6d2f32]">
                 Current Training Modules
@@ -352,7 +352,7 @@ const CMEPage = () => {
             </div>
 
             {/* Card 3 - State-of-the-art Facilities */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#8A393B] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-[400px] sm:min-h-[450px] md:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#8A393B]/30 hover:bg-[#9d4447] group">
+            <div className="rounded-2xl sm:rounded-3xl bg-[#8A393B] p-4 sm:p-6 lg:p-8 relative fade-in-section min-h-auto sm:min-h-[400px] md:min-h-[450px] lg:min-h-[500px] flex flex-col cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#8A393B]/30 hover:bg-[#9d4447] group">
               <div className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F2913F] mb-3 sm:mb-4 transition-all duration-300 group-hover:text-[#ffb366] group-hover:scale-110"></div>
               <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#F2913F] mb-4 sm:mb-6 transition-colors duration-300 group-hover:text-[#ffb366]">
                 State-of-the-art Facilities

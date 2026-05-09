@@ -56,9 +56,9 @@ const OurVisionPage = () => {
   }, [coreValuesInView, hasAnimated]);
 
   return (
-    <div className="bg-white pt-[103px]">
+    <div className="bg-white pt-[88px] lg:pt-[103px]">
       {/* Vision Section */}
-      <section ref={visionRef} className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
+      <section ref={visionRef} className="bg-white py-8 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
         {/* Gradient Line - Absolute positioned from right edge */}
         <div
           className={`absolute right-0 hidden md:block transition-all duration-1000 will-change-transform ${visionInView ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
@@ -77,7 +77,7 @@ const OurVisionPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Vision Heading */}
           <div
-            className={`mb-6 sm:mb-8 md:mb-10 lg:mb-16 transition-all duration-700 will-change-transform ${visionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            className={`mb-4 sm:mb-8 md:mb-10 lg:mb-16 transition-all duration-700 will-change-transform ${visionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             style={{
               transitionDelay: '100ms',
@@ -85,7 +85,7 @@ const OurVisionPage = () => {
             }}
           >
             <h2
-              className="font-bold text-[#8A393B] text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+              className="text-center font-bold text-[#8A393B] text-3xl sm:text-4xl md:text-left md:text-5xl lg:text-6xl"
               style={{
                 lineHeight: '110%',
               }}
@@ -119,7 +119,7 @@ const OurVisionPage = () => {
       </section>
 
       {/* Mission Section */}
-      <section ref={missionRef} className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
+      <section ref={missionRef} className="bg-white py-8 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
         {/* Gradient Line - Absolute positioned from left edge */}
         <div
           className={`absolute left-0 hidden md:block transition-all duration-1000 will-change-transform ${missionInView ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
@@ -138,7 +138,7 @@ const OurVisionPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Mission Heading */}
           <div
-            className={`mb-6 sm:mb-8 md:mb-10 lg:mb-16 transition-all duration-700 will-change-transform ${missionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            className={`mb-4 sm:mb-8 md:mb-10 lg:mb-16 transition-all duration-700 will-change-transform ${missionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             style={{
               transitionDelay: '100ms',
@@ -146,7 +146,7 @@ const OurVisionPage = () => {
             }}
           >
             <h2
-              className="font-bold text-[#8A393B] text-right text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+              className="text-center font-bold text-[#8A393B] text-3xl sm:text-4xl md:text-right md:text-5xl lg:text-6xl"
               style={{
                 lineHeight: '110%',
               }}

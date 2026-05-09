@@ -14,7 +14,7 @@ export default function LegacyPage() {
         {/* Background video (wrapped for parallax) */}
         <div className="absolute inset-0 w-full h-full hero-video">
           <HLSVideo
-            src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/3494c7838d848cc6f3d6b5fb39fdb0fe/manifest/video.m3u8"
+            src="https://customer-bowidoym2wl882qb.cloudflarestream.com/e8d4fe7a9c73752bd0f0892ecea0b575/manifest/video.m3u8"
             fallbackSrc="/ourlegacy1.mp4"
             autoPlay
             muted
