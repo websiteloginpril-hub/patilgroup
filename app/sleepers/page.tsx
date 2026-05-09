@@ -838,7 +838,7 @@ const SleepersPage = () => {
             <div className="slide-in-right">
               <div className="relative rounded-lg overflow-hidden">
                 <HLSVideo
-                  src="https://customer-jf4n2ieoizmya0xu.cloudflarestream.com/f20f1b2d05a66f0e26bb600fc9e00a74/manifest/video.m3u8"
+                  src="https://customer-bowidoym2wl882qb.cloudflarestream.com/2f79224de7890d7b52d2656909fe77cb/manifest/video.m3u8"
                   fallbackSrc="/2.mp4"
                   autoPlay
                   muted
