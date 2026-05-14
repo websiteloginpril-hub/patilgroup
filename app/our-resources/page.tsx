@@ -57,7 +57,7 @@ const OurResourcesPage = () => {
     {
       id: "annual-return",
       title: "Annual Return",
-      pdfs: [        
+      pdfs: [
         { name: "Annual Return FY 2024-25", filename: "Annual-Return_FY_2024-25.pdf", path: "/documents/annual-return/Annual-Return_FY_2024-25.pdf" },
         { name: "Annual Return FY 2023-24", filename: "Annual-Return_FY-2023-24.pdf", path: "/documents/annual-return/Annual-Return_FY-2023-24.pdf" },
         { name: "Annual Return FY 2022-23", filename: "Annual-Return_FY-2022-23.pdf", path: "/documents/annual-return/Annual-Return_FY-2022-23.pdf" },
@@ -96,7 +96,7 @@ const OurResourcesPage = () => {
         { name: "29th AGM Notice", filename: "29th-AGM-Notice.pdf", path: "/documents/notices/2025-26/29th-AGM-Notice.pdf" },
       ]
     },
-   
+
     {
       id: "other-documents",
       title: "Other Documents",
@@ -111,6 +111,7 @@ const OurResourcesPage = () => {
       pdfs: [
         { name: "Resignation Letter of Mr. Durga Prasad Subramanyam Anapindi - 14th May 2024", filename: "Resignation-Letter-of-Mr-Durga-Prasad-Subramanyam-Anapindi_14th-May-2024.pdf", path: "/documents/resignation-letter/Resignation-Letter-of-Mr-Durga-Prasad-Subramanyam-Anapindi_14th-May-2024.pdf" },
         { name: "Resignation Letter of Mr. Kokkonda Subrahmaniyam - 18th July 2024", filename: "Resignation-Letter-of-Mr-Kokkonda-Subrahmaniyam_18th-July-2024.pdf", path: "/documents/resignation-letter/Resignation-Letter-of-Mr-Kokkonda-Subrahmaniyam_18th-July-2024.pdf" },
+        { name: "Cessation Letter of Mr. Manish Panchal - 31st March 2026", filename: "Cessation-Letter-of-Mr-Manish-Panchal-31st-March-2026.pdf", path: "/documents/resignation-letter/Cessation-Letter-of-Mr-Manish-Panchal-31st-March-2026.pdf" }
       ]
     }
   ];
@@ -143,8 +144,8 @@ const OurResourcesPage = () => {
           <div className="flex items-center">
             <div className="flex-1" style={{
               height: '20px',
-                background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
-              }}></div>
+              background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
+            }}></div>
             <div className="px-6 flex-shrink-0">
               <h2 className="font-bold text-[#8A393B] leading-tight whitespace-nowrap" style={{
                 fontFamily: '"Helvetica Neue"',
@@ -152,85 +153,85 @@ const OurResourcesPage = () => {
                 fontWeight: 700,
                 lineHeight: '75%'
               }}>
-                  Brochures
-                </h2>
-                </div>
+                Brochures
+              </h2>
+            </div>
             <div className="flex-1" style={{
               height: '20px',
-                background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
-              }}></div>
+              background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 70%, rgba(242, 145, 63, 0) 100%)'
+            }}></div>
           </div>
-              </div>
+        </div>
 
         {/* Brochures Content - Centered Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
-              {brochures.map((brochure, index) => (
-                <div key={index} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-300 sm:hover:scale-105">
-                  {/* Card Header with Cover Image or PDF Preview */}
-                  <div className="relative w-full bg-white overflow-hidden">
-                    {brochure.hasCoverImage && brochure.coverImage ? (
-                      <>
-                        <div className="relative w-full">
-                          <Image
-                            src={brochure.coverImage}
-                            alt={`${brochure.title} Cover`}
-                            width={0}
-                            height={0}
-                            sizes="100vw"
-                            className="w-full h-auto object-contain object-center max-h-[180px]"
-                            style={{ width: '100%', height: 'auto', maxHeight: '180px' }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <iframe
-                          src={`/Brochure/${brochure.filename}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
-                          className="w-full h-full transform scale-150 origin-top-left pointer-events-none"
-                          title={`${brochure.title} Preview`}
-                          style={{
-                            width: '150%',
-                            height: '150%',
-                            transform: 'scale(0.67) translate(-25%, -25%)'
-                          }}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
+            {brochures.map((brochure, index) => (
+              <div key={index} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-300 sm:hover:scale-105">
+                {/* Card Header with Cover Image or PDF Preview */}
+                <div className="relative w-full bg-white overflow-hidden">
+                  {brochure.hasCoverImage && brochure.coverImage ? (
+                    <>
+                      <div className="relative w-full">
+                        <Image
+                          src={brochure.coverImage}
+                          alt={`${brochure.title} Cover`}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          className="w-full h-auto object-contain object-center max-h-[180px]"
+                          style={{ width: '100%', height: 'auto', maxHeight: '180px' }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-                      </>
-                    )}
-                  </div>
-                  
-                  {/* Card Content */}
-                  <div className="p-3 sm:p-4 bg-white">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 leading-tight text-gray-800">
-                      {brochure.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm mb-2 leading-relaxed text-gray-600 line-clamp-2">
-                      {brochure.description}
-                    </p>
-                    
-                    {/* File Info */}
-                    <div className="flex items-center gap-2 sm:gap-3 mb-3 text-xs text-gray-500">
-                      <span className="flex items-center gap-1.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#F2913F]"></div>
-                        PDF Format
-                      </span>
-                      <span>•</span>
-                      <span>Multiple Pages</span>
-                    </div>
-                    
-                    {/* Download Button */}
-                    <button
-                      onClick={() => handleDownload(brochure.filename, brochure.title)}
-                      className="flex w-full items-center justify-center gap-2 text-white px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base bg-[#F2913F] hover:bg-[#E6822B]"
-                    >
-                      <Download size={16} className="sm:w-4 sm:h-4" />
-                      <span>Download PDF</span>
-                    </button>
-                  </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <iframe
+                        src={`/Brochure/${brochure.filename}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`}
+                        className="w-full h-full transform scale-150 origin-top-left pointer-events-none"
+                        title={`${brochure.title} Preview`}
+                        style={{
+                          width: '150%',
+                          height: '150%',
+                          transform: 'scale(0.67) translate(-25%, -25%)'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                    </>
+                  )}
                 </div>
-              ))}
+
+                {/* Card Content */}
+                <div className="p-3 sm:p-4 bg-white">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 leading-tight text-gray-800">
+                    {brochure.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm mb-2 leading-relaxed text-gray-600 line-clamp-2">
+                    {brochure.description}
+                  </p>
+
+                  {/* File Info */}
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#F2913F]"></div>
+                      PDF Format
+                    </span>
+                    <span>•</span>
+                    <span>Multiple Pages</span>
+                  </div>
+
+                  {/* Download Button */}
+                  <button
+                    onClick={() => handleDownload(brochure.filename, brochure.title)}
+                    className="flex w-full items-center justify-center gap-2 text-white px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base bg-[#F2913F] hover:bg-[#E6822B]"
+                  >
+                    <Download size={16} className="sm:w-4 sm:h-4" />
+                    <span>Download PDF</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -242,8 +243,8 @@ const OurResourcesPage = () => {
               className="flex items-center gap-2 px-6 py-3 bg-[#F2913F] text-white rounded-lg font-medium hover:bg-[#E6822B] transition-colors duration-200"
             >
               <span>Explore More</span>
-              <ChevronDown 
-                className={`w-5 h-5 transition-transform duration-300 ${isExploreExpanded ? 'rotate-180' : ''}`} 
+              <ChevronDown
+                className={`w-5 h-5 transition-transform duration-300 ${isExploreExpanded ? 'rotate-180' : ''}`}
               />
             </button>
           </div>
@@ -254,133 +255,132 @@ const OurResourcesPage = () => {
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 {documentCategories.map((category, index) => (
                   category.id === "notices-2025-26" ? null : (
-                  <div key={category.id} className="border-b border-gray-200 last:border-b-0">
-                    {/* Category Header */}
-                    <button
-                      onClick={() => toggleCategory(category.id)}
-                      className="w-full flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors duration-200 text-left"
-                    >
-                      <Folder className="w-6 h-6 text-gray-600 flex-shrink-0" />
-                      <span className="flex-1 text-gray-800 font-medium text-lg">
-                        {category.title}
-                      </span>
-                      <ChevronDown 
-                        className={`w-5 h-5 text-gray-600 transition-transform duration-300 flex-shrink-0 ${
-                          expandedCategories[category.id] ? 'rotate-180' : ''
-                        }`} 
-                      />
-                    </button>
+                    <div key={category.id} className="border-b border-gray-200 last:border-b-0">
+                      {/* Category Header */}
+                      <button
+                        onClick={() => toggleCategory(category.id)}
+                        className="w-full flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors duration-200 text-left"
+                      >
+                        <Folder className="w-6 h-6 text-gray-600 flex-shrink-0" />
+                        <span className="flex-1 text-gray-800 font-medium text-lg">
+                          {category.title}
+                        </span>
+                        <ChevronDown
+                          className={`w-5 h-5 text-gray-600 transition-transform duration-300 flex-shrink-0 ${expandedCategories[category.id] ? 'rotate-180' : ''
+                            }`}
+                        />
+                      </button>
 
-                    {/* Category Content - PDFs List (with special nesting for Notices - 2025-26) */}
-                    {expandedCategories[category.id] && (
-                      <div className="bg-gray-50 px-6 py-4">
-                        {category.id === "notices" ? (
-                          <>
-                            {category.pdfs.length > 0 && (
-                              <div className="space-y-2 mb-4">
-                                {category.pdfs.map((pdf, pdfIndex) => (
-                                  <div
-                                    key={pdfIndex}
-                                    className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                                  >
-                                    <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                    <span 
-                                      className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
-                                      onClick={() => handleView(pdf.path)}
+                      {/* Category Content - PDFs List (with special nesting for Notices - 2025-26) */}
+                      {expandedCategories[category.id] && (
+                        <div className="bg-gray-50 px-6 py-4">
+                          {category.id === "notices" ? (
+                            <>
+                              {category.pdfs.length > 0 && (
+                                <div className="space-y-2 mb-4">
+                                  {category.pdfs.map((pdf, pdfIndex) => (
+                                    <div
+                                      key={pdfIndex}
+                                      className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
                                     >
-                                      {pdf.name}
-                                    </span>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDownload(pdf.filename, pdf.name, pdf.path);
-                                      }}
-                                      className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
-                                      aria-label={`Download ${pdf.name}`}
-                                    >
-                                      <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
-                                    </button>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Nested Notices - 2025-26 inside Notices */}
-                            {(() => {
-                              const nestedCategory = documentCategories.find(cat => cat.id === "notices-2025-26");
-                              if (!nestedCategory || nestedCategory.pdfs.length === 0) {
-                                return null;
-                              }
-                              return (
-                                <div>
-                                  <div className="text-sm font-semibold text-gray-800 mb-2">
-                                    {nestedCategory.title}
-                                  </div>
-                                  <div className="space-y-2">
-                                    {nestedCategory.pdfs.map((pdf, pdfIndex) => (
-                                      <div
-                                        key={pdfIndex}
-                                        className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                                      <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+                                      <span
+                                        className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+                                        onClick={() => handleView(pdf.path)}
                                       >
-                                        <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                        <span 
-                                          className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
-                                          onClick={() => handleView(pdf.path)}
-                                        >
-                                          {pdf.name}
-                                        </span>
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDownload(pdf.filename, pdf.name, pdf.path);
-                                          }}
-                                          className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
-                                          aria-label={`Download ${pdf.name}`}
-                                        >
-                                          <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
-                                        </button>
-                                      </div>
-                                    ))}
-                                  </div>
+                                        {pdf.name}
+                                      </span>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleDownload(pdf.filename, pdf.name, pdf.path);
+                                        }}
+                                        className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
+                                        aria-label={`Download ${pdf.name}`}
+                                      >
+                                        <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+                                      </button>
+                                    </div>
+                                  ))}
                                 </div>
-                              );
-                            })()}
-                          </>
-                        ) : category.pdfs.length > 0 ? (
-                          <div className="space-y-2">
-                            {category.pdfs.map((pdf, pdfIndex) => (
-                              <div
-                                key={pdfIndex}
-                                className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                              >
-                                <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                <span 
-                                  className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
-                                  onClick={() => handleView(pdf.path)}
+                              )}
+
+                              {/* Nested Notices - 2025-26 inside Notices */}
+                              {(() => {
+                                const nestedCategory = documentCategories.find(cat => cat.id === "notices-2025-26");
+                                if (!nestedCategory || nestedCategory.pdfs.length === 0) {
+                                  return null;
+                                }
+                                return (
+                                  <div>
+                                    <div className="text-sm font-semibold text-gray-800 mb-2">
+                                      {nestedCategory.title}
+                                    </div>
+                                    <div className="space-y-2">
+                                      {nestedCategory.pdfs.map((pdf, pdfIndex) => (
+                                        <div
+                                          key={pdfIndex}
+                                          className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                                        >
+                                          <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+                                          <span
+                                            className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+                                            onClick={() => handleView(pdf.path)}
+                                          >
+                                            {pdf.name}
+                                          </span>
+                                          <button
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleDownload(pdf.filename, pdf.name, pdf.path);
+                                            }}
+                                            className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
+                                            aria-label={`Download ${pdf.name}`}
+                                          >
+                                            <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+                                          </button>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </>
+                          ) : category.pdfs.length > 0 ? (
+                            <div className="space-y-2">
+                              {category.pdfs.map((pdf, pdfIndex) => (
+                                <div
+                                  key={pdfIndex}
+                                  className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
                                 >
-                                  {pdf.name}
-                                </span>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDownload(pdf.filename, pdf.name, pdf.path);
-                                  }}
-                                  className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
-                                  aria-label={`Download ${pdf.name}`}
-                                >
-                                  <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-gray-500 text-sm py-2">
-                            No documents available. Upload PDFs for this category.
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                                  <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+                                  <span
+                                    className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+                                    onClick={() => handleView(pdf.path)}
+                                  >
+                                    {pdf.name}
+                                  </span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDownload(pdf.filename, pdf.name, pdf.path);
+                                    }}
+                                    className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
+                                    aria-label={`Download ${pdf.name}`}
+                                  >
+                                    <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-gray-500 text-sm py-2">
+                              No documents available. Upload PDFs for this category.
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   )
                 ))}
               </div>
