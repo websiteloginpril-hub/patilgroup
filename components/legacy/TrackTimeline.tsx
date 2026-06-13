@@ -169,8 +169,8 @@ export default function TrackTimeline({
       {/* MOBILE – simple vertical timeline (no horizontal scroll) */}
       <div className="md:hidden px-4 sm:px-6">
         <div className="relative max-w-2xl mx-auto">
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-[#F2913F] via-[#8A393B] to-[#1E3888] rounded-full" />
-          <div className="space-y-12">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F2913F] rounded-full" />
+          <div className="space-y-4">
             {normalizedItems.map((item, index) => (
               <motion.div
                 key={`${item.year}-${index}`}
@@ -178,29 +178,29 @@ export default function TrackTimeline({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className="relative pl-20"
+                className="relative pl-6 pr-2"
               >
-                <div className="absolute left-6 top-2 w-6 h-6 bg-[#F2913F] rounded-full border-4 border-white shadow-lg" />
-                <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 shadow-sm border border-gray-100">
-                  <p className="fluid-h4 font-extrabold text-[#F2913F] mb-3">
+                <div className="absolute -left-2 top-3 w-5 h-5 bg-[#F2913F] rounded-full border-[3px] border-white shadow-lg" />
+                <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-2 shadow-sm border border-gray-300">
+                  <p className="text-sm font-extrabold text-[#F2913F] mb-1">
                     {item.year}
                   </p>
                   {item.image && (
-                    <div className="mb-4">
+                    <div className="mb-1">
                       <Image
                         src={item.image}
                         alt={`${item.year} timeline image`}
-                        width={400}
-                        height={250}
-                        className="w-full h-auto rounded-lg object-cover"
+                        width={300}
+                        height={180}
+                        className="w-full h-auto rounded object-cover"
                       />
                     </div>
                   )}
-                  <h4 className="fluid-h4 font-semibold text-[#8A393B] leading-normal mb-2 text-left" style={{ wordSpacing: '0.05em', lineHeight: '1.5', letterSpacing: '0.01em' }}>
+                  <h4 className="text-sm font-bold text-[#8A393B] leading-tight mb-1 text-left" style={{ wordSpacing: '0.05em', letterSpacing: '0.01em' }}>
                     {item.title}
                   </h4>
                   {item.body && (
-                    <p className="fluid-body-sm text-gray-700" style={{ wordSpacing: '0.05em', lineHeight: '1.5', letterSpacing: '0.01em' }}>{item.body}</p>
+                    <p className="text-xs text-gray-700 leading-snug" style={{ wordSpacing: '0.05em', letterSpacing: '0.01em' }}>{item.body}</p>
                   )}
                 </div>
               </motion.div>

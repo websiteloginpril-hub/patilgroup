@@ -4,16 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
 import HLSVideo from '@/components/HLSVideo';
 
 const projects = [
@@ -61,6 +54,7 @@ const StatCounter = ({ end, duration, suffix = '', prefix = '' }: { end: number;
     </div>
   );
 };
+
 
 const NewsCard = ({ date, title, delay }: { date: string; title: string; delay: number }) => {
   const [ref, inView] = useInView({
@@ -152,76 +146,49 @@ const OurProjectsSection = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
-
-  useEffect(() => {
-    if (!carouselApi) return;
-
-    const interval = window.setInterval(() => {
-      if (carouselApi.canScrollNext()) {
-        carouselApi.scrollNext();
-      } else {
-        carouselApi.scrollTo(0);
-      }
-    }, 2000);
-
-    return () => window.clearInterval(interval);
-  }, [carouselApi]);
 
   return (
-    <section ref={ref} className="bg-white py-16 sm:py-24 our-projects-carousel">
-      {/* Centered Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`flex justify-between items-center mb-10 transition-all duration-800 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-        >
+    <section ref={ref} className="relative z-20 mt-0 bg-white pt-4 pb-12 sm:mt-0 sm:py-20 md:py-24">
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+        <div className={`mb-6 px-4 sm:mb-10 sm:px-0 transition-all duration-800 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl sm:text-5xl font-bold text-[#8A393B]">Our Projects</h2>
-          {/* Buttons are part of the Carousel now, so this div is removed */}
         </div>
-      </div>
 
-      {/* Full-bleed Carousel */}
-      <Carousel
-        opts={{ align: "start", loop: true }}
-        setApi={setCarouselApi}
-        className="w-full"
-        aria-label="Our Projects Carousel"
-      >
-        <CarouselContent className="-ml-4 px-2.5">
-          {projects.map((project, index) => (
-            <CarouselItem
-              key={project.city}
-              className="pl-4 basis-[80%] sm:basis-[60%] md:basis-[40%] lg:basis-[30%] xl:basis-[25%]"
-            >
-              <div className="group rounded-2xl overflow-hidden">
-                <div className="px-6 pt-6 mb-4 sm:px-0 sm:pt-0 sm:mb-5">
-                  <div className="overflow-hidden rounded-2xl shadow-lg transform transition-transform duration-300 group-hover:-translate-y-2 aspect-[16/9] sm:aspect-[4/3] md:aspect-[3/4]">
+        <div className="overflow-hidden">
+          <div
+            className="flex w-max gap-4 sm:gap-5 lg:gap-6 animate-marquee hover:[animation-play-state:paused]"
+          >
+            {[...projects, ...projects].map((project, index) => (
+              <div
+                key={`${project.city}-${index}`}
+                className="w-[168px] flex-none sm:w-[220px] md:w-[240px] lg:w-[250px] xl:w-[260px]"
+              >
+                <div className="group rounded-2xl overflow-hidden">
+                  <div className="mb-3 aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition-transform duration-300 group-hover:-translate-y-2 sm:mb-5">
                     <Image
                       src={project.image}
                       alt={project.city}
-                      width={300}
-                      height={400}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      width={400}
+                      height={533}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       priority={index < 3}
                     />
                   </div>
+                  <h3 className="mb-1 text-sm font-bold text-gray-900 sm:text-xl">
+                    {project.city}
+                  </h3>
+                  <Link
+                    href={project.link}
+                    className="text-xs font-medium text-gray-600 transition-colors hover:text-[#F2913F] sm:text-base"
+                  >
+                    View Project
+                  </Link>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-1 px-6 sm:px-0">{project.city}</h3>
-                <Link href={project.link} className="text-base font-medium text-gray-600 hover:text-[#F2913F] transition-colors px-6 sm:px-0">
-                  View Project
-                </Link>
               </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <div className="absolute top-0 right-0 max-w-7xl mx-auto w-full h-full pointer-events-none">
-          <div className="hidden sm:flex items-center gap-1 absolute top-[-4.5rem] right-4 sm:right-6 lg:right-8">
-            <CarouselPrevious className="w-12 h-12 rounded-full border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 transition-colors pointer-events-auto" />
-            <CarouselNext className="w-12 h-12 rounded-full bg-[#F2913F] text-white hover:bg-[#D97706] transition-colors pointer-events-auto" />
+            ))}
           </div>
         </div>
-      </Carousel>
+      </div>
     </section>
   );
 };
@@ -357,8 +324,10 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero Section - Compact to content */}
-      <section className="relative h-screen overflow-hidden bg-black hero-section">
+
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-black hero-section block sm:h-screen">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full hero-video">
           <video
@@ -375,52 +344,47 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {/* Hero Content Overlay - Compact spacing */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8 hero-content">
-          <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center pt-24 text-center sm:pt-28 md:pt-32">
+        {/* Hero Content Overlay */}
+        <div className="relative z-10 px-4 sm:absolute sm:inset-0 sm:px-6 lg:flex lg:items-center lg:justify-center lg:px-8 hero-content">
+          <div className="mx-auto flex h-auto sm:h-full w-full max-w-7xl flex-col justify-between pt-24 pb-4 sm:justify-between sm:pt-20 sm:pb-6 text-left md:pt-24 lg:max-w-5xl lg:items-center lg:justify-center lg:pb-0 lg:pt-32 lg:text-center">
             {/* Main Heading - First Animation */}
-            <h1 className={`mb-4 sm:mb-5 md:mb-6 transition-all duration-1000 ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="text-white text-3xl sm:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-1">
+            <h1 className={`self-start text-left mb-2 sm:mb-2 md:mb-3 lg:self-center lg:text-center lg:mb-6 transition-all duration-1000 ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="text-white text-4xl sm:text-3xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-0 sm:mb-1">
                 WORLD&apos;S
               </div>
-              <div className="text-[#F2913F] text-3xl sm:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-1">
+              <div className="text-[#F2913F] text-4xl sm:text-3xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-0 sm:mb-1">
                 LARGEST SLEEPER
               </div>
-              <div className="text-white text-3xl sm:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-4 sm:mb-5 md:mb-6">
+              <div className="text-white text-4xl sm:text-3xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-2 sm:mb-2 md:mb-3 lg:mb-6">
                 MANUFACTURER
               </div>
-              {/* Stats removed as requested */}
             </h1>
 
-            {/* Stats Section - Second Animation (after 800ms) */}
             <div
-              className={`grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4 md:mb-5 max-w-4xl w-full transition-all duration-1000`}
+              className="self-end flex flex-col items-end text-right gap-1 sm:gap-2 md:gap-3 mt-8 sm:mt-0 mb-2 sm:mb-2 md:mb-3 lg:grid lg:w-full lg:max-w-4xl lg:grid-cols-2 lg:gap-6 lg:self-center lg:items-start lg:text-center lg:mb-5 transition-all duration-1000"
               style={{
                 opacity: showText ? 1 : 0,
                 transform: showText ? 'translateY(0)' : 'translateY(20px)',
                 transitionDelay: showText ? '800ms' : '0ms',
               }}
             >
-              {/* Stat 1 */}
-              <div className="flex flex-col items-center">
-                <div className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-1">
+              <div className="flex flex-col items-end lg:items-center">
+                <div className="text-white text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold mb-1">
                   {showText ? <CountUp end={50} duration={2} suffix="+" delay={0.8} /> : '0+'}
                 </div>
-                <div className="text-[#F2913F] text-sm sm:text-base font-medium">years on the job</div>
+                <div className="text-[#F2913F] text-lg sm:text-lg lg:text-base font-medium">years on the job</div>
               </div>
 
-              {/* Stat 3 */}
-              <div className="flex flex-col items-center">
-                <div className="text-white text-lg sm:text-2xl md:text-3xl font-bold mb-1">
+              <div className="flex flex-col items-end lg:items-center">
+                <div className="text-white text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold mb-1">
                   {showText ? <CountUp end={4000000} duration={2} separator="," suffix="+" delay={0.8} /> : '0+'}
                 </div>
-                <div className="text-[#F2913F] text-sm sm:text-base font-medium">Safe Sleepers per year</div>
+                <div className="text-[#F2913F] text-lg sm:text-lg lg:text-base font-medium">Safe Sleepers per year</div>
               </div>
             </div>
 
-            {/* Tagline - Third Animation (after 1600ms) */}
             <div
-              className={`text-base sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight pb-2 sm:pb-3 transition-all duration-1000`}
+              className="self-center text-center text-xl sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight mt-[15px] sm:mt-[15px] md:mt-[15px] lg:mt-0 pb-3 sm:pb-4 lg:pb-3 transition-all duration-1000"
               style={{
                 opacity: showText ? 1 : 0,
                 transform: showText ? 'translateY(0)' : 'translateY(20px)',
@@ -434,57 +398,168 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recent News and Updates Section */}
-      <section className="bg-[#F5F4F1] py-8 sm:py-10 md:py-12 will-change-transform">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* Card 1 */}
-            <NewsCard
-              date="Delivered at scale"
-              title="Sleepers supplied for new Pune Metro Corridor"
-              delay={0}
-            />
-
-            {/* Card 2 */}
-            <NewsCard
-              date="Built for long life"
-              title="Partnered on Mumbai-Ahmedabad bullet train trial track"
-              delay={150}
-            />
-
-            {/* Card 3 */}
-            <NewsCard
-              date="Approved across systems"
-              title="Recognized by RDSO for product innovation"
-              delay={300}
-            />
-          </div>
-        </div>
-
-        {/* Button and Gradient Line Section - Full Width to Right Edge */}
-        <div className="relative mt-12 sm:mt-16 md:mt-20">
+      {/* Mobile Only: Precast Section with Stacking Cards */}
+      <div className="block lg:hidden">
+        <section className="bg-[#F5F4F1] pt-16 pb-4 sm:py-24 md:py-32 will-change-transform">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-4">
-              {/* Explore Precast Solution Button */}
-              <Link
-                href="/precast"
-                className="group inline-flex items-center gap-3 bg-[#8A393B] hover:bg-[#F2913F] px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-500 ease-out text-base md:text-lg font-medium text-white whitespace-nowrap flex-shrink-0 z-10 will-change-transform"
-              >
-                Explore Precast Solution
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
+            <div className="precast-container">
+
+              {/* Left Column: Sticky Title & Glass Card */}
+              <div className="sticky-column hidden lg:block">
+                <h2 className="text-[#8A393B] text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-8">
+                  PRECAST
+                </h2>
+
+                <div className="precast-glass-card shadow-xl border border-white/40">
+                  <p className="text-gray-800 text-base sm:text-lg lg:text-xl font-medium leading-relaxed mb-8">
+                    Pioneering precast concrete solutions for India&apos;s modern infrastructure. Our precision-engineered
+                    systems redefine durability and efficiency in railway construction.
+                  </p>
+
+                  <Link
+                    href="/precast"
+                    className="group inline-flex items-center gap-3 bg-[#8A393B] hover:bg-[#F2913F] px-6 py-3 sm:px-8 sm:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 ease-out text-base sm:text-lg font-bold text-white"
+                  >
+                    Explore Precast Solution
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Column: Stacking Cards */}
+              <div className="stack-container">
+
+                {/* Card 1 */}
+                <article className="stack-card">
+                  <h3 className="card-tag">Delivered at Scale</h3>
+                  <p className="card-desc">
+                    Sleepers supplied for new Pune Metro Corridor
+                  </p>
+                  <div className="mt-6">
+                    <Link
+                      href="/news"
+                      className="text-[#F2913F] font-bold hover:text-[#8A393B] transition-colors flex items-center gap-2"
+                    >
+                      Read More
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  </div>
+                </article>
+
+                {/* Card 2 */}
+                <article className="stack-card">
+                  <h3 className="card-tag">Built for long life</h3>
+                  <p className="card-desc">
+                    Partnered on Mumbai-Ahmedabad bullet train trial track
+                  </p>
+                  <div className="mt-6">
+                    <Link
+                      href="/news"
+                      className="text-[#F2913F] font-bold hover:text-[#8A393B] transition-colors flex items-center gap-2"
+                    >
+                      Read More
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  </div>
+                </article>
+
+                {/* Card 3 */}
+                <article className="stack-card">
+                  <h3 className="card-tag">Approved across systems</h3>
+                  <p className="card-desc">
+                    Recognized by RDSO for product innovation
+                  </p>
+                  <div className="mt-6">
+                    <Link
+                      href="/news"
+                      className="text-[#F2913F] font-bold hover:text-[#8A393B] transition-colors flex items-center gap-2"
+                    >
+                      Read More
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  </div>
+                </article>
+
+              </div>
+
+              {/* Mobile Only: Explore Precast Solution Button */}
+              <div className="lg:hidden flex justify-start mt-2 w-full pb-0">
+                <Link
+                  href="/precast"
+                  className="group inline-flex items-center gap-3 bg-[#8A393B] hover:bg-[#F2913F] px-6 py-3 sm:px-8 sm:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 ease-out text-base sm:text-lg font-bold text-white"
+                >
+                  Explore Precast Solution
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Desktop Only: Recent News and Updates Section */}
+      <div className="hidden lg:block">
+        <section className="bg-[#F5F4F1] py-8 sm:py-10 md:py-12 will-change-transform">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+              {/* Card 1 */}
+              <NewsCard
+                date="Delivered at scale"
+                title="Sleepers supplied for new Pune Metro Corridor"
+                delay={0}
+              />
+
+              {/* Card 2 */}
+              <NewsCard
+                date="Built for long life"
+                title="Partnered on Mumbai-Ahmedabad bullet train trial track"
+                delay={150}
+              />
+
+              {/* Card 3 */}
+              <NewsCard
+                date="Approved across systems"
+                title="Recognized by RDSO for product innovation"
+                delay={300}
+              />
             </div>
           </div>
 
-          {/* Gradient Line extending to viewport right edge */}
-          <GradientLine />
-        </div>
-      </section>
+          {/* Button and Gradient Line Section - Full Width to Right Edge */}
+          <div className="relative mt-12 sm:mt-16 md:mt-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center gap-4">
+                {/* Explore Precast Solution Button */}
+                <Link
+                  href="/precast"
+                  className="group inline-flex items-center gap-3 bg-[#8A393B] hover:bg-[#F2913F] px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-500 ease-out text-base md:text-lg font-medium text-white whitespace-nowrap flex-shrink-0 z-10 will-change-transform"
+                >
+                  Explore Precast Solution
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Gradient Line extending to viewport right edge */}
+            <GradientLine />
+          </div>
+        </section>
+      </div>
 
       {/* Responsive Our Projects Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
         <OurProjectsSection />
       </div>
 

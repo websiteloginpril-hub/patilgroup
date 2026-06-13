@@ -17,6 +17,7 @@ const LeadershipCard = ({ image, name, post }: { image: string, name: string, po
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         priority={true}
         quality={90}
+        unoptimized={true}
         placeholder="blur"
         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
       />
@@ -55,6 +56,11 @@ const leadershipData = [
     post: 'MD - Track Systems',
   },
   {
+    image: '/management/sawpan maite.png',
+    name: 'Mr. Swapan Maite',
+    post: 'CEO - fastening systems',
+  },
+  {
     image: '/management/avchandrasir.jpg',
     name: 'Mr. A. V. Chandra Gupta',
     post: 'CEO - Growth Centre',
@@ -75,7 +81,7 @@ const leadershipData = [
     post: 'Director - Sleeper Operations',
   },
   {
-    image: '/management/Janardhanan Narayanaswamy.png',
+    image: '/management/Janardhanan Narayanaswamy.jpg',
     name: 'Mr. Janardhanan Narayanaswamy',
     post: 'Group CHRO',
   },
@@ -106,6 +112,7 @@ const ManagementPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+  const [isMobileMarqueePaused, setIsMobileMarqueePaused] = useState(false);
 
   // Desktop carousel with smooth animations
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -120,7 +127,7 @@ const ManagementPage = () => {
 
   // Mobile carousel with optimized performance
   const [mobileEmblaRef, mobileEmblaApi] = useEmblaCarousel({
-    align: 'center',
+    align: 'start',
     containScroll: 'trimSnaps',
     dragFree: false,
     loop: false,
@@ -190,7 +197,7 @@ const ManagementPage = () => {
   return (
     <div className="bg-[#1E1E1E] text-white pt-[103px]">
       {/* Responsive Our Leadership Section */}
-      <section className="md:min-h-[calc(100vh-103px)] flex flex-col md:justify-center py-2 sm:py-3 md:py-4 pb-0 md:pb-4 bg-white text-black" style={{ backgroundColor: '#ffffff' }}>
+      <section className="md:min-h-[calc(100vh-103px)] flex flex-col md:justify-center py-2 sm:py-3 md:py-4 pb-6 md:pb-8 bg-white text-black" style={{ backgroundColor: '#ffffff' }}>
         {/* Legacy in Rail Header - Full Width */}
         <div className="w-screen overflow-hidden mb-2 sm:mb-3 relative">
           {/* Heading with gradient lines from screen edges */}
@@ -225,63 +232,44 @@ const ManagementPage = () => {
 
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 
-          {/* Mobile Layout - Swipeable Carousel */}
-          <div className="md:hidden relative px-0 mb-0">
-            <div className="overflow-hidden snap-x snap-mandatory" ref={mobileEmblaRef}>
-              <div className="flex gap-4 touch-pan-y" style={{ backfaceVisibility: 'hidden', perspective: '1000px' }}>
-                {leadershipData.map((leader, i) => (
-                  <div key={i} className="flex-shrink-0 w-[85vw] sm:w-[80%] pl-0 will-change-transform snap-center" style={{ transform: 'translateZ(0)' }}>
-                    <div className="group leadership-card-mobile rounded-2xl border border-gray-300/30 backdrop-blur-sm bg-white overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl will-change-transform" style={{ backgroundColor: '#ffffff' }}>
-                      {/* Full Photo Container */}
-                      <div className="relative h-[180px] sm:h-[200px] bg-white overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
-                        <Image
-                          src={leader.image}
-                          alt={leader.name}
-                          fill
-                          className="object-contain object-center transition-transform duration-500 will-change-transform"
-                          sizes="(max-width: 640px) 90vw, 80vw"
-                          priority={i < 3}
-                          quality={90}
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                        />
-                      </div>
-
-                      {/* Designation and Name Below Photo */}
-                      <div className="p-2 sm:p-3 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
-                        <p className="text-[10px] sm:text-xs text-white font-bold mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">
-                          {leader.post}
-                        </p>
-                        <h3 className="text-[10px] sm:text-xs font-medium text-white leading-tight transition-colors duration-500 ease-out group-hover:text-black">
-                          {leader.name}
-                        </h3>
-                      </div>
+          {/* Mobile Layout - Auto Circular Marquee (Replaced Swipeable Carousel) */}
+          <div className="md:hidden overflow-hidden w-[calc(100%+1rem)] -mx-2 mb-4 pb-4">
+            <div
+              className="flex w-max animate-marquee"
+              style={{ animationPlayState: isMobileMarqueePaused ? 'paused' : 'running' }}
+              onMouseEnter={() => setIsMobileMarqueePaused(true)}
+              onMouseLeave={() => setIsMobileMarqueePaused(false)}
+              onTouchStart={() => setIsMobileMarqueePaused(true)}
+              onTouchEnd={() => setIsMobileMarqueePaused(false)}
+              onTouchCancel={() => setIsMobileMarqueePaused(false)}
+            >
+              {/* Duplicated for a seamless circular loop */}
+              {[...leadershipData, ...leadershipData].map((leader, i) => (
+                <div key={i} className="flex-none px-2 w-[48vw] sm:w-[38vw]">
+                  <div className="group w-full h-full flex flex-col rounded-2xl border border-gray-300/30 bg-white overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#ffffff' }}>
+                    <div className="relative h-[180px] sm:h-[220px] bg-white overflow-hidden shrink-0" style={{ backgroundColor: '#ffffff' }}>
+                      <Image
+                        src={leader.image}
+                        alt={leader.name}
+                        fill
+                        className="object-contain object-center transition-transform duration-500"
+                        sizes="48vw"
+                        priority={i < 6}
+                        quality={90}
+                        unoptimized={true}
+                      />
+                    </div>
+                    <div className="h-[64px] flex flex-col justify-center p-2 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F] shrink-0">
+                      <p className="text-[10px] sm:text-[11px] text-white font-bold mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">
+                        {leader.post}
+                      </p>
+                      <h3 className="text-[10px] sm:text-[11px] font-medium text-white leading-tight transition-colors duration-500 ease-out group-hover:text-black">
+                        {leader.name}
+                      </h3>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile Scroll Indicator */}
-            <div className="flex justify-center -mt-1 sm:mt-2 space-x-2 py-0">
-              {leadershipData.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => mobileEmblaApi && mobileEmblaApi.scrollTo(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${index === selectedIndex
-                    ? 'bg-[#F2913F] scale-125'
-                    : 'bg-gray-400 opacity-50 hover:opacity-75'
-                    }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
+                </div>
               ))}
-            </div>
-
-            {/* Mobile Swipe Hint */}
-            <div className="text-center mt-0 sm:mt-1 mb-0 py-0">
-              <p className="text-[10px] sm:text-xs text-gray-600 font-medium">
-                ← Swipe to explore →
-              </p>
             </div>
           </div>
 

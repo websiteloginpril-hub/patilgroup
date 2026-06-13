@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import Link from 'next/link';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 
+// --- StatCounter ------------------------------------------------------------
 const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }: {
   end: number;
   duration: number;
@@ -14,11 +14,7 @@ const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }
   prefix?: string;
   className?: string;
 }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-    rootMargin: '50px',
-  });
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1, rootMargin: '50px' });
 
   return (
     <span ref={ref} className={className}>
@@ -35,20 +31,65 @@ const StatCounter = ({ end, duration, suffix = '', prefix = '', className = '' }
   );
 };
 
+// --- Decision cards ---------------------------------------------------------
+const decisionCards = [
+  { id: 1, title: 'Country', order: '1st' },
+  { id: 2, title: 'Customer', order: '2nd' },
+  { id: 3, title: 'Company & Employees', order: '3rd' },
+];
+
+// --- Mobile decision cards --------------------------------------------------
+function MobileDecisionCards() {
+  return (
+    <div className="stack-container mx-auto w-full max-w-[44rem] pb-10">
+      {decisionCards.map((card) => (
+        <article
+          key={card.id}
+          className="stack-card text-center"
+          style={{
+            background: '#9A4043',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            boxShadow: '0 14px 28px rgba(0, 0, 0, 0.14)',
+          }}
+        >
+          <h3 className="text-[clamp(1rem,4.4vw,1.65rem)] font-bold leading-[1.05] tracking-[-0.03em] text-white">
+            {card.title}{' '}
+            <span className="text-[#F2913F]">
+              {card.order.slice(0, 1)}
+              <sup className="align-super text-[0.62em] font-bold">{card.order.slice(1)}</sup>
+            </span>
+          </h3>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function DecisionSectionTitle({ className = '' }: { className?: string }) {
+  return (
+    <h2 className={`font-bold ${className}`.trim()}>
+      <span className="block whitespace-nowrap text-[#F2913F]">Our Business Decision -</span>
+      <span className="block whitespace-nowrap text-[#8A393B]">Making Principles</span>
+    </h2>
+  );
+}
+
+const trainImages = ['/Train1.jpg', '/Train2.webp', '/Train3.jpg'];
+
+// --- Page component --------------------------------------------------------
 const AboutUsPage = () => {
-  const [activeTab, setActiveTab] = useState('Sleepers');
-
-  const tabs = [
-    { name: 'Sleepers' },
-    { name: 'Fastening systems' },
-    { name: 'Turnout parts' },
-    { name: 'Rubber elements' },
-  ];
-
   useGSAPAnimations();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    // Dynamically import GSAP to reduce initial bundle
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % trainImages.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const loadGSAPAnimation = async () => {
       const { default: gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
@@ -67,7 +108,7 @@ const AboutUsPage = () => {
           trigger: philosophySection,
           start: 'top 60%',
           toggleActions: 'play none none none',
-        }
+        },
       });
 
       tl.to(items, {
@@ -79,9 +120,7 @@ const AboutUsPage = () => {
       });
 
       return () => {
-        if (tl.scrollTrigger) {
-          tl.scrollTrigger.kill();
-        }
+        if (tl.scrollTrigger) tl.scrollTrigger.kill();
         tl.kill();
       };
     };
@@ -91,93 +130,179 @@ const AboutUsPage = () => {
 
   return (
     <div className="bg-white">
-      {/* New About - Track background header */}
-      <section className="bg-white overflow-hidden pt-32 sm:pt-24 md:pt-28 pb-4 sm:pb-6 md:pb-8">
-        <div className="flex items-center justify-center w-full">
-          {/* Left track - hide on mobile to prevent crowding */}
-          <div className="hidden sm:block flex-1 min-w-0 h-40 sm:h-48 md:h-56 relative" style={{ WebkitMaskImage: 'linear-gradient(to left, transparent 10%, black 100%)', maskImage: 'linear-gradient(to left, transparent 10%, black 100%)' }}>
-            <Image src="/trackkkk.png" alt="Rail track left" fill className="object-cover object-right scale-x-[-1]" priority />
+      <section className="relative overflow-hidden bg-white pb-4 pt-32 sm:pb-6 sm:pt-24 md:hidden">
+        <div className="absolute inset-0">
+          {trainImages.map((imageSrc, index) => (
+            <Image
+              key={imageSrc}
+              src={imageSrc}
+              alt="Train slideshow"
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              aria-hidden={index !== currentImageIndex}
+              className={`object-cover object-center transition-opacity duration-[1400ms] ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+            />
+          ))}
+          <div className="absolute inset-0 bg-white/65" />
+        </div>
+
+        <div className="relative z-10 flex w-full items-center justify-center">
+          <div
+            className="relative hidden h-40 min-w-0 flex-1 sm:block sm:h-48 md:h-56"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to left, transparent 10%, black 100%)',
+              maskImage: 'linear-gradient(to left, transparent 10%, black 100%)',
+            }}
+          >
+            <Image
+              src="/trackkkk.png"
+              alt="Rail track left"
+              fill
+              className="scale-x-[-1] object-cover object-right"
+              priority
+            />
           </div>
 
-          {/* Centered heading */}
-          <h1 className="flex-shrink-0 text-[#8A393B] font-extrabold leading-tight text-center px-4 sm:px-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl whitespace-normal sm:whitespace-nowrap break-words max-w-[90vw]">
+          <h1
+            className="max-w-[90vw] flex-shrink-0 break-words px-4 text-center text-3xl font-extrabold leading-tight text-[#f4a01b] sm:px-6 sm:text-4xl sm:whitespace-nowrap md:text-5xl lg:text-6xl"
+            style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}
+          >
             Through the tracks of time
           </h1>
 
-          {/* Right track - hide on mobile to prevent crowding */}
-          <div className="hidden sm:block flex-1 min-w-0 h-40 sm:h-48 md:h-56 relative" style={{ WebkitMaskImage: 'linear-gradient(to right, transparent 10%, black 100%)', maskImage: 'linear-gradient(to right, transparent 10%, black 100%)' }}>
+          <div
+            className="relative hidden h-40 min-w-0 flex-1 sm:block sm:h-48 md:h-56"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to right, transparent 10%, black 100%)',
+              maskImage: 'linear-gradient(to right, transparent 10%, black 100%)',
+            }}
+          >
+            <Image
+              src="/trackkkk.png"
+              alt="Rail track right"
+              fill
+              className="object-cover object-left"
+              priority
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="hidden overflow-hidden bg-white pb-8 pt-28 md:block">
+        <div className="flex w-full items-center justify-center">
+          <div
+            className="relative h-56 min-w-0 flex-1"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to left, transparent 10%, black 100%)',
+              maskImage: 'linear-gradient(to left, transparent 10%, black 100%)',
+            }}
+          >
+            <Image src="/trackkkk.png" alt="Rail track left" fill className="scale-x-[-1] object-cover object-right" priority />
+          </div>
+
+          <h1 className="max-w-[90vw] flex-shrink-0 break-words px-6 text-center text-5xl font-extrabold leading-tight text-[#8A393B] lg:text-6xl">
+            Through the tracks of time
+          </h1>
+
+          <div
+            className="relative h-56 min-w-0 flex-1"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to right, transparent 10%, black 100%)',
+              maskImage: 'linear-gradient(to right, transparent 10%, black 100%)',
+            }}
+          >
             <Image src="/trackkkk.png" alt="Rail track right" fill className="object-cover object-left" priority />
           </div>
         </div>
       </section>
 
-      {/* Legacy blurb card */}
-      <section className="bg-white py-4 sm:py-5 md:py-6 mt-6 sm:-mt-14 md:-mt-16">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="rounded-2xl border border-gray-200 bg-[#F7F6F4] shadow-sm px-3 sm:px-8 py-5 sm:py-8 text-center">
-            <p className="text-[#F2913F] font-bold text-base sm:text-xl md:text-2xl">
+      <section className="mt-6 bg-white py-4 sm:mt-2 sm:py-5 md:hidden">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-[0.9fr_1.6fr] md:gap-6">
+            <div className="flex min-h-[116px] items-center justify-center rounded-2xl border border-gray-200 bg-[#F7F6F4] px-4 py-5 text-center shadow-sm sm:min-h-[132px] sm:px-6 sm:py-6 md:min-h-[136px] md:px-7 md:py-7">
+              <p className="text-sm font-bold leading-tight text-[#F2913F] sm:text-lg md:text-xl">
+                We began in the 1960s with a single concrete sleeper plant.
+              </p>
+            </div>
+
+            <div className="flex min-h-[116px] items-center justify-center rounded-2xl border border-gray-200 bg-[#F7F6F4] px-4 py-5 text-center shadow-sm sm:min-h-[132px] sm:px-6 sm:py-6 md:min-h-[136px] md:px-7 md:py-7">
+              <p className="text-sm font-semibold leading-snug text-[#8A393B] sm:text-base md:text-xl">
+                Today, we supply track components to railways and <br className="hidden md:block" /> metros across India.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-6 hidden bg-white py-6 md:-mt-16 md:block">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="rounded-2xl border border-gray-200 bg-[#F7F6F4] px-8 py-8 text-center shadow-sm">
+            <p className="text-2xl font-bold text-[#F2913F]">
               We began in the 1960s with a single concrete sleeper plant.
             </p>
-            <p className="mt-2 text-[#8A393B] font-semibold text-lg sm:text-2xl md:text-3xl leading-snug">
+            <p className="mt-2 text-3xl font-semibold leading-snug text-[#8A393B]">
               Today, we supply track components to railways and
-              <br className="hidden sm:block" /> metros across India.
+              <br /> metros across India.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Zero Bad Section */}
-      <section className="bg-white py-8 sm:py-10 md:py-12 relative fade-in-section" data-delay="0.1" data-duration="0.9">
-        {/* Left Edge Gradient Line */}
+      <section className="relative bg-white pb-0 pt-8 fade-in-section sm:pt-10 md:hidden" data-delay="0.1" data-duration="0.9">
+        <div className="fade-in-section mx-auto px-4 sm:px-6">
+          <div className="fade-heading mb-8 text-center" data-delay="0.15" data-duration="0.9">
+            <DecisionSectionTitle className="text-left text-[28px] leading-tight sm:text-[50px]" />
+          </div>
+          <MobileDecisionCards />
+        </div>
+      </section>
+
+      <section className="relative hidden bg-white py-12 fade-in-section md:block" data-delay="0.1" data-duration="0.9">
         <div
           className="absolute hidden lg:block reveal-line-left gradient-line-ltr gradient-line-md"
           style={{
             height: '28px',
             left: '0px',
             top: '50%',
-            transform: 'translateY(-50%)'
+            transform: 'translateY(-50%)',
           }}
         />
 
-        {/* Right Edge Gradient Line */}
         <div
           className="absolute hidden lg:block reveal-line-right gradient-line-rtl gradient-line-md"
           style={{
             height: '28px',
             right: '0px',
             top: '50%',
-            transform: 'translateY(-50%)'
+            transform: 'translateY(-50%)',
           }}
         />
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
-          {/* Title */}
-          <div className="text-center mb-8 fade-heading" data-delay="0.15" data-duration="0.9">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold whitespace-normal break-words">
+        <div className="fade-in-section mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="fade-heading mb-8 text-center" data-delay="0.15" data-duration="0.9">
+            <h2 className="break-words text-4xl font-bold">
               <span className="text-[#8A393B]">Our Business Decision - </span>
               <span className="text-[#F2913F]">Making Principles</span>
             </h2>
           </div>
 
-          {/* Three Boxes */}
-          <div className="space-y-3 sm:space-y-4 max-w-md mx-auto stagger-children" data-stagger="0.15" data-duration="0.7">
-            {/* Country 1st */}
-            <div className="bg-[#8A393B] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl shadow-lg stagger-item">
-              <h3 className="text-base sm:text-lg font-bold text-center">
+          <div className="stagger-children mx-auto max-w-md space-y-4" data-stagger="0.15" data-duration="0.7">
+            <div className="stagger-item rounded-xl bg-[#8A393B] px-6 py-3 text-white shadow-lg">
+              <h3 className="text-center text-lg font-bold">
                 Country <span className="text-[#F2913F]">1<sup className="fluid-small">st</sup></span>
               </h3>
             </div>
 
-            {/* Customer 2nd */}
-            <div className="bg-[#8A393B] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl shadow-lg stagger-item">
-              <h3 className="text-base sm:text-lg font-bold text-center">
+            <div className="stagger-item rounded-xl bg-[#8A393B] px-6 py-3 text-white shadow-lg">
+              <h3 className="text-center text-lg font-bold">
                 Customer <span className="text-[#F2913F]">2<sup className="fluid-small">nd</sup></span>
               </h3>
             </div>
 
-            {/* Company & Employees 3rd */}
-            <div className="bg-[#8A393B] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl shadow-lg stagger-item">
-              <h3 className="text-base sm:text-lg font-bold text-center">
+            <div className="stagger-item rounded-xl bg-[#8A393B] px-6 py-3 text-white shadow-lg">
+              <h3 className="text-center text-lg font-bold">
                 Company & Employees <span className="text-[#F2913F]">3<sup className="fluid-small">rd</sup></span>
               </h3>
             </div>
@@ -185,53 +310,77 @@ const AboutUsPage = () => {
         </div>
       </section>
 
-      {/* Responsive Philosophy Section (minimized) */}
-      <section id="philosophy-section" className="py-4 sm:py-6 md:py-8 bg-white relative overflow-hidden">
+      <section id="philosophy-section" className="relative overflow-hidden bg-white py-4 sm:py-6 md:py-8">
         <div className="relative z-10">
-          {/* Desktop Layout - text removed as requested */}
           <div className="hidden md:block">
-
-
             <div className="philosophy-item"></div>
-
             <div className="philosophy-item"></div>
             <div className="philosophy-item"></div>
           </div>
         </div>
       </section>
 
-      {/* Innovation gradient statements */}
-      <section className="bg-white py-4 sm:py-6 md:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 fade-in-section">
-          <div className="space-y-10 sm:space-y-12">
-            {/* Left-edge gradient with text */}
+      <section className="bg-white pb-8 pt-6 sm:pt-8 md:hidden">
+        <div className="fade-in-section mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="space-y-8 sm:space-y-10">
             <div>
-              <h3 className="text-black text-2xl sm:text-3xl md:text-4xl font-semibold mb-4 text-left">
+              <div className="-mx-4 flex flex-col items-start sm:-mx-6">
+                <h3 className="mb-1 whitespace-nowrap px-4 text-left text-lg font-semibold leading-tight text-black sm:whitespace-normal sm:px-6 sm:text-3xl sm:leading-none">
+                  Innovation Keeps Our Journey Moving
+                </h3>
+                <div
+                  className="h-4 w-full rounded-r-full sm:h-6"
+                  style={{
+                    background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)',
+                  }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="-mx-4 flex flex-col items-end text-right sm:-mx-6">
+                <h3 className="mb-1 whitespace-nowrap px-4 text-lg font-semibold text-black sm:px-6 sm:text-3xl">
+                  Refining Every Detail, Every Decade.
+                </h3>
+                <div
+                  className="h-4 w-full rounded-l-full sm:h-6"
+                  style={{
+                    background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)',
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="hidden bg-white py-8 md:block">
+        <div className="fade-in-section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="space-y-12">
+            <div>
+              <h3 className="mb-4 text-left text-4xl font-semibold text-black">
                 Innovation keeps our journey moving
               </h3>
               <div
-                className="h-4 sm:h-6 rounded-full"
+                className="h-6 rounded-full"
                 style={{
                   width: '80vw',
                   marginLeft: 'calc(50% - 50vw)',
-                  background:
-                    'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)',
+                  background: 'linear-gradient(90deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)',
                 }}
               />
             </div>
 
-            {/* Right-edge gradient with text */}
             <div className="text-right">
-              <h3 className="text-black text-2xl sm:text-3xl md:text-4xl font-semibold mb-4">
+              <h3 className="mb-4 text-4xl font-semibold text-black">
                 refining every detail, every decade.
               </h3>
               <div
-                className="h-4 sm:h-6 rounded-full ml-auto"
+                className="ml-auto h-6 rounded-full"
                 style={{
                   width: '80vw',
                   marginLeft: 'calc(50% + 50vw - 60vw)',
-                  background:
-                    'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)',
+                  background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)',
                 }}
               />
             </div>
@@ -239,45 +388,55 @@ const AboutUsPage = () => {
         </div>
       </section>
 
-      {/* Responsive In Service Section */}
-      <section className="py-10 sm:py-16 md:py-24 bg-white text-center relative fade-in-section">
+      <section className="relative bg-white py-10 text-center fade-in-section sm:py-16 md:hidden">
+        <div className="absolute inset-0 opacity-90">
+          <Image src="/worldmap.png" alt="" fill className="object-contain object-center md:object-fill" sizes="100vw" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="space-y-5 md:hidden">
+            <h2 className="text-3xl font-extrabold text-[#8A393B]">In Service</h2>
+            <p className="text-lg font-semibold text-[#8A393B]">
+              <StatCounter end={4000000} duration={2.5} /> sleepers and counting used in <StatCounter end={14} duration={2} /> railway zones.
+            </p>
+            <p
+              className="text-lg font-semibold"
+              style={{
+                background: 'linear-gradient(to right, #8A393B, #F2913F)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Over four hundred kilo metres delivered each year.
+            </p>
+            <p className="text-base font-medium text-[#8A393B]">Approved across systems</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative hidden bg-white py-24 text-center fade-in-section md:block">
         <div
           className="absolute inset-0 opacity-90"
           style={{
             backgroundImage: "url('/worldmap.png')",
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            backgroundSize: 'contain'
+            backgroundSize: 'contain',
           }}
         ></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Mobile Layout */}
-          <div className="md:hidden space-y-5">
-            <h2 className="text-3xl font-extrabold text-[#8A393B]">In Service</h2>
-            <p className="text-lg text-[#8A393B] font-semibold">
-              <StatCounter end={4000000} duration={2.5} /> sleepers and counting used in <StatCounter end={14} duration={2} /> railway zones.
-            </p>
-            <p className="text-lg font-semibold" style={{
-              background: 'linear-gradient(to right, #8A393B, #F2913F)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              Over four hundred kilo metres delivered each year.
-            </p>
-            <p className="text-base font-medium text-[#8A393B]">Approved across systems</p>
-          </div>
-
-          {/* Desktop Layout - Styled to match reference */}
-          <div className="hidden md:block">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div>
             <h2 className="text-6xl font-extrabold text-[#8A393B]">In Service</h2>
-            <p className="mt-6 text-2xl lg:text-3xl font-semibold text-[#8A393B]">
+            <p className="mt-6 text-2xl font-semibold text-[#8A393B] lg:text-3xl">
               <StatCounter end={4000000} duration={2.5} /> sleepers and counting used in <StatCounter end={14} duration={2} /> railway zones.
             </p>
-            <p className="mt-2 text-2xl lg:text-3xl font-semibold" style={{
-              background: 'linear-gradient(to right, #8A393B, #F2913F)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
+            <p
+              className="mt-2 text-2xl font-semibold lg:text-3xl"
+              style={{
+                background: 'linear-gradient(to right, #8A393B, #F2913F)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
               Over four hundred kilo metres delivered each year.
             </p>
             <p className="mt-4 text-xl font-medium text-[#8A393B]">Approved across systems</p>
@@ -285,15 +444,13 @@ const AboutUsPage = () => {
         </div>
       </section>
 
-      {/* Responsive Make in India Section */}
-      <section className="py-10 sm:py-16 md:py-24 bg-white text-center relative fade-in-section">
-        {/* Mobile Layout */}
-        <div className="md:hidden px-4">
-          <div className="bg-gradient-to-r from-orange-50 to-green-50 rounded-2xl p-6 mx-auto max-w-sm">
-            <img src="/makeindia.png" alt="Make in India" loading="lazy" className="h-16 sm:h-24 mx-auto mb-4" />
-            <p className="text-lg sm:text-2xl font-bold text-black leading-tight">Installed across India</p>
+      <section className="relative bg-white py-10 text-center fade-in-section sm:py-16 md:hidden">
+        <div className="px-4 md:hidden">
+          <div className="mx-auto max-w-sm rounded-2xl bg-gradient-to-r from-orange-50 to-green-50 p-6">
+            <Image src="/makeindia.png" alt="Make in India" width={150} height={96} className="mx-auto mb-4 h-16 w-auto sm:h-24" />
+            <p className="text-lg font-bold leading-tight text-black sm:text-2xl">Installed across India</p>
             <div
-              className="h-1.5 mt-3 mx-auto rounded-full"
+              className="mx-auto mt-3 h-1.5 rounded-full"
               style={{
                 width: '120px',
                 background: 'linear-gradient(to right, #F2913F, #1E3888, #8A393B)',
@@ -301,18 +458,19 @@ const AboutUsPage = () => {
             />
           </div>
         </div>
+      </section>
 
-        {/* Desktop Layout - Original */}
-        <div className="hidden md:block">
-          <div className="flex justify-center items-center max-w-7xl mx-auto max-w-full w-auto">
-            <img src="/indiaflag.png" alt="Indian Flag" loading="lazy" className="w-[636px] h-96" />
-            <img src="/makeindia.png" alt="Make in India" loading="lazy" className="h-56 mx-8" />
-            <img src="/indiaflag.png" alt="Indian Flag" loading="lazy" className="w-[636px] h-96 transform scale-x-[-1]" />
+      <section className="relative hidden bg-white py-24 text-center fade-in-section md:block">
+        <div>
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-center">
+            <img src="/indiaflag.png" alt="Indian Flag" loading="lazy" className="h-96 w-[636px]" />
+            <img src="/makeindia.png" alt="Make in India" loading="lazy" className="mx-8 h-56" />
+            <img src="/indiaflag.png" alt="Indian Flag" loading="lazy" className="h-96 w-[636px] scale-x-[-1]" />
           </div>
           <div className="mt-12">
             <p className="text-5xl font-semibold text-black">Installed across India</p>
             <div
-              className="h-2 mt-4 mx-auto"
+              className="mx-auto mt-4 h-2"
               style={{
                 width: '400px',
                 background: 'linear-gradient(to right, #F2913F, #1E3888, #8A393B)',
@@ -321,7 +479,6 @@ const AboutUsPage = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };
