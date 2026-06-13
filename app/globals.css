@@ -65,6 +65,14 @@ img,
   image-rendering: crisp-edges;
 }
 
+.patil-navbar-logo {
+  image-rendering: auto;
+  transform: none;
+  backface-visibility: visible;
+  perspective: none;
+  will-change: auto;
+}
+
 .management-leadership-image {
   image-rendering: auto;
   transform: none !important;

@@ -121,10 +121,10 @@ const Navbar = () => {
                   <img
                     src="/pg.png"
                     alt="Patil Group Logo"
-                    width={140}
-                    height={70}
+                    width={1080}
+                    height={1080}
                     loading="eager"
-                    className="h-24 w-auto transition-all duration-300 hover-scale cursor-pointer"
+                    className="patil-navbar-logo h-24 w-auto transition-all duration-300 hover-scale cursor-pointer"
                   />
                 </picture>
               </Link>
@@ -335,18 +335,18 @@ const Navbar = () => {
           className={`nav-pill pointer-events-auto mx-auto max-w-[1380px] rounded-none sm:rounded-full px-3 sm:px-6 transition-all duration-300 ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
         >
           <div className="max-w-[1440px] mx-auto px-2 sm:px-3 md:px-6">
-            <div className="flex justify-between items-center h-[52px] sm:h-16">
-              <div className="flex items-center animate-fadeInLeft ml-0 sm:-ml-4 md:-ml-6">
+            <div className="flex items-center justify-between h-[68px] sm:h-20">
+              <div className="flex items-center">
                 <Link href="/" onMouseEnter={() => setIsAboutMenuOpen(false)} aria-label="Patil Group Home">
                   <picture>
                     <source srcSet="/pg.png" type="image/png" />
                     <img
                       src="/pg.png"
                       alt="Patil Group Logo"
-                      width={140}
-                      height={70}
+                      width={1080}
+                      height={1080}
                       loading="eager"
-                      className="h-8 sm:h-10 w-auto transition-all duration-300 hover-scale cursor-pointer"
+                      className="patil-navbar-logo h-14 sm:h-16 w-auto transition-all duration-300 hover-scale cursor-pointer"
                     />
                   </picture>
                 </Link>
@@ -381,7 +381,7 @@ const Navbar = () => {
           />
 
           <div
-            className="lg:hidden fixed z-[9997] shadow-2xl rounded-b-2xl transition-transform duration-400 ease-out overflow-hidden top-[52px] sm:top-[76px]"
+            className="lg:hidden fixed z-[9997] shadow-2xl rounded-b-2xl transition-transform duration-400 ease-out overflow-hidden top-[68px] sm:top-[92px]"
             style={{
               right: 0,
               width: '50vw',
