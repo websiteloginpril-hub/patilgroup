@@ -6,20 +6,23 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 
+const getManagementImageClassName = (name: string) =>
+  name === 'Mr. Swapan Maite'
+    ? 'management-leadership-image management-leadership-image-swapan object-contain object-center'
+    : 'management-leadership-image object-contain object-center';
+
 const LeadershipCard = ({ image, name, post }: { image: string, name: string, post: string }) => (
-  <div className="group bg-white text-black transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl will-change-transform">
+  <div className="group bg-white text-black transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
     <div className="relative h-[200px] sm:h-[220px] md:h-[240px] bg-white overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
       <Image
         src={image}
         alt={name}
         fill
-        className="object-contain object-center transition-transform duration-500 will-change-transform"
+        className={getManagementImageClassName(name)}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         priority={true}
         quality={90}
         unoptimized={true}
-        placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
       />
     </div>
     <div className="text-center mt-1.5 sm:mt-2 font-clash px-2 py-1.5 sm:py-2 bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
@@ -252,7 +255,7 @@ const ManagementPage = () => {
                         src={leader.image}
                         alt={leader.name}
                         fill
-                        className="object-contain object-center transition-transform duration-500"
+                        className={getManagementImageClassName(leader.name)}
                         sizes="48vw"
                         priority={i < 6}
                         quality={90}
@@ -276,9 +279,9 @@ const ManagementPage = () => {
           {/* Desktop Layout - Original Carousel */}
           <div className="hidden md:block relative">
             <div className="overflow-hidden" ref={emblaRef}>
-              <div className="flex" style={{ backfaceVisibility: 'hidden', perspective: '1000px' }}>
+              <div className="flex">
                 {leadershipData.map((leader, i) => (
-                  <div key={i} className="flex-grow-0 flex-shrink-0 w-full md:w-1/3 pl-4 sm:pl-6 md:pl-8 will-change-transform" style={{ transform: 'translateZ(0)' }}>
+                  <div key={i} className="flex-grow-0 flex-shrink-0 w-full md:w-1/3 pl-4 sm:pl-6 md:pl-8">
                     <LeadershipCard image={leader.image} name={leader.name} post={leader.post} />
                   </div>
                 ))}

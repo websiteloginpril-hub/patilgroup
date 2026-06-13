@@ -65,6 +65,19 @@ img,
   image-rendering: crisp-edges;
 }
 
+.management-leadership-image {
+  image-rendering: auto;
+  transform: none !important;
+  backface-visibility: visible;
+  perspective: none;
+  will-change: auto;
+}
+
+.management-leadership-image-swapan {
+  transform: scale(1.28) !important;
+  transform-origin: center 8%;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -1720,6 +1733,14 @@ h1, h2, h3, h4, h5, h6, p {
 .stack-card:nth-child(3) {
   top: 180px;
   z-index: 3;
+}
+
+@media (max-width: 1023px) {
+  .precast-container > .stack-container .stack-card {
+    width: 100%;
+    height: clamp(248px, 62vw, 300px);
+    padding: clamp(2rem, 7vw, 2.5rem);
+  }
 }
 
 .cme-pg-stack-container .stack-card:nth-child(4) {
