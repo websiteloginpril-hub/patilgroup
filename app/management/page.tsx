@@ -61,7 +61,7 @@ const leadershipData = [
   {
     image: '/management/sawpan maite.png',
     name: 'Mr. Swapan Maite',
-    post: 'CEO - fastening systems',
+    post: 'CEO - Fastening Systems',
   },
   {
     image: '/management/avchandrasir.jpg',
@@ -116,6 +116,10 @@ const ManagementPage = () => {
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const [isMobileMarqueePaused, setIsMobileMarqueePaused] = useState(false);
+
+  const pauseMobileMarquee = () => setIsMobileMarqueePaused(true);
+  const resumeMobileMarquee = () => setIsMobileMarqueePaused(false);
+  const preventImageContextMenu = (event: React.SyntheticEvent) => event.preventDefault();
 
   // Desktop carousel with smooth animations
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -236,15 +240,18 @@ const ManagementPage = () => {
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 
           {/* Mobile Layout - Auto Circular Marquee (Replaced Swipeable Carousel) */}
-          <div className="md:hidden overflow-hidden w-[calc(100%+1rem)] -mx-2 mb-4 pb-4">
+          <div
+            className="management-mobile-marquee md:hidden overflow-hidden w-[calc(100%+1rem)] -mx-2 mb-4 pb-4"
+            onContextMenu={preventImageContextMenu}
+          >
             <div
               className="flex w-max animate-marquee"
               style={{ animationPlayState: isMobileMarqueePaused ? 'paused' : 'running' }}
-              onMouseEnter={() => setIsMobileMarqueePaused(true)}
-              onMouseLeave={() => setIsMobileMarqueePaused(false)}
-              onTouchStart={() => setIsMobileMarqueePaused(true)}
-              onTouchEnd={() => setIsMobileMarqueePaused(false)}
-              onTouchCancel={() => setIsMobileMarqueePaused(false)}
+              onPointerEnter={pauseMobileMarquee}
+              onPointerLeave={resumeMobileMarquee}
+              onPointerDown={pauseMobileMarquee}
+              onPointerUp={resumeMobileMarquee}
+              onPointerCancel={resumeMobileMarquee}
             >
               {/* Duplicated for a seamless circular loop */}
               {[...leadershipData, ...leadershipData].map((leader, i) => (
@@ -260,6 +267,8 @@ const ManagementPage = () => {
                         priority={i < 6}
                         quality={90}
                         unoptimized={true}
+                        draggable={false}
+                        onContextMenu={preventImageContextMenu}
                       />
                     </div>
                     <div className="h-[64px] flex flex-col justify-center p-2 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F] shrink-0">

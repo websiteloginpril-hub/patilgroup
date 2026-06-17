@@ -86,6 +86,23 @@ img,
   transform-origin: center 8%;
 }
 
+.management-mobile-marquee,
+.management-mobile-marquee * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.management-mobile-marquee {
+  touch-action: pan-y;
+}
+
+.management-mobile-marquee img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: auto;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
