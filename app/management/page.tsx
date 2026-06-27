@@ -7,7 +7,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 
 const getManagementImageClassName = (name: string) =>
-  name === 'Mr. Swapan Maite'
+  name.toLowerCase().includes('swapan')
     ? 'management-leadership-image management-leadership-image-swapan object-contain object-center'
     : 'management-leadership-image object-contain object-center';
 
@@ -59,8 +59,8 @@ const leadershipData = [
     post: 'MD - Track Systems',
   },
   {
-    image: '/management/sawpan maite.png',
-    name: 'Mr. Swapan Maite',
+    image: '/management/swapan maithey.png',
+    name: 'Mr. Swapan Maity',
     post: 'CEO - Fastening Systems',
   },
   {
