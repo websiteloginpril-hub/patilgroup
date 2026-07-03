@@ -1,36 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
-import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 
+/* Photo boxes use aspect-[3/4] to match the portraits' native aspect
+   ratio. With matching aspect ratios, object-cover fills the frame
+   edge-to-edge with near-zero cropping:
+   — no white space at the sides
+   — no zoom-in effect
+   — no blurred/dark backdrop layers                                 */
 const getManagementImageClassName = (name: string) =>
   name.toLowerCase().includes('swapan')
-    ? 'management-leadership-image management-leadership-image-swapan object-contain object-center'
-    : 'management-leadership-image object-contain object-center';
-
-const LeadershipCard = ({ image, name, post }: { image: string, name: string, post: string }) => (
-  <div className="group bg-white text-black transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-    <div className="relative h-[200px] sm:h-[220px] md:h-[240px] bg-white overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
-      <Image
-        src={image}
-        alt={name}
-        fill
-        className={getManagementImageClassName(name)}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={true}
-        quality={90}
-        unoptimized={true}
-      />
-    </div>
-    <div className="text-center mt-1.5 sm:mt-2 font-clash px-2 py-1.5 sm:py-2 bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F]">
-      <p className="font-bold text-[10px] sm:text-xs text-white mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">{post}</p>
-      <p className="text-[10px] sm:text-xs text-white font-medium transition-colors duration-500 ease-out group-hover:text-black leading-tight">{name}</p>
-    </div>
-  </div>
-);
+    ? 'management-leadership-image management-leadership-image-swapan object-cover object-top'
+    : 'management-leadership-image object-cover object-top';
 
 const leadershipData = [
   {
@@ -112,94 +95,16 @@ const leadershipData = [
 
 const ManagementPage = () => {
   useGSAPAnimations();
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
   const [isMobileMarqueePaused, setIsMobileMarqueePaused] = useState(false);
+  const [isDesktopMarqueePaused, setIsDesktopMarqueePaused] = useState(false);
 
   const pauseMobileMarquee = () => setIsMobileMarqueePaused(true);
   const resumeMobileMarquee = () => setIsMobileMarqueePaused(false);
+  const pauseDesktopMarquee = () => setIsDesktopMarqueePaused(true);
+  const resumeDesktopMarquee = () => setIsDesktopMarqueePaused(false);
   const preventImageContextMenu = (event: React.SyntheticEvent) => event.preventDefault();
 
-  // Desktop carousel with smooth animations
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    slidesToScroll: 1,
-    containScroll: 'trimSnaps',
-    skipSnaps: false,
-    duration: 25,
-    dragFree: false,
-    loop: false,
-    align: 'start'
-  });
 
-  // Mobile carousel with optimized performance
-  const [mobileEmblaRef, mobileEmblaApi] = useEmblaCarousel({
-    align: 'start',
-    containScroll: 'trimSnaps',
-    dragFree: false,
-    loop: false,
-    skipSnaps: false,
-    duration: 25,
-    startIndex: 0,
-    slidesToScroll: 1
-  });
-
-  const scrollPrev = () => {
-    if (emblaApi && canScrollPrev) {
-      emblaApi.scrollPrev();
-    }
-  };
-
-  const scrollNext = () => {
-    if (emblaApi && canScrollNext) {
-      emblaApi.scrollNext();
-    }
-  };
-
-  const mobileScrollPrev = () => {
-    if (mobileEmblaApi) {
-      mobileEmblaApi.scrollPrev();
-    }
-  };
-
-  const mobileScrollNext = () => {
-    if (mobileEmblaApi) {
-      mobileEmblaApi.scrollNext();
-    }
-  };
-
-  const onDesktopSelect = () => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  };
-
-  const onMobileSelect = () => {
-    if (!mobileEmblaApi) return;
-    setSelectedIndex(mobileEmblaApi.selectedScrollSnap());
-  };
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onDesktopSelect();
-    emblaApi.on('select', onDesktopSelect);
-    emblaApi.on('reInit', onDesktopSelect);
-    return () => {
-      emblaApi.off('select', onDesktopSelect);
-      emblaApi.off('reInit', onDesktopSelect);
-    };
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!mobileEmblaApi) return;
-    onMobileSelect();
-    mobileEmblaApi.on('select', onMobileSelect);
-    mobileEmblaApi.on('reInit', onMobileSelect);
-    return () => {
-      mobileEmblaApi.off('select', onMobileSelect);
-      mobileEmblaApi.off('reInit', onMobileSelect);
-    };
-  }, [mobileEmblaApi]);
 
   return (
     <div className="bg-[#1E1E1E] text-white pt-[103px]">
@@ -239,7 +144,9 @@ const ManagementPage = () => {
 
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 
-          {/* Mobile Layout - Auto Circular Marquee (Replaced Swipeable Carousel) */}
+          {/* Mobile Layout - Auto Circular Marquee
+              Uniform card geometry: aspect-[3/4] photo + h-[60px] caption.
+              Every card is exactly the same size. */}
           <div
             className="management-mobile-marquee md:hidden overflow-hidden w-[calc(100%+1rem)] -mx-2 mb-4 pb-4"
             onContextMenu={preventImageContextMenu}
@@ -256,8 +163,10 @@ const ManagementPage = () => {
               {/* Duplicated for a seamless circular loop */}
               {[...leadershipData, ...leadershipData].map((leader, i) => (
                 <div key={i} className="flex-none px-2 w-[48vw] sm:w-[38vw]">
-                  <div className="group w-full h-full flex flex-col rounded-2xl border border-gray-300/30 bg-white overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#ffffff' }}>
-                    <div className="relative h-[180px] sm:h-[220px] bg-white overflow-hidden shrink-0" style={{ backgroundColor: '#ffffff' }}>
+                  <div className="group w-full flex flex-col rounded-none border border-gray-200 bg-white overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#ffffff' }}>
+                    {/* Photo box matches portrait aspect ratio — image
+                        fills fully, no white sides, no visible zoom */}
+                    <div className="relative w-full aspect-[3/4] overflow-hidden shrink-0">
                       <Image
                         src={leader.image}
                         alt={leader.name}
@@ -271,11 +180,14 @@ const ManagementPage = () => {
                         onContextMenu={preventImageContextMenu}
                       />
                     </div>
-                    <div className="h-[64px] flex flex-col justify-center p-2 text-center bg-[#8A393B] transition-colors duration-500 ease-out group-hover:bg-[#F2913F] shrink-0">
-                      <p className="text-[10px] sm:text-[11px] text-white font-bold mb-0.5 transition-colors duration-500 ease-out group-hover:text-black leading-tight">
+                    {/* Fixed-height caption band: identical on every card.
+                        line-clamp-2 keeps long posts (e.g. Sajjan sir's)
+                        inside the band instead of growing the card. */}
+                    <div className="flex flex-col justify-center py-1.5 px-2 text-center bg-[#F2913F] shrink-0 h-[60px]">
+                      <p className="text-[11px] sm:text-xs text-black font-bold mb-0.5 leading-tight line-clamp-2">
                         {leader.post}
                       </p>
-                      <h3 className="text-[10px] sm:text-[11px] font-medium text-white leading-tight transition-colors duration-500 ease-out group-hover:text-black">
+                      <h3 className="text-[10px] sm:text-[11px] font-medium text-black leading-tight">
                         {leader.name}
                       </h3>
                     </div>
@@ -285,38 +197,53 @@ const ManagementPage = () => {
             </div>
           </div>
 
-          {/* Desktop Layout - Original Carousel */}
-          <div className="hidden md:block relative">
-            <div className="overflow-hidden" ref={emblaRef}>
-              <div className="flex">
-                {leadershipData.map((leader, i) => (
-                  <div key={i} className="flex-grow-0 flex-shrink-0 w-full md:w-1/3 pl-4 sm:pl-6 md:pl-8">
-                    <LeadershipCard image={leader.image} name={leader.name} post={leader.post} />
+          {/* Desktop Layout - Auto Scrolling Marquee (same as mobile)
+              Uniform card geometry: w-[220/240px] × aspect-[3/4] photo
+              + h-[60px] caption. */}
+          <div
+            className="hidden md:block overflow-hidden w-[calc(100%+2rem)] -mx-4 mb-4 pb-4"
+            onContextMenu={preventImageContextMenu}
+          >
+            <div
+              className="flex w-max animate-marquee"
+              style={{ animationPlayState: isDesktopMarqueePaused ? 'paused' : 'running' }}
+              onPointerEnter={pauseDesktopMarquee}
+              onPointerLeave={resumeDesktopMarquee}
+              onPointerDown={pauseDesktopMarquee}
+              onPointerUp={resumeDesktopMarquee}
+              onPointerCancel={resumeDesktopMarquee}
+            >
+              {[...leadershipData, ...leadershipData].map((leader, i) => (
+                <div key={i} className="flex-none px-3 w-[220px] lg:w-[240px]">
+                  <div className="group w-full flex flex-col rounded-none border border-gray-200 bg-white overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#ffffff' }}>
+                    {/* Photo box matches portrait aspect ratio */}
+                    <div className="relative w-full aspect-[3/4] overflow-hidden shrink-0">
+                      <Image
+                        src={leader.image}
+                        alt={leader.name}
+                        fill
+                        className={getManagementImageClassName(leader.name)}
+                        sizes="240px"
+                        priority={i < 6}
+                        quality={90}
+                        unoptimized={true}
+                        draggable={false}
+                        onContextMenu={preventImageContextMenu}
+                      />
+                    </div>
+                    {/* Fixed-height caption band: identical on every card */}
+                    <div className="flex flex-col justify-center py-1.5 px-2 text-center bg-[#F2913F] shrink-0 h-[60px]">
+                      <p className="text-xs text-black font-bold mb-0.5 leading-tight line-clamp-2">
+                        {leader.post}
+                      </p>
+                      <h3 className="text-[11px] font-medium text-black leading-tight">
+                        {leader.name}
+                      </h3>
+                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-
-            <button
-              onClick={scrollPrev}
-              disabled={!canScrollPrev}
-              className={`absolute top-1/2 -left-16 transform -translate-y-1/2 p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-gray-400/30 ${canScrollPrev
-                ? 'bg-gray-200/80 hover:bg-gray-300/80 active:bg-gray-400/80 hover:scale-105 active:scale-95 cursor-pointer'
-                : 'bg-gray-100/50 cursor-not-allowed opacity-50'
-                }`}
-            >
-              <ArrowLeft className={`h-6 w-6 ${canScrollPrev ? 'text-[#F2913F]' : 'text-gray-400'}`} />
-            </button>
-            <button
-              onClick={scrollNext}
-              disabled={!canScrollNext}
-              className={`absolute top-1/2 -right-16 transform -translate-y-1/2 p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-gray-400/30 ${canScrollNext
-                ? 'bg-gray-200/80 hover:bg-gray-300/80 active:bg-gray-400/80 hover:scale-105 active:scale-95 cursor-pointer'
-                : 'bg-gray-100/50 cursor-not-allowed opacity-50'
-                }`}
-            >
-              <ArrowRight className={`h-6 w-6 ${canScrollNext ? 'text-[#F2913F]' : 'text-gray-400'}`} />
-            </button>
           </div>
         </div>
       </section>

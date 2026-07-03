@@ -1,13 +1,18 @@
 "use client";
 
-import React from 'react';
-import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import { ArrowRight, ArrowLeft, X } from 'lucide-react';
-import Footer from '@/components/Footer';
-import Image from 'next/image';
-import HLSVideo from '@/components/HLSVideo';
-import useEmblaCarousel from 'embla-carousel-react';
-import { TypingAnimation } from '@/components/TypingAnimation';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
+import { useGSAPAnimations } from "@/hooks/useGSAPAnimations";
+import { ArrowRight, ArrowLeft, X } from "lucide-react";
+import Footer from "@/components/Footer";
+import Image from "next/image";
+import HLSVideo from "@/components/HLSVideo";
+import { TypingAnimation } from "@/components/TypingAnimation";
 import {
   Dialog,
   DialogContent,
@@ -17,158 +22,263 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-const projectsData = [
+/* ==================================================================
+   Types
+   ================================================================== */
+interface Project {
+  title: string;
+  image: string;
+  description: string;
+  client: string;
+  principalClient: string;
+  specs: string[];
+  conclusion?: string;
+  showcaseImage?: string;
+}
+
+interface Slot {
+  abs: number;
+  off: number;
+  project: Project;
+}
+
+interface CarouselMetrics {
+  cardW: number;
+  cardH: number;
+  spacing: number;
+}
+
+/* ==================================================================
+   Center-Focus Carousel — engine configuration
+   ------------------------------------------------------------------
+   • Center card: scale 1, sharp, top z-index, elevated shadow
+   • Side cards: overlap behind center, scaled down, blurred, dimmed
+   • Auto-advance: one card every STEP_INTERVAL (≈1s ease + dwell)
+   ================================================================== */
+const STEP_INTERVAL = 2400; // ms per auto-advance
+const SLIDE_MS = 1000; // slide duration
+const SLIDE_EASE = "cubic-bezier(0.65, 0, 0.35, 1)"; // fast ease-in-out
+const SIDE_SCALE = 0.87;
+const SIDE_BLUR = 5; // px
+const VISIBLE_RANGE = 3; // offsets rendered per side
+
+/* Breakpoint-driven card geometry (spacing < width ⇒ overlap) */
+const METRICS: Record<"mobile" | "tablet" | "desktop", CarouselMetrics> = {
+  mobile: { cardW: 230, cardH: 320, spacing: 175 },
+  tablet: { cardW: 280, cardH: 380, spacing: 220 },
+  desktop: { cardW: 320, cardH: 430, spacing: 255 },
+};
+
+function useCarouselMetrics(): CarouselMetrics {
+  const [metrics, setMetrics] = useState<CarouselMetrics>(METRICS.desktop);
+
+  useEffect(() => {
+    const compute = (): void => {
+      const w = window.innerWidth;
+      setMetrics(
+        w < 640 ? METRICS.mobile : w < 1024 ? METRICS.tablet : METRICS.desktop
+      );
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
+  return metrics;
+}
+
+/* ------------------------------------------------------------------ */
+
+const projectsData: Project[] = [
   {
-    title: 'Delhi Phase III',
-    image: '/delhi metro.png',
+    title: "Delhi Phase III",
+    image: "/delhi metro.png",
     description: `Patil Group was entrusted with the supply and installation of fastening systems across key corridors of Delhi Metro Phase III. The project covered multiple extensions — including Kalindi Kunj to Botanical Garden, Noida City Centre to Sector 62, Dilshad Garden to Ghaziabad, and Escorts Mujesar to Ballabhgarh. We delivered and installed over 2 lakh fastening assemblies, supporting both elevated and underground track structures. The project demanded high precision and performance under challenging urban transit conditions.`,
-    client: 'Delhi Metro Rail Corporation (DMRC)',
-    principalClient: 'DMRC',
+    client: "Delhi Metro Rail Corporation (DMRC)",
+    principalClient: "DMRC",
     specs: [
-      'Fastener Types: 2&4 Bolts elastic rail clip systems',
-      'Models Used: FS 336 (standard), ADFF-6 (for vibration-sensitive underground zones)',
-      'Compliance: RDSO standards (IRS-T-39), ISO 2631 (vibration control), and Metro safety norms',
-      'Application: Suitable for ballastless and ballasted track sections across the corridor',
+      "Fastener Types: 2&4 Bolts elastic rail clip systems",
+      "Models Used: FS 336 (standard), ADFF-6 (for vibration-sensitive underground zones)",
+      "Compliance: RDSO standards (IRS-T-39), ISO 2631 (vibration control), and Metro safety norms",
+      "Application: Suitable for ballastless and ballasted track sections across the corridor",
     ],
-    conclusion: 'This project reflects our continued partnership with DMRC in shaping India’s most advanced metro networks.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project reflects our continued partnership with DMRC in shaping India’s most advanced metro networks.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'Noida Corridor',
-    image: '/noida metroo.png',
+    title: "Noida Corridor",
+    image: "/noida metroo.png",
     description: `Patil Group secured the supply of over 2.1 lakh fastening assemblies for the ballastless track on Line-8 (Janakpuri West - Majlis Park - R.K. Ashram), including 69,000 four-anchor and 1,44,150 two-anchor sets to support both elevated and underground segments.`,
-    client: 'Delhi Metro Rail Corporation (DMRC)',
-    principalClient: 'DMRC',
+    client: "Delhi Metro Rail Corporation (DMRC)",
+    principalClient: "DMRC",
     specs: [
-      'Fastener Configurations: 2&4 Anchor Bolts FS 336 plate systems',
-      'Quantities Supplied: ~2.13 lakh unit sets',
-      'Usage Context: Ballastless track designed for speeds up to 110km/h, handling axle loads of up to 20t',
-      'Compliance: Pre-approved by Ministry of Railways, tested to RDSO/DMRC safety criteria per Metro footing Annexure C-II standards',
+      "Fastener Configurations: 2&4 Anchor Bolts FS 336 plate systems",
+      "Quantities Supplied: ~2.13 lakh unit sets",
+      "Usage Context: Ballastless track designed for speeds up to 110km/h, handling axle loads of up to 20t",
+      "Compliance: Pre-approved by Ministry of Railways, tested to RDSO/DMRC safety criteria per Metro footing Annexure C-II standards",
     ],
-    conclusion: 'This deployment further establishes Patil Group’s role as a trusted partner for high-precision fastening solutions on modern metro corridors.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This deployment further establishes Patil Group’s role as a trusted partner for high-precision fastening solutions on modern metro corridors.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'Kolkata Stretch',
-    image: '/kolkata metro.png',
+    title: "Kolkata Stretch",
+    image: "/kolkata metro.png",
     description: `Patil Group contributed to the expansion of the Kolkata Metro network by supplying fastening systems for the Noapara to Barasat via Bimanbandar corridor. This route includes underground, at-grade, and elevated sections. We supplied over 66,000 fastening assemblies engineered for the specific structural and vibration conditions of Kolkata’s mixed-terrain metro line.`,
-    client: 'Paras Railtech Pvt. Ltd.',
-    principalClient: 'Metro Authority, Kolkata',
+    client: "Paras Railtech Pvt. Ltd.",
+    principalClient: "Metro Authority, Kolkata",
     specs: [
-      'Fastener Types: 2&4 Bolts elastic clip systems',
-      'Quantities Supplied: 38,317 (2-hole) + 28,493 (4-hole) sets',
-      'Application: Compatible with tunnel, elevated viaduct, and station slab tracks',
-      'Compliance: Supplied as per Metro safety and vibration standards, RDSO-compliant',
+      "Fastener Types: 2&4 Bolts elastic clip systems",
+      "Quantities Supplied: 38,317 (2-hole) + 28,493 (4-hole) sets",
+      "Application: Compatible with tunnel, elevated viaduct, and station slab tracks",
+      "Compliance: Supplied as per Metro safety and vibration standards, RDSO-compliant",
     ],
-    conclusion: 'This project marks our growing presence in Eastern India’s transit infrastructure with robust, tested fastening solutions.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project marks our growing presence in Eastern India’s transit infrastructure with robust, tested fastening solutions.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'Ahmedabad Phase II',
-    image: '/ahemdabad metro.png',
+    title: "Ahmedabad Phase II",
+    image: "/ahemdabad metro.png",
     description: `For the Phase II expansion of the Ahmedabad Metro, Patil Group supplied fastening systems for the corridor stretching from Motera Stadium to Mahatma Mandir. Over 2 lakh fastening assemblies were delivered to support the construction of ballastless track systems across elevated and at-grade sections.`,
-    client: 'KEC International Ltd.',
-    principalClient: 'Gujarat Metro Rail Corporation (GMRCL)',
+    client: "KEC International Ltd.",
+    principalClient: "Gujarat Metro Rail Corporation (GMRCL)",
     specs: [
-      'Fastener Types: 2&4 Bolts elastic systems',
-      'Quantities Supplied: 1,80,000 (2-hole) + 20,500 (4-hole) sets',
-      'Application: Engineered for elevated track sections and viaduct spans',
-      'Standards: RDSO-certified systems suitable for high-speed, low-vibration metro operations',
+      "Fastener Types: 2&4 Bolts elastic systems",
+      "Quantities Supplied: 1,80,000 (2-hole) + 20,500 (4-hole) sets",
+      "Application: Engineered for elevated track sections and viaduct spans",
+      "Standards: RDSO-certified systems suitable for high-speed, low-vibration metro operations",
     ],
-    conclusion: 'This delivery reinforced our continued partnership in Gujarat’s evolving metro infrastructure.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This delivery reinforced our continued partnership in Gujarat’s evolving metro infrastructure.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'Mumbai Line 2B',
-    image: '/mumbai metro.png',
+    title: "Mumbai Line 2B",
+    image: "/mumbai metro.png",
     description: `Patil Group supplied fastening systems for Mumbai Metro Line 2B, a critical corridor connecting DN Nagar to Mandale via Bandra. We delivered over 76,000 fastening assemblies, designed for high-traffic, elevated urban infrastructure.`,
-    client: 'KEC International Ltd.',
-    principalClient: 'Mumbai Metropolitan Region Development Authority (MMRDA)',
+    client: "KEC International Ltd.",
+    principalClient: "Mumbai Metropolitan Region Development Authority (MMRDA)",
     specs: [
-      'Fastener Types: 2&4 Bolts elastic clip sets',
-      'Quantities Supplied: 58,218 (2-hole) + 18,697 (4-hole) sets',
-      'Application: Designed for elevated viaduct track sections under heavy axle load',
-      'Standards: Fully compliant with RDSO and MMRDA performance norms for metro systems',
+      "Fastener Types: 2&4 Bolts elastic clip sets",
+      "Quantities Supplied: 58,218 (2-hole) + 18,697 (4-hole) sets",
+      "Application: Designed for elevated viaduct track sections under heavy axle load",
+      "Standards: Fully compliant with RDSO and MMRDA performance norms for metro systems",
     ],
-    conclusion: 'This project demonstrates our expertise in delivering robust fastening solutions for Mumbai\'s expanding metro network.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project demonstrates our expertise in delivering robust fastening solutions for Mumbai's expanding metro network.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'Mumbai Line 5',
-    image: '/mumbai metro.png',
+    title: "Mumbai Line 5",
+    image: "/mumbai metro.png",
     description: `Patil Group supplied fastening systems for the extension of Mumbai Metro Line 7, connecting Gundavali to the Chhatrapati Shivaji International Airport (CSIA). This strategic link enhances airport connectivity via the western suburbs. We delivered over 85,000 fastening assemblies, engineered for durability in high-traffic urban transit.`,
-    client: 'Paras Railtech Pvt. Ltd.',
-    principalClient: 'MMRD',
+    client: "Paras Railtech Pvt. Ltd.",
+    principalClient: "MMRD",
     specs: [
-      'Fastener Types: 2&4 Bolts elastic systems',
-      'Quantities Supplied: 56,420 (2-hole) + 29,800 (4-hole) sets',
-      'Application: Suitable for metro tracks including elevated and airport corridor sections',
-      'Standards: Conforms to RDSO and DMRC metro infrastructure guidelines',
+      "Fastener Types: 2&4 Bolts elastic systems",
+      "Quantities Supplied: 56,420 (2-hole) + 29,800 (4-hole) sets",
+      "Application: Suitable for metro tracks including elevated and airport corridor sections",
+      "Standards: Conforms to RDSO and DMRC metro infrastructure guidelines",
     ],
-    conclusion: 'This project marks our continued involvement in Mumbai\'s next-generation urban mobility solutions.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project marks our continued involvement in Mumbai's next-generation urban mobility solutions.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'L&T - Standard Gauge Sleeper Supply',
-    image: '/lntmonu.webp',
+    title: "L&T - Standard Gauge Sleeper Supply",
+    image: "/lntmonu.webp",
     description: `We supplied over 17,000 pre-stressed concrete (PSC) sleepers to L&T for standard gauge urban rail construction. These sleepers were produced to match L&T's specifications while meeting Indian Railway and metro compliance norms.`,
-    client: 'Larsen & Toubro (L&T)',
-    principalClient: 'L&T Rail Projects',
+    client: "Larsen & Toubro (L&T)",
+    principalClient: "L&T Rail Projects",
     specs: [
-      'Product Type: PSC sleepers for standard gauge application',
-      'Compliance: Designed as per L&T technical requirements and metro standards',
-      'Quantity Supplied: 17,600 units',
-      'Application: Urban transit corridors and depot track',
-      'Manufacturing: Supplied from our certified PSC sleeper plants',
+      "Product Type: PSC sleepers for standard gauge application",
+      "Compliance: Designed as per L&T technical requirements and metro standards",
+      "Quantity Supplied: 17,600 units",
+      "Application: Urban transit corridors and depot track",
+      "Manufacturing: Supplied from our certified PSC sleeper plants",
     ],
-    conclusion: 'This project added to our growing collaborations with India\'s largest EPC contractors in modern rail infrastructure.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project added to our growing collaborations with India's largest EPC contractors in modern rail infrastructure.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'IRCON - Special Sleeper Supply',
-    image: '/irconmonu.jpg',
+    title: "IRCON - Special Sleeper Supply",
+    image: "/irconmonu.jpg",
     description: `We supplied a range of specialized concrete sleepers to IRCON including those used in turnouts, bridges, and level crossings. These sleepers were custom-engineered to meet non-standard geometries and high-precision requirements.`,
-    client: 'IRCON International Ltd.',
-    principalClient: 'IRCON',
+    client: "IRCON International Ltd.",
+    principalClient: "IRCON",
     specs: [
-      'Product Type: PSC sleepers for standard gauge application',
-      'Compliance: Designed and manufactured to project-specific and RDSO standards',
-      'Quantity Supplied: Not specified',
-      'Application: Used in junctions and high-stress structural zones',
-      'Manufacturing: Produced at our specialized sleeper units with custom moulding capabilities',
+      "Product Type: PSC sleepers for standard gauge application",
+      "Compliance: Designed and manufactured to project-specific and RDSO standards",
+      "Quantity Supplied: Not specified",
+      "Application: Used in junctions and high-stress structural zones",
+      "Manufacturing: Produced at our specialized sleeper units with custom moulding capabilities",
     ],
-    conclusion: 'This project highlights our expertise in delivering tailored sleeper solutions for complex rail configurations.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project highlights our expertise in delivering tailored sleeper solutions for complex rail configurations.",
+    showcaseImage: "/projectrailway.jpg",
   },
   {
-    title: 'IRCON - PSC Sleeper Supply',
-    image: '/irconmonu2.jpg',
+    title: "IRCON - PSC Sleeper Supply",
+    image: "/irconmonu2.jpg",
     description: `We manufactured, transported, and delivered pre-stressed concrete (PSC) sleepers to IRCON for large-scale railway development projects. The supply was executed under stringent quality protocols to meet performance and durability requirements across diverse terrains.`,
-    client: 'IRCON International Ltd.',
-    principalClient: 'IRCON',
+    client: "IRCON International Ltd.",
+    principalClient: "IRCON",
     specs: [
-      'Product Type: Standard PSC sleepers for mainline rail',
-      'Compliance: RDSO approved design and loading standards',
-      'Quantity Supplied: Not specified',
-      'Application: General railway infrastructure across multiple project sites',
-      'Execution: End-to-end delivery including manufacturing and logistics',
+      "Product Type: Standard PSC sleepers for mainline rail",
+      "Compliance: RDSO approved design and loading standards",
+      "Quantity Supplied: Not specified",
+      "Application: General railway infrastructure across multiple project sites",
+      "Execution: End-to-end delivery including manufacturing and logistics",
     ],
-    conclusion: 'This project reinforced our long-standing relationship with IRCON and our role in national railway expansion.',
-    showcaseImage: '/projectrailway.jpg'
+    conclusion:
+      "This project reinforced our long-standing relationship with IRCON and our role in national railway expansion.",
+    showcaseImage: "/projectrailway.jpg",
   },
 ];
 
-const ProjectsPage = () => {
+const ProjectsPage: React.FC = () => {
   useGSAPAnimations();
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: 'start',
-    loop: true,
-    skipSnaps: false,
-    inViewThreshold: 0.7,
-  });
 
-  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
-  const scrollNext = () => emblaApi && emblaApi.scrollNext();
+  const { cardW, cardH, spacing } = useCarouselMetrics();
+  const [index, setIndex] = useState<number>(0);
+  const [paused, setPaused] = useState<boolean>(false); // hover pause
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false); // pause while a dialog is open
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const n = projectsData.length;
+
+  /* --- Auto-advance engine (typed; resets on manual navigation) --- */
+  const clearTimer = (): void => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    clearTimer();
+    if (paused || dialogOpen) return;
+    timerRef.current = setInterval(
+      () => setIndex((i) => i + 1),
+      STEP_INTERVAL
+    );
+    return clearTimer;
+  }, [paused, dialogOpen, index]); // index dep restarts dwell after manual nav
+
+  const scrollPrev = useCallback((): void => setIndex((i) => i - 1), []);
+  const scrollNext = useCallback((): void => setIndex((i) => i + 1), []);
+
+  /* --- Visible slots: offsets -RANGE..+RANGE around active index --- */
+  const slots = useMemo<Slot[]>(() => {
+    const out: Slot[] = [];
+    for (let off = -VISIBLE_RANGE; off <= VISIBLE_RANGE; off++) {
+      const abs = index + off;
+      out.push({ abs, off, project: projectsData[((abs % n) + n) % n] });
+    }
+    return out;
+  }, [index, n]);
 
   return (
     <>
@@ -190,7 +300,9 @@ const ProjectsPage = () => {
         <div className="absolute inset-0 z-10 hero-content flex items-center">
           <div className="pl-6 sm:pl-8 md:pl-16 lg:pl-24">
             <h2 className="text-white font-bold font-clash hero-title">Our</h2>
-            <h1 className="text-white font-bold font-clash hero-title -mt-1 sm:-mt-2 md:-mt-4">Projects</h1>
+            <h1 className="text-white font-bold font-clash hero-title -mt-1 sm:-mt-2 md:-mt-4">
+              Projects
+            </h1>
           </div>
         </div>
       </section>
@@ -218,8 +330,14 @@ const ProjectsPage = () => {
                   startAfterMs={200}
                   cursorColor="#F2913F"
                   textParts={[
-                    { text: "Engineering Excellence\nfor a ", className: "text-amber-500" },
-                    { text: "Stronger Tomorrow", className: "text-[#8A393B]" }
+                    {
+                      text: "Engineering Excellence\nfor a ",
+                      className: "text-amber-500",
+                    },
+                    {
+                      text: "Stronger Tomorrow",
+                      className: "text-[#8A393B]",
+                    },
                   ]}
                 />
               </h2>
@@ -229,33 +347,83 @@ const ProjectsPage = () => {
         </div>
       </section>
 
-      <section className="bg-white py-12 sm:py-16 md:py-24 fade-in-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center sm:justify-end mb-6 sm:mb-8">
+      {/* ============================================================
+          Projects — Center-Focus Carousel (white stage)
+          Center card sharp & elevated; side cards tucked behind
+          with blur/scale; auto-advances every STEP_INTERVAL.
+          ============================================================ */}
+      <section className="bg-white fade-in-section py-12 sm:py-16 md:py-24 overflow-hidden">
+        {/* Navigation arrows */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center sm:justify-end mb-8 sm:mb-10">
           <div className="flex items-center space-x-4">
-            <button onClick={scrollPrev} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border border-gray-300 text-gray-400 hover:bg-gray-100 transition-colors">
+            <button
+              onClick={scrollPrev}
+              aria-label="Previous project"
+              className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border border-gray-300 text-gray-400 hover:bg-gray-100 transition-colors"
+            >
               <ArrowLeft size={20} className="sm:w-6 sm:h-6" />
             </button>
-            <button onClick={scrollNext} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+            <button
+              onClick={scrollNext}
+              aria-label="Next project"
+              className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+            >
               <ArrowRight size={20} className="sm:w-6 sm:h-6" />
             </button>
           </div>
         </div>
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex">
-            {projectsData.map((project, index) => (
-              <div key={index} className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2 sm:px-4">
-                <Dialog>
-                <div className="relative h-72 sm:h-80 md:h-96 rounded-lg overflow-hidden group">
+
+        {/* Carousel stage */}
+        <div
+          className="relative flex items-center justify-center"
+          style={{ height: cardH + 48 }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {slots.map(({ abs, off, project }) => {
+            const isCenter = off === 0;
+            return (
+              <Dialog key={abs} onOpenChange={(open) => setDialogOpen(open)}>
+                <div
+                  className="absolute rounded-3xl overflow-hidden group"
+                  style={{
+                    width: cardW,
+                    height: cardH,
+                    transform: `translateX(${off * spacing}px) scale(${isCenter ? 1 : SIDE_SCALE
+                      })`,
+                    zIndex: 10 - Math.abs(off),
+                    filter: isCenter
+                      ? "none"
+                      : `blur(${SIDE_BLUR}px) brightness(0.92)`,
+                    opacity: Math.abs(off) >= VISIBLE_RANGE ? 0 : 1,
+                    boxShadow: isCenter
+                      ? "0 28px 60px -18px rgba(0,0,0,0.38)"
+                      : "0 18px 40px -16px rgba(0,0,0,0.25)",
+                    transition: `transform ${SLIDE_MS}ms ${SLIDE_EASE}, filter ${SLIDE_MS}ms ${SLIDE_EASE}, opacity ${SLIDE_MS}ms ${SLIDE_EASE}, box-shadow ${SLIDE_MS}ms ${SLIDE_EASE}`,
+                    willChange: "transform, filter",
+                    cursor: isCenter ? "default" : "pointer",
+                    pointerEvents:
+                      Math.abs(off) >= VISIBLE_RANGE ? "none" : "auto",
+                  }}
+                  onClick={() => {
+                    if (!isCenter) setIndex(index + off);
+                  }}
+                >
                   <Image
                     src={project.image}
                     alt={project.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-500 group-hover:scale-110"
+                    fill
+                    sizes={`${cardW}px`}
+                    className="object-cover"
                   />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 sm:p-6">
-                    <h3 className="text-white fluid-h4 font-bold">{project.title}</h3>
-                    </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 sm:p-6">
+                    <h3 className="text-white fluid-h4 font-bold">
+                      {project.title}
+                    </h3>
+                  </div>
+
+                  {/* Read More overlay — center card only */}
+                  {isCenter && (
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <DialogTrigger asChild>
                         <button className="bg-orange-500 text-white font-bold py-2 px-3 sm:py-2 sm:px-4 rounded-full inline-flex items-center text-sm sm:text-base">
@@ -264,126 +432,173 @@ const ProjectsPage = () => {
                         </button>
                       </DialogTrigger>
                     </div>
-                  </div>
+                  )}
+                </div>
 
-                  <DialogContent
-                    className="w-[94vw] max-h-[90vh] max-w-none sm:max-w-[92vw] md:max-w-[88vw] lg:max-w-[85vw] bg-[#18181B] text-gray-300 border border-gray-600 shadow-2xl p-0 rounded-lg sm:rounded-xl overflow-hidden fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col"
+                <DialogContent className="w-[94vw] max-h-[90vh] max-w-none sm:max-w-[92vw] md:max-w-[88vw] lg:max-w-[85vw] bg-[#18181B] text-gray-300 border border-gray-600 shadow-2xl p-0 rounded-lg sm:rounded-xl overflow-hidden fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col">
+                  <DialogHeader className="p-2 sm:p-3 lg:p-6 border-b border-gray-700 bg-[#18181B] z-10 flex flex-row items-center justify-between flex-shrink-0">
+                    <DialogTitle className="fluid-h3 font-bold text-orange-500 pr-2 sm:pr-4 leading-tight">
+                      {project.title}
+                    </DialogTitle>
+                    <DialogClose asChild>
+                      <button className="p-2 sm:p-1 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors flex-shrink-0 touch-manipulation">
+                        <X className="h-5 w-5 sm:h-4 sm:w-4 lg:h-5 lg:w-5" />
+                        <span className="sr-only">Close</span>
+                      </button>
+                    </DialogClose>
+                  </DialogHeader>
+                  <div
+                    className="overflow-y-auto overscroll-contain flex-grow"
+                    onWheel={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
-                    <DialogHeader className="p-2 sm:p-3 lg:p-6 border-b border-gray-700 bg-[#18181B] z-10 flex flex-row items-center justify-between flex-shrink-0">
-                      <DialogTitle className="fluid-h3 font-bold text-orange-500 pr-2 sm:pr-4 leading-tight">{project.title}</DialogTitle>
-                      <DialogClose asChild>
-                        <button className="p-2 sm:p-1 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 transition-colors flex-shrink-0 touch-manipulation">
-                          <X className="h-5 w-5 sm:h-4 sm:w-4 lg:h-5 lg:w-5" />
-                          <span className="sr-only">Close</span>
-                        </button>
-                      </DialogClose>
-                    </DialogHeader>
-                    <div
-                      className="overflow-y-auto overscroll-contain flex-grow"
-                      onWheel={(e) => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      {/* Mobile Layout */}
-                      <div className="block lg:hidden p-3 sm:p-4 space-y-3 sm:space-y-4">
+                    {/* Mobile Layout */}
+                    <div className="block lg:hidden p-3 sm:p-4 space-y-3 sm:space-y-4">
+                      <Image
+                        src={project.showcaseImage || "/engineering-infra.jpg"}
+                        alt={project.title}
+                        width={1600}
+                        height={1200}
+                        className="rounded-lg object-cover w-full h-32 sm:h-40 shadow-lg"
+                      />
+
+                      {project.conclusion && (
+                        <div className="border-l-4 border-orange-500 pl-3 bg-zinc-800/30 p-3 sm:p-4 rounded-r-lg">
+                          <p className="text-sm sm:text-base font-medium text-gray-400 italic leading-relaxed">
+                            "{project.conclusion}"
+                          </p>
+                        </div>
+                      )}
+
+                      {project.specs && project.specs.length > 0 && (
+                        <div className="bg-zinc-800/50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full">
+                          <h4 className="text-base sm:text-lg font-semibold text-orange-400 mb-3">
+                            Specifications
+                          </h4>
+                          <ul className="space-y-2">
+                            {project.specs.map((spec, i) => (
+                              <li
+                                key={i}
+                                className="flex items-start text-sm sm:text-base"
+                              >
+                                <ArrowRight
+                                  size={14}
+                                  className="mr-2 mt-0.5 text-orange-500 flex-shrink-0"
+                                />
+                                <span className="text-gray-300">{spec}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      <div>
+                        <h4 className="fluid-h3 font-semibold text-orange-400 mb-3 border-b border-gray-700 pb-2">
+                          Project Overview
+                        </h4>
+                        <p className="text-gray-400 fluid-body">
+                          {project.description}
+                        </p>
+                      </div>
+
+                      <div className="bg-zinc-800/50 p-3 sm:p-4 rounded-lg border border-gray-700">
+                        <h4 className="fluid-h3 font-semibold text-orange-400 mb-3">
+                          Project Details
+                        </h4>
+                        <div className="fluid-body space-y-2">
+                          <div className="flex flex-col space-y-1">
+                            <strong className="text-gray-500">Client:</strong>
+                            <span className="text-gray-300">
+                              {project.client}
+                            </span>
+                          </div>
+                          <div className="flex flex-col space-y-1">
+                            <strong className="text-gray-500">
+                              Principal Client:
+                            </strong>
+                            <span className="text-gray-300">
+                              {project.principalClient}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Desktop Layout */}
+                    <div className="hidden lg:grid grid-cols-5 gap-12 p-6">
+                      <div className="col-span-3">
                         <Image
-                          src={project.showcaseImage || '/engineering-infra.jpg'}
+                          src={
+                            project.showcaseImage || "/engineering-infra.jpg"
+                          }
                           alt={project.title}
                           width={1600}
                           height={1200}
-                          className="rounded-lg object-cover w-full h-40 sm:h-48 shadow-lg"
+                          className="rounded-lg object-cover w-full shadow-lg mb-6"
                         />
-                        
                         {project.conclusion && (
-                          <div className="border-l-4 border-orange-500 pl-3 bg-zinc-800/30 p-3 sm:p-4 rounded-r-lg">
-                            <p className="text-sm sm:text-base font-medium text-gray-400 italic leading-relaxed">"{project.conclusion}"</p>
+                          <div className="border-l-4 border-orange-500 pl-4">
+                            <p className="text-lg font-medium text-gray-400 italic">
+                              "{project.conclusion}"
+                            </p>
                           </div>
                         )}
-
                         {project.specs && project.specs.length > 0 && (
-                          <div className="bg-zinc-800/50 p-3 sm:p-4 rounded-lg border border-gray-700 w-full">
-                            <h4 className="text-base sm:text-lg font-semibold text-orange-400 mb-3">Specifications</h4>
+                          <div className="bg-zinc-800/50 p-4 rounded-lg border border-gray-700 w-full mt-6">
+                            <h4 className="text-lg font-semibold text-orange-400 mb-3">
+                              Specifications
+                            </h4>
                             <ul className="space-y-2">
                               {project.specs.map((spec, i) => (
-                                <li key={i} className="flex items-start text-sm sm:text-base">
-                                  <ArrowRight size={14} className="mr-2 mt-0.5 text-orange-500 flex-shrink-0" />
+                                <li key={i} className="flex items-start text-sm">
+                                  <ArrowRight
+                                    size={14}
+                                    className="mr-2 mt-0.5 text-orange-500 flex-shrink-0"
+                                  />
                                   <span className="text-gray-300">{spec}</span>
                                 </li>
                               ))}
                             </ul>
                           </div>
                         )}
-
-                        <div>
-                          <h4 className="fluid-h3 font-semibold text-orange-400 mb-3 border-b border-gray-700 pb-2">Project Overview</h4>
-                          <p className="text-gray-400 fluid-body">{project.description}</p>
-                        </div>
-                        
-                        <div className="bg-zinc-800/50 p-3 sm:p-4 rounded-lg border border-gray-700">
-                          <h4 className="fluid-h3 font-semibold text-orange-400 mb-3">Project Details</h4>
-                          <div className="fluid-body space-y-2">
-                            <div className="flex flex-col space-y-1">
-                              <strong className="text-gray-500">Client:</strong>
-                              <span className="text-gray-300">{project.client}</span>
-                            </div>
-                            <div className="flex flex-col space-y-1">
-                              <strong className="text-gray-500">Principal Client:</strong>
-                              <span className="text-gray-300">{project.principalClient}</span>
-                            </div>
-                          </div>
-                        </div>
                       </div>
-
-                      {/* Desktop Layout */}
-                      <div className="hidden lg:grid grid-cols-5 gap-12 p-6">
-                        <div className="col-span-3">
-                          <Image
-                            src={project.showcaseImage || '/engineering-infra.jpg'}
-                            alt={project.title}
-                            width={1600}
-                            height={1200}
-                            className="rounded-lg object-cover w-full shadow-lg mb-6"
-                          />
-                           {project.conclusion && (
-                            <div className="border-l-4 border-orange-500 pl-4">
-                              <p className="text-lg font-medium text-gray-400 italic">"{project.conclusion}"</p>
-                            </div>
-                          )}
-                          {project.specs && project.specs.length > 0 && (
-                            <div className="bg-zinc-800/50 p-4 rounded-lg border border-gray-700 w-full mt-6">
-                              <h4 className="text-lg font-semibold text-orange-400 mb-3">Specifications</h4>
-                              <ul className="space-y-2">
-                                {project.specs.map((spec, i) => (
-                                  <li key={i} className="flex items-start text-sm">
-                                    <ArrowRight size={14} className="mr-2 mt-0.5 text-orange-500 flex-shrink-0" />
-                                    <span className="text-gray-300">{spec}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+                      <div className="col-span-2 space-y-6">
+                        <div>
+                          <h4 className="text-lg font-semibold text-orange-400 mb-2 border-b border-gray-700 pb-2">
+                            Project Overview
+                          </h4>
+                          <p className="text-sm text-gray-400 leading-relaxed">
+                            {project.description}
+                          </p>
                         </div>
-                        <div className="col-span-2 space-y-6">
-                          <div>
-                            <h4 className="text-lg font-semibold text-orange-400 mb-2 border-b border-gray-700 pb-2">Project Overview</h4>
-                            <p className="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-                          </div>
-                          
-                          <div className="bg-zinc-800/50 p-4 rounded-lg border border-gray-700">
-                            <h4 className="text-lg font-semibold text-orange-400 mb-3">Project Details</h4>
-                            <div className="text-sm space-y-2">
-                              <p><strong className="text-gray-500 w-28 inline-block">Client:</strong> {project.client}</p>
-                              <p><strong className="text-gray-500 w-28 inline-block">Principal Client:</strong> {project.principalClient}</p>
-                            </div>
+
+                        <div className="bg-zinc-800/50 p-4 rounded-lg border border-gray-700">
+                          <h4 className="text-lg font-semibold text-orange-400 mb-3">
+                            Project Details
+                          </h4>
+                          <div className="text-sm space-y-2">
+                            <p>
+                              <strong className="text-gray-500 w-28 inline-block">
+                                Client:
+                              </strong>{" "}
+                              {project.client}
+                            </p>
+                            <p>
+                              <strong className="text-gray-500 w-28 inline-block">
+                                Principal Client:
+                              </strong>{" "}
+                              {project.principalClient}
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            ))}
-          </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            );
+          })}
         </div>
       </section>
     </>
