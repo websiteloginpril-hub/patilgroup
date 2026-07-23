@@ -26,7 +26,7 @@ const FastenersPage = () => {
       if (autoPlayRef.current) {
         clearInterval(autoPlayRef.current);
       }
-      
+
       autoPlayRef.current = setInterval(() => {
         if (isAutoPlaying) {
           api.scrollNext();
@@ -53,7 +53,7 @@ const FastenersPage = () => {
   const handleMouseLeave = () => {
     setIsAutoPlaying(true);
   };
-  
+
   return (
     <div className="bg-white text-black">
       <div className="relative h-screen max-h-screen overflow-hidden hero-section">
@@ -67,7 +67,7 @@ const FastenersPage = () => {
             className="z-0"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 z-10"></div>
-          
+
           <div className="relative z-20 h-full flex items-center justify-center hero-content">
             <div className="text-center px-6 w-full max-w-lg mx-auto">
               <h1 className="hero-title font-bold text-white leading-tight mb-3 drop-shadow-2xl">
@@ -80,7 +80,7 @@ const FastenersPage = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Desktop Layout */}
         <div className="hidden md:block relative h-full hero-image">
           <Image
@@ -92,7 +92,7 @@ const FastenersPage = () => {
           />
           {/* Overlay */}
           <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
-          
+
           {/* Content */}
           <div className="relative max-w-7xl mx-auto flex flex-col md:flex-row h-full z-20 hero-content">
             {/* Left Panel */}
@@ -109,42 +109,42 @@ const FastenersPage = () => {
 
       <div className="bg-black py-8 sm:py-10 md:py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="flex">
-                <div className="w-full md:w-4/5 pr-0 md:pr-6 lg:pr-10">
-                    <TypingAnimation
-                      text="Patil Group has set up global manufacturing facilities under the Make in India initiative, capable of supplying world-class fastening systems for railway infrastructure"
-                      showCursor
-                      speed={30}
-                      className="block fluid-body-sm font-light text-white fade-in-section"
-                      cursorColor="#ffffff"
-                    />
-                </div>
-                <div className="hidden md:block md:w-1/5 border-l border-gray-700/40"></div>
+          <div className="flex">
+            <div className="w-full md:w-4/5 pr-0 md:pr-6 lg:pr-10">
+              <TypingAnimation
+                text="Patil Group has set up global manufacturing facilities under the Make in India initiative, capable of supplying world-class fastening systems for railway infrastructure"
+                showCursor
+                speed={30}
+                className="block fluid-body-sm font-light text-white fade-in-section"
+                cursorColor="#ffffff"
+              />
             </div>
+            <div className="hidden md:block md:w-1/5 border-l border-gray-700/40"></div>
+          </div>
         </div>
       </div>
 
-             <div className="bg-white py-8 sm:py-12 md:py-16">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-           <div className="mb-8 sm:mb-12 md:mb-16 fade-in-section">
-             <p className="fluid-body text-gray-700 text-justify">
-               Fasteners are the critical link between rails and sleepers, ensuring safety and performance across diverse track conditions. Patil Group, in collaboration with global leaders in fastening technology, has built proven expertise in designing, manufacturing, and supplying advanced fastening systems for modern rail networks.
-             </p>
-           </div>
-           
-           <div className="mb-8 sm:mb-12 md:mb-16 fade-in-section">
-             <p className="fluid-body text-gray-700 text-justify">
-               Patil Group has over two decades of experience in track fastening systems — beginning with joint ventures and the development of a local vendor base. In 2020, the Group established a dedicated fastening plant, bringing all processes under one roof and adding in-house capabilities in die tool design and heat treatment. Today, Patil Group is the largest fastening supplier for metros and a trusted partner to Indian Railways across multiple zones.
-             </p>
-           </div>
-           
+      <div className="bg-white py-8 sm:py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="mb-8 sm:mb-12 md:mb-16 fade-in-section">
+            <p className="fluid-body text-gray-700 text-justify">
+              Fasteners are the critical link between rails and sleepers, ensuring safety and performance across diverse track conditions. Patil Group, in collaboration with global leaders in fastening technology, has built proven expertise in designing, manufacturing, and supplying advanced fastening systems for modern rail networks.
+            </p>
+          </div>
+
+          <div className="mb-8 sm:mb-12 md:mb-16 fade-in-section">
+            <p className="fluid-body text-gray-700 text-justify">
+              Patil Group has over two decades of experience in track fastening systems — beginning with joint ventures and the development of a local vendor base. In 2020, the Group established a dedicated fastening plant, bringing all processes under one roof and adding in-house capabilities in die tool design and heat treatment. Today, Patil Group is the largest fastening supplier for metros and a trusted partner to Indian Railways across multiple zones.
+            </p>
+          </div>
+
         </div>
       </div>
 
       {/* For Mainline Ballasted Track Section */}
       <section className="bg-white py-8 sm:py-10 md:py-12 relative">
         {/* Right Edge Gradient Line */}
-        <div 
+        <div
           className="absolute hidden lg:block fade-in-section"
           style={{
             width: '564px',
@@ -154,7 +154,7 @@ const FastenersPage = () => {
             background: 'linear-gradient(270deg, #8A393B 0%, #1E3888 30%, #F2913F 60%, rgba(242, 145, 63, 0) 97.12%)'
           }}
         />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           {/* Section Header */}
           <div className="fade-in-section mb-12">
@@ -165,7 +165,7 @@ const FastenersPage = () => {
 
           {/* Content Grid */}
           <div className="space-y-8 fade-in-section">
-            
+
             {/* Elastic Rail Clips Row */}
             <div className="bg-[#F5F4F1] rounded-lg p-8 lg:p-10">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
@@ -188,7 +188,7 @@ const FastenersPage = () => {
                     Production Capacity
                   </h4>
                   <p className="fluid-body-sm text-gray-700">
-                    Approximately 110,000 units per annum
+                    4,800,000 units per annum
                   </p>
                 </div>
               </div>
@@ -313,18 +313,18 @@ const FastenersPage = () => {
       <div className="bg-[#F5F4F1] py-8 sm:py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="space-y-12">
-            
+
             {/* System 300 */}
             <div className="bg-white rounded-lg p-8 lg:p-10 shadow-lg">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 <div className="order-2 lg:order-1">
                   <div className="relative">
-                    <Image 
-                      src="/fs300.jpg" 
-                      alt="System 300" 
-                      width={400} 
-                      height={300} 
-                      className="rounded-lg object-cover w-full h-64" 
+                    <Image
+                      src="/fs300.jpg"
+                      alt="System 300"
+                      width={400}
+                      height={300}
+                      className="rounded-lg object-cover w-full h-64"
                     />
                     <div className="absolute top-4 left-4">
                       <div className="bg-[#F2913F] text-white px-4 py-2 rounded font-bold">
@@ -372,12 +372,12 @@ const FastenersPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 <div>
                   <div className="relative">
-                    <Image 
-                      src="/fs336.jpg" 
-                      alt="System DB 336" 
-                      width={400} 
-                      height={300} 
-                      className="rounded-lg object-cover w-full h-64" 
+                    <Image
+                      src="/fs336.jpg"
+                      alt="System DB 336"
+                      width={400}
+                      height={300}
+                      className="rounded-lg object-cover w-full h-64"
                     />
                     <div className="absolute top-4 left-4">
                       <div className="bg-[#F2913F] text-white px-4 py-2 rounded font-bold">
@@ -576,13 +576,13 @@ const FastenersPage = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#8A393B] mb-6 sm:mb-8 md:mb-12 fade-in-section">
             Fatigue Testing
           </h2>
-          
+
           <div className="mb-8 sm:mb-12 md:mb-16 fade-in-section">
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
               Our laboratories are equipped with world-class facilities including India's first fatigue testing machine for railway fastening systems. It simulates real track conditions and subjects components to millions of load cycles, with five million cycles equating to more than ten years of service life in the lab. Earlier, such advanced testing was available only in Europe — this capability now sets a new benchmark for safety and reliability in India.
             </p>
           </div>
-          
+
           <div className="mt-8 sm:mt-12 md:mt-16 flex justify-center fade-in-section">
             <Image
               src="/fatigue.jpg"
