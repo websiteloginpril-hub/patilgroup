@@ -168,10 +168,12 @@ const OurProjectsSection = () => {
                     <Image
                       src={project.image}
                       alt={project.city}
-                      width={400}
-                      height={533}
+                      width={520}
+                      height={693}
+                      unoptimized
+                      sizes="(max-width: 640px) 200px, 300px"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      priority={index < 3}
+                      priority={index < 4}
                     />
                   </div>
                   <h3 className="mb-1 text-sm font-bold text-gray-900 sm:text-xl">
