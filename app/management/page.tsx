@@ -11,9 +11,7 @@ import Image from 'next/image';
    — no zoom-in effect
    — no blurred/dark backdrop layers                                 */
 const getManagementImageClassName = (name: string) =>
-  name.toLowerCase().includes('swapan')
-    ? 'management-leadership-image management-leadership-image-swapan object-cover object-top'
-    : 'management-leadership-image object-cover object-top';
+  'management-leadership-image object-cover object-top';
 
 const leadershipData = [
   {

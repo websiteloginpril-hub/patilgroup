@@ -568,20 +568,20 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover, stateLocationData = [
               onPointerLeave={(e) => {
                 if (isTapMode) return;
                 setHoveredPinIndex(null);
-                
+
                 // ✅ Check if pointer is now over a state path when leaving pin
                 // Use requestAnimationFrame to ensure pointer has moved to the state
                 requestAnimationFrame(() => {
                   const under = document.elementFromPoint(e.clientX, e.clientY) as Element | null;
                   if (!under) return;
-                  
+
                   // Skip if still over a pin
                   if (under.closest(".pin")) return;
-                  
+
                   // Check if over a state path
                   const statePath = under.closest('path[id^="IN-"]');
                   const stateId = statePath?.getAttribute("id") ?? null;
-                  
+
                   if (stateId) {
                     // Update pending hover state and commit immediately
                     pendingHoverStateRef.current = stateId;

@@ -347,46 +347,46 @@ export default function Home() {
         </div>
 
         {/* Hero Content Overlay */}
-        <div className="relative z-10 px-4 sm:absolute sm:inset-0 sm:px-6 lg:flex lg:items-center lg:justify-center lg:px-8 hero-content">
-          <div className="mx-auto flex h-auto sm:h-full w-full max-w-7xl flex-col justify-between pt-24 pb-4 sm:justify-between sm:pt-20 sm:pb-6 text-left md:pt-24 lg:max-w-5xl lg:items-center lg:justify-center lg:pb-0 lg:pt-32 lg:text-center">
+        <div className="relative z-10 px-4 sm:absolute sm:inset-0 sm:px-6 lg:px-8 hero-content">
+          <div className="mx-auto flex h-auto sm:h-full w-full max-w-7xl flex-col justify-between pt-24 pb-4 sm:justify-between sm:pt-20 sm:pb-6 text-left md:pt-24">
             {/* Main Heading - First Animation */}
-            <h1 className={`self-start text-left mb-2 sm:mb-2 md:mb-3 lg:self-center lg:text-center lg:mb-6 transition-all duration-1000 ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="text-white text-4xl sm:text-3xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-0 sm:mb-1">
+            <h1 className={`self-start text-left mb-2 sm:mb-2 md:mb-3 transition-all duration-1000 ${showText ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="text-white text-4xl sm:text-3xl lg:text-4xl xl:text-4xl font-extrabold tracking-tight mb-0 sm:mb-1">
                 WORLD&apos;S
               </div>
-              <div className="text-[#F2913F] text-4xl sm:text-3xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-0 sm:mb-1">
+              <div className="text-[#F2913F] text-4xl sm:text-3xl lg:text-4xl xl:text-4xl font-extrabold tracking-tight mb-0 sm:mb-1">
                 LARGEST SLEEPER
               </div>
-              <div className="text-white text-4xl sm:text-3xl lg:text-6xl xl:text-6xl font-extrabold tracking-tight mb-2 sm:mb-2 md:mb-3 lg:mb-6">
+              <div className="text-white text-4xl sm:text-3xl lg:text-4xl xl:text-4xl font-extrabold tracking-tight mb-2 sm:mb-2 md:mb-3">
                 MANUFACTURER
               </div>
             </h1>
 
             <div
-              className="self-end flex flex-col items-end text-right gap-1 sm:gap-2 md:gap-3 mt-8 sm:mt-0 mb-2 sm:mb-2 md:mb-3 lg:grid lg:w-full lg:max-w-4xl lg:grid-cols-2 lg:gap-6 lg:self-center lg:items-start lg:text-center lg:mb-5 transition-all duration-1000"
+              className="self-end flex flex-col items-end text-right gap-1 sm:gap-2 md:gap-3 mt-8 sm:mt-0 mb-2 sm:mb-2 md:mb-3 transition-all duration-1000"
               style={{
                 opacity: showText ? 1 : 0,
                 transform: showText ? 'translateY(0)' : 'translateY(20px)',
                 transitionDelay: showText ? '800ms' : '0ms',
               }}
             >
-              <div className="flex flex-col items-end lg:items-center">
-                <div className="text-white text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold mb-1">
+              <div className="flex flex-col items-end">
+                <div className="text-white text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1">
                   {showText ? <CountUp end={50} duration={2} suffix="+" delay={0.8} /> : '0+'}
                 </div>
-                <div className="text-[#F2913F] text-lg sm:text-lg lg:text-base font-medium">years on the job</div>
+                <div className="text-[#F2913F] text-lg sm:text-lg lg:text-xl font-medium">years on the job</div>
               </div>
 
-              <div className="flex flex-col items-end lg:items-center">
-                <div className="text-white text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold mb-1">
+              <div className="flex flex-col items-end">
+                <div className="text-white text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1">
                   {showText ? <CountUp end={4000000} duration={2} separator="," suffix="+" delay={0.8} /> : '0+'}
                 </div>
-                <div className="text-[#F2913F] text-lg sm:text-lg lg:text-base font-medium">Safe Sleepers per year</div>
+                <div className="text-[#F2913F] text-lg sm:text-lg lg:text-xl font-medium">Safe Sleepers per year</div>
               </div>
             </div>
 
             <div
-              className="self-center text-center text-xl sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight mt-[15px] sm:mt-[15px] md:mt-[15px] lg:mt-0 pb-3 sm:pb-4 lg:pb-3 transition-all duration-1000"
+              className="self-center text-center text-xl sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight mt-[15px] sm:mt-[15px] md:mt-[15px] pb-3 sm:pb-4 transition-all duration-1000"
               style={{
                 opacity: showText ? 1 : 0,
                 transform: showText ? 'translateY(0)' : 'translateY(20px)',

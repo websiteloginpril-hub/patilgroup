@@ -115,116 +115,116 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ===== DESKTOP FOOTER (md and above) — original layout ===== */}
-      <div className="hidden md:block">
-        {/* Pre-footer section */}
-        <div className="bg-black pt-8 sm:pt-12 md:pt-16">
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center">
-            <div className="mb-6 md:mb-0">
+      {/* ================================== */}
+      {/* DESKTOP FOOTER (>=md) — from image */}
+      {/* ================================== */}
+      <div className="hidden md:block bg-black text-white">
+        {/* Main 3-column section */}
+        <div className="max-w-7xl mx-auto px-8 lg:px-16 pt-14 pb-10">
+          <div className="grid grid-cols-3 gap-8">
+
+            {/* ── Col 1: Address ── */}
+            <div className="flex flex-col items-start">
+              <h4 className="text-[#F2913F] font-bold text-lg mb-5 tracking-wide">Address</h4>
               <address className="not-italic">
-                <p className="text-lg sm:text-xl md:text-2xl lg:text-xl font-bold">
-                  6-3-1239/B/111 Raj Bhavan Rd,<br />
-                  Raj Bhavan Quarters Colony,<br />
-                  Somajiguda, Hyderabad,<br />
+                <p className="text-white text-[15px] font-medium leading-relaxed mb-4">
+                  6-3-1239/B/111 Raj Bhavan Rd, Raj Bhavan<br />
+                  Quarters Colony, Somajiguda, Hyderabad,<br />
                   Telangana India, 500082
                 </p>
+                <div className="text-gray-400 text-[14px] space-y-1">
+                  <p><a href="mailto:info@patilgroup.com" className="hover:text-[#F2913F] transition-colors">info@patilgroup.com</a></p>
+                  <p><a href="tel:+914039556700" className="hover:text-[#F2913F] transition-colors">+91 40 3955 6700/6800</a></p>
+                  <p><a href="tel:+914039556750" className="hover:text-[#F2913F] transition-colors">Fax: +91 40 3955 6750</a></p>
+                </div>
               </address>
-              <div className="flex items-center gap-4 mt-6">
-                <Link href="/contact" className="inline-block">
-                  <button className="bg-[#F2913F] text-black font-bold py-2 sm:py-3 px-6 sm:px-8 rounded-full text-xs sm:text-sm hover:bg-orange-400 transition-colors">
-                    Contact Us
-                  </button>
-                </Link>
+              {/* Social icons */}
+              <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => window.open('https://maps.app.goo.gl/Hyms5ZonVwVXRy6t7?g_st=aw', '_blank')}
-                  className="bg-[#F2913F] text-black p-2 sm:p-3 rounded-full hover:bg-orange-400 transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#1a1a1a] border border-gray-700 flex items-center justify-center text-gray-300 hover:text-[#F2913F] hover:border-[#F2913F] transition-all duration-200"
                   aria-label="View location on Google Maps"
-                  title="View our location on Google Maps"
                 >
-                  <MapPin size={18} className="sm:w-5 sm:h-5" />
+                  <MapPin size={17} />
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Main footer section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-
-            {/* About & Socials */}
-            <div className="space-y-4 sm:space-y-6">
-              <div className="space-y-0">
-                <p className="text-xs sm:text-sm">
-                  <a href="mailto:info@patilgroup.com" className="hover:text-orange-400 transition-colors">info@patilgroup.com</a>
-                </p>
-                <p className="text-sm sm:text-base">
-                  <a href="tel:+914039556700" className="hover:text-orange-400 transition-colors whitespace-nowrap">Tel No:+91 40 3955 6700/6800</a>
-                </p>
-                <p className="text-sm sm:text-base">
-                  <a href="tel:+914039556750" className="hover:text-orange-400 transition-colors">Fax No:+91 40 3955 6750</a>
-                </p>
-              </div>
-              <div className="flex space-x-3 sm:space-x-4">
                 <a
                   href="https://www.linkedin.com/company/patil-group/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Visit Patil Group on LinkedIn"
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-400 transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#1a1a1a] border border-gray-700 flex items-center justify-center text-gray-300 hover:text-[#F2913F] hover:border-[#F2913F] transition-all duration-200"
                 >
-                  <Linkedin size={16} className="sm:w-5 sm:h-5" />
+                  <Linkedin size={17} />
                 </a>
               </div>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <div className="flex items-stretch justify-between gap-4 md:block">
-                <div>
-                  <h4 className="font-bold mb-4">Quick Links</h4>
-                  <ul className="space-y-3 text-gray-400">
-                    <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                    <li><Link href="/products" className="hover:text-white transition-colors">Products</Link></li>
-                    <li><Link href="/systems" className="hover:text-white transition-colors">Systems</Link></li>
-                    <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
-                    <li><Link href="/cme" className="hover:text-white transition-colors">CME</Link></li>
-                    <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
-                  </ul>
-                </div>
-              </div>
+            {/* ── Col 2: Quick Links ── */}
+            <div className="flex flex-col items-start pl-8">
+              <h4 className="text-[#F2913F] font-bold text-lg mb-5 tracking-wide">Quick Links</h4>
+              <ul className="space-y-3">
+                {[
+                  { href: '/about', label: 'About Us' },
+                  { href: '/products', label: 'Products' },
+                  { href: '/systems', label: 'Systems' },
+                  { href: '/projects', label: 'Projects' },
+                  { href: '/cme', label: 'CME' },
+                  { href: '/careers', label: 'Careers' },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-gray-400 text-[14px] hover:text-[#F2913F] transition-colors duration-200">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Action Buttons */}
-            <div className="md:col-span-2">
-              <div className="mt-6 flex justify-end md:mt-8 md:items-center md:justify-between">
-                <div className="md:flex md:flex-wrap md:items-center md:gap-4">
-                  <Link href="/whistleblower" className="inline-block">
-                    <span className="inline-block bg-[#F2913F] text-black font-bold py-3 px-6 rounded-full text-sm hover:bg-orange-400 transition-colors">WHISTLEBLOWER POLICY</span>
-                  </Link>
-                  <Link href="/privacy-policy" className="inline-block">
-                    <span className="inline-block bg-[#F2913F] text-black font-bold py-3 px-6 rounded-full text-sm hover:bg-orange-400 transition-colors">PRIVACY POLICY</span>
-                  </Link>
-                </div>
-                <button
-                  onClick={scrollToTop}
-                  className="h-12 w-12 items-center justify-center rounded-full bg-[#F2913F] text-black transition-colors hover:bg-orange-400 md:flex hidden"
-                  aria-label="Scroll to top"
-                >
-                  <ArrowUp size={24} />
-                </button>
-              </div>
+            {/* ── Col 3: Action Buttons ── */}
+            <div className="flex flex-col gap-4 items-end justify-start pt-1">
+              <Link
+                href="/contact"
+                className="w-full max-w-[260px] bg-[#7a2d2d] hover:bg-[#8a393b] text-white font-bold text-[13px] tracking-widest uppercase py-4 px-6 rounded-xl text-center transition-all duration-200 hover:brightness-110"
+              >
+                CONTACT US
+              </Link>
+              <Link
+                href="/whistleblower"
+                className="w-full max-w-[260px] bg-[#111] hover:bg-[#1a1a1a] text-white font-bold text-[13px] tracking-widest uppercase py-4 px-6 rounded-xl text-center border border-gray-700 hover:border-gray-500 transition-all duration-200"
+              >
+                WHISTLEBLOWER POLICY
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="w-full max-w-[260px] bg-[#111] hover:bg-[#1a1a1a] text-white font-bold text-[13px] tracking-widest uppercase py-4 px-6 rounded-xl text-center border border-gray-700 hover:border-gray-500 transition-all duration-200"
+              >
+                PRIVACY POLICY
+              </Link>
             </div>
+
           </div>
+        </div>
 
-          {/* CIN Information */}
-          <div className="mt-2 border-t border-gray-800 pt-6 sm:mt-8">
-            <p className="text-gray-400 text-sm text-center">
-              CIN: U60100TG1996PTC023894 | © 2025 Patil Rail Infrastructure Pvt. Ltd. (PRIL) | <strong>All rights reserved.</strong>
-            </p>
-            <p className="text-gray-400 text-sm text-center mt-2">
-              Mr. Santosh Sinha, General Manager - Compliance, Mobile: +91 9930495226
-            </p>
+        {/* ── Bottom bar: divider + copyright + scroll-to-top ── */}
+        <div className="border-t border-gray-800">
+          <div className="max-w-7xl mx-auto px-8 lg:px-16 py-5 flex items-center justify-between">
+            <div className="flex-1 text-center">
+              <p className="text-gray-500 text-[13px]">
+                CIN: U60100TG1996PTC023894 | © 2025 Patil Rail Infrastructure Pvt. Ltd. (PRIL) |{' '}
+                <strong className="text-gray-400 font-semibold">All rights reserved.</strong>
+              </p>
+              <p className="text-gray-500 text-[13px] mt-1">
+                Mr. Santosh Sinha, General Manager - Compliance, Mobile: +91 9930495226
+              </p>
+            </div>
+            {/* Orange scroll-to-top circle — right edge */}
+            <button
+              onClick={scrollToTop}
+              className="shrink-0 ml-6 bg-[#F2913F] w-12 h-12 rounded-full flex items-center justify-center text-black hover:bg-orange-400 transition-all duration-300 shadow-lg hover:-translate-y-1"
+              aria-label="Scroll to top"
+            >
+              <ArrowUp size={20} />
+            </button>
           </div>
         </div>
       </div>
@@ -233,3 +233,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
