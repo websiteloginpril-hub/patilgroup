@@ -11,7 +11,7 @@ const cards = [
     image: '/IIT Tirupati.png',
     title: 'Patil Group Signs MoU with IIT Tirupati',
     paragraphs: [
-      "Patil Group has been recognised by the Confederation of Indian Industry (CII) as one of the top 10 Indian innovations in the railway sector for its indigenous Stricter Tolerance Track Fastening System, designed to enhance safety and ride comfort on semi-high-speed corridors including Vande Bharat routes.",
+      "Patil Group is proud to announce a strategic MoU with IIT Tirupati, bridging academia and industry in service of India's infrastructure future.",
     ],
     bullets: [
       'Research Collaboration: Joint work on real-world challenges across civil engineering, AI/ML and allied domains.',
