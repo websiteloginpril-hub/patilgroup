@@ -65,9 +65,11 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/pg.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/pg.png" />
         <link rel="shortcut icon" href="/pg.png" />
-        <script
+        <Script
+          id="chatbase-script"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="d8bJDvq40KN0i1VPL9vY7";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"||document.readyState==="interactive"){onLoad()}else{window.addEventListener("load",onLoad)}})();`,
+            __html: `(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="d8bJDvq40KN0i1VPL9vY7";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();`,
           }}
         />
       </head>
