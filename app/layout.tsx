@@ -65,21 +65,53 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/pg.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/pg.png" />
         <link rel="shortcut icon" href="/pg.png" />
-        <Script
-          id="chatbase-script"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="d8bJDvq40KN0i1VPL9vY7";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();`,
-          }}
-        />
       </head>
       <body className="font-sans">
+        {/* Google Analytics */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-Z7GMB3Z4VR"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-Z7GMB3Z4VR');
+          `}
+        </Script>
+
         <LenisProvider>
           <Navbar />
           <main>{children}</main>
           <Footer />
           <Toaster />
         </LenisProvider>
+        <Script
+          id="chatbase-script"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if(!window.chatbase||window.chatbase("getState")!=="initialized"){
+                window.chatbase=(...args)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(args)};
+                window.chatbase=new Proxy(window.chatbase,{
+                  get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}
+                });
+              }
+              const onLoad=function(){
+                if(document.getElementById("d8bJDvq40KN0i1VPL9vY7")) return;
+                const script=document.createElement("script");
+                script.src="https://www.chatbase.co/embed.min.js";
+                script.id="d8bJDvq40KN0i1VPL9vY7";
+                script.domain="www.chatbase.co";
+                document.body.appendChild(script);
+              };
+              if(document.readyState==="complete"){onLoad();}else{window.addEventListener("load",onLoad);}
+            `,
+          }}
+        />
       </body>
     </html>
   );
