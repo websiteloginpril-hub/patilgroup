@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
 import { Download, ChevronDown, Folder, FileText } from 'lucide-react';
 import Image from 'next/image';
+import BrochureDownloadModal from '@/components/BrochureDownloadModal';
 
 interface PDFDocument {
   name: string;
@@ -22,6 +23,15 @@ const OurResourcesPage = () => {
 
   const [isExploreExpanded, setIsExploreExpanded] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+
+  // Brochure download modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBrochure, setSelectedBrochure] = useState<{ name: string; path: string } | null>(null);
+
+  const openBrochureModal = (name: string, filename: string) => {
+    setSelectedBrochure({ name, path: `/Brochure/${filename}` });
+    setIsModalOpen(true);
+  };
 
   const brochures = [
     {
@@ -221,13 +231,13 @@ const OurResourcesPage = () => {
                     <span>Multiple Pages</span>
                   </div>
 
-                  {/* Download Button */}
+                  {/* Download Button — opens modal form */}
                   <button
-                    onClick={() => handleDownload(brochure.filename, brochure.title)}
+                    onClick={() => openBrochureModal(brochure.title, brochure.filename)}
                     className="flex w-full items-center justify-center gap-2 text-white px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base bg-[#F2913F] hover:bg-[#E6822B]"
                   >
                     <Download size={16} className="sm:w-4 sm:h-4" />
-                    <span>Download PDF</span>
+                    <span>Download Brochure</span>
                   </button>
                 </div>
               </div>
@@ -388,6 +398,16 @@ const OurResourcesPage = () => {
           )}
         </div>
       </section>
+
+      {/* Brochure Download Modal */}
+      {selectedBrochure && (
+        <BrochureDownloadModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          brochureName={selectedBrochure.name}
+          brochurePath={selectedBrochure.path}
+        />
+      )}
     </div>
   );
 };
