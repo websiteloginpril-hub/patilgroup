@@ -23,7 +23,7 @@ const GoogleAuthContext = createContext<GoogleAuthContextValue | null>(null);
 function GoogleAuthProviderInner({ children }: { children: ReactNode }) {
   const [googleUser, setGoogleUser] = useState<GoogleUser | null>(null);
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const [pendingCallback, setPendingCallback] = useState<((user: GoogleUser) => void) | null>(null);
+  const pendingCallbackRef = React.useRef<((user: GoogleUser) => void) | null>(null);
 
   const fetchUserInfo = useCallback(async (accessToken: string, onSuccess?: (user: GoogleUser) => void) => {
     try {
@@ -55,23 +55,29 @@ function GoogleAuthProviderInner({ children }: { children: ReactNode }) {
 
   const login = useGoogleLogin({
     onSuccess: (response) => {
-      fetchUserInfo(response.access_token, pendingCallback ?? undefined);
-      setPendingCallback(null);
+      fetchUserInfo(response.access_token, pendingCallbackRef.current ?? undefined);
+      pendingCallbackRef.current = null;
     },
     onError: () => {
       setIsSigningIn(false);
-      setPendingCallback(null);
+      pendingCallbackRef.current = null;
     },
     onNonOAuthError: () => {
       setIsSigningIn(false);
-      setPendingCallback(null);
+      pendingCallbackRef.current = null;
     },
   });
 
   const signIn = useCallback((onSuccess?: (user: GoogleUser) => void) => {
     setIsSigningIn(true);
-    setPendingCallback(onSuccess ? () => onSuccess : null);
-    login();
+    pendingCallbackRef.current = onSuccess || null;
+    try {
+      login();
+    } catch (e) {
+      console.error('Google login failed:', e);
+      setIsSigningIn(false);
+      pendingCallbackRef.current = null;
+    }
   }, [login]);
 
   const signOut = useCallback(() => {
