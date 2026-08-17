@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import LenisProvider from '@/components/LenisProvider';
+import { GoogleAuthProvider } from '@/contexts/GoogleAuthContext';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patilgroup.com'),
@@ -83,12 +84,14 @@ export default function RootLayout({
           `}
         </Script>
 
-        <LenisProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <Toaster />
-        </LenisProvider>
+        <GoogleAuthProvider>
+          <LenisProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <Toaster />
+          </LenisProvider>
+        </GoogleAuthProvider>
         <Script
           id="chatbase-script"
           strategy="lazyOnload"

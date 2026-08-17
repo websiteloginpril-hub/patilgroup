@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { useGoogleLogin, googleLogout } from '@react-oauth/google';
+import { useGoogleLogin, googleLogout, GoogleOAuthProvider } from '@react-oauth/google';
 
 export interface GoogleUser {
   email: string;
@@ -20,7 +20,7 @@ interface GoogleAuthContextValue {
 
 const GoogleAuthContext = createContext<GoogleAuthContextValue | null>(null);
 
-export function GoogleAuthProvider({ children }: { children: ReactNode }) {
+function GoogleAuthProviderInner({ children }: { children: ReactNode }) {
   const [googleUser, setGoogleUser] = useState<GoogleUser | null>(null);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [pendingCallback, setPendingCallback] = useState<((user: GoogleUser) => void) | null>(null);
@@ -86,8 +86,28 @@ export function GoogleAuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+export function GoogleAuthProvider({ children }: { children: ReactNode }) {
+  return (
+    <GoogleOAuthProvider clientId="1003318748688-gaa53tjotsdipgs7n3vor6bfvn7tr1v6.apps.googleusercontent.com">
+      <GoogleAuthProviderInner>
+        {children}
+      </GoogleAuthProviderInner>
+    </GoogleOAuthProvider>
+  );
+}
+
 export function useGoogleAuth() {
   const ctx = useContext(GoogleAuthContext);
-  if (!ctx) throw new Error('useGoogleAuth must be used within GoogleAuthProvider');
+  if (!ctx) {
+    if (typeof window === 'undefined') {
+      return {
+        googleUser: null,
+        isSigningIn: false,
+        signIn: () => {},
+        signOut: () => {}
+      };
+    }
+    throw new Error('useGoogleAuth must be used within GoogleAuthProvider');
+  }
   return ctx;
 }
