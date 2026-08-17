@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import { Download, ChevronDown, Folder, FileText, LogIn, Loader2 } from 'lucide-react';
+import { Download, ChevronDown, Folder, FileText, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import BrochureDownloadModal from '@/components/BrochureDownloadModal';
 import { useDocumentDownload } from '@/hooks/useDocumentDownload';
@@ -207,29 +207,6 @@ const OurResourcesPage = () => {
           </div>
         </div>
 
-        {/* Google Sign-In status indicator */}
-        {googleUser && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
-            <div className="flex items-center gap-2 text-sm text-gray-500 bg-green-50 border border-green-200 rounded-lg px-4 py-2 w-fit">
-              {googleUser.picture ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={googleUser.picture} alt={googleUser.name} className="w-5 h-5 rounded-full" referrerPolicy="no-referrer" />
-              ) : (
-                <div className="w-5 h-5 rounded-full bg-green-400" />
-              )}
-              <span className="text-green-700 font-medium">Signed in as {googleUser.email}</span>
-            </div>
-          </div>
-        )}
-
-        {!googleUser && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
-            <div className="flex items-center gap-2 text-sm text-gray-500 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 w-fit">
-              <LogIn className="w-4 h-4 text-blue-600" />
-              <span className="text-blue-700">Google Sign-In required to download documents</span>
-            </div>
-          </div>
-        )}
 
         {/* Brochures Content - Centered Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
