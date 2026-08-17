@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useGSAPAnimations } from '@/hooks/useGSAPAnimations';
-import { Download, ChevronDown, Folder, FileText } from 'lucide-react';
+import { Download, ChevronDown, Folder, FileText, LogIn, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import BrochureDownloadModal from '@/components/BrochureDownloadModal';
+import { useDocumentDownload } from '@/hooks/useDocumentDownload';
+import { useGoogleAuth } from '@/contexts/GoogleAuthContext';
+import { GoogleUser } from '@/contexts/GoogleAuthContext';
 
 interface PDFDocument {
   name: string;
@@ -18,20 +21,30 @@ interface DocumentCategory {
   pdfs: PDFDocument[];
 }
 
+interface ModalState {
+  name: string;
+  path: string;
+  googleUser: GoogleUser;
+}
+
 const OurResourcesPage = () => {
   useGSAPAnimations();
+
+  const { googleUser, isSigningIn } = useGoogleAuth();
 
   const [isExploreExpanded, setIsExploreExpanded] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
 
-  // Brochure download modal state
+  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBrochure, setSelectedBrochure] = useState<{ name: string; path: string } | null>(null);
+  const [modalState, setModalState] = useState<ModalState | null>(null);
 
-  const openBrochureModal = (name: string, filename: string) => {
-    setSelectedBrochure({ name, path: `/Brochure/${filename}` });
+  const handleOpenModal = useCallback((name: string, path: string, user: GoogleUser) => {
+    setModalState({ name, path, googleUser: user });
     setIsModalOpen(true);
-  };
+  }, []);
+
+  const { handleDownloadClick } = useDocumentDownload({ onOpenModal: handleOpenModal });
 
   const brochures = [
     {
@@ -126,13 +139,6 @@ const OurResourcesPage = () => {
     }
   ];
 
-  const handleDownload = (filename: string, title: string, path?: string) => {
-    const link = document.createElement('a');
-    link.href = path || `/Brochure/${filename}`;
-    link.download = filename;
-    link.click();
-  };
-
   const handleView = (path: string) => {
     window.open(path, '_blank');
   };
@@ -143,6 +149,34 @@ const OurResourcesPage = () => {
       [categoryId]: !prev[categoryId]
     }));
   };
+
+  // Reusable download row component for document categories
+  const DocumentRow = ({ pdf }: { pdf: PDFDocument }) => (
+    <div className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200">
+      <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
+      <span
+        className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
+        onClick={() => handleView(pdf.path)}
+      >
+        {pdf.name}
+      </span>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDownloadClick(pdf.name, pdf.path);
+        }}
+        disabled={isSigningIn}
+        className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-wait"
+        aria-label={`Download ${pdf.name}`}
+      >
+        {isSigningIn ? (
+          <Loader2 className="w-4 h-4 text-gray-500 animate-spin" />
+        ) : (
+          <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
+        )}
+      </button>
+    </div>
+  );
 
   return (
     <div className="bg-white pt-[103px]">
@@ -172,6 +206,30 @@ const OurResourcesPage = () => {
             }}></div>
           </div>
         </div>
+
+        {/* Google Sign-In status indicator */}
+        {googleUser && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+            <div className="flex items-center gap-2 text-sm text-gray-500 bg-green-50 border border-green-200 rounded-lg px-4 py-2 w-fit">
+              {googleUser.picture ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={googleUser.picture} alt={googleUser.name} className="w-5 h-5 rounded-full" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="w-5 h-5 rounded-full bg-green-400" />
+              )}
+              <span className="text-green-700 font-medium">Signed in as {googleUser.email}</span>
+            </div>
+          </div>
+        )}
+
+        {!googleUser && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+            <div className="flex items-center gap-2 text-sm text-gray-500 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 w-fit">
+              <LogIn className="w-4 h-4 text-blue-600" />
+              <span className="text-blue-700">Google Sign-In required to download documents</span>
+            </div>
+          </div>
+        )}
 
         {/* Brochures Content - Centered Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -231,13 +289,23 @@ const OurResourcesPage = () => {
                     <span>Multiple Pages</span>
                   </div>
 
-                  {/* Download Button — opens modal form */}
+                  {/* Download Button — gated behind Google Sign-In */}
                   <button
-                    onClick={() => openBrochureModal(brochure.title, brochure.filename)}
-                    className="flex w-full items-center justify-center gap-2 text-white px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base bg-[#F2913F] hover:bg-[#E6822B]"
+                    onClick={() => handleDownloadClick(brochure.title, `/Brochure/${brochure.filename}`)}
+                    disabled={isSigningIn}
+                    className="flex w-full items-center justify-center gap-2 text-white px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 text-sm sm:text-base bg-[#F2913F] hover:bg-[#E6822B] disabled:opacity-70 disabled:cursor-wait"
                   >
-                    <Download size={16} className="sm:w-4 sm:h-4" />
-                    <span>Download Brochure</span>
+                    {isSigningIn ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>Signing in...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download size={16} className="sm:w-4 sm:h-4" />
+                        <span>Download Brochure</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
@@ -263,7 +331,7 @@ const OurResourcesPage = () => {
           {isExploreExpanded && (
             <div className="mt-8 max-w-7xl mx-auto">
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                {documentCategories.map((category, index) => (
+                {documentCategories.map((category) => (
                   category.id === "notices-2025-26" ? null : (
                     <div key={category.id} className="border-b border-gray-200 last:border-b-0">
                       {/* Category Header */}
@@ -289,28 +357,7 @@ const OurResourcesPage = () => {
                               {category.pdfs.length > 0 && (
                                 <div className="space-y-2 mb-4">
                                   {category.pdfs.map((pdf, pdfIndex) => (
-                                    <div
-                                      key={pdfIndex}
-                                      className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                                    >
-                                      <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                      <span
-                                        className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
-                                        onClick={() => handleView(pdf.path)}
-                                      >
-                                        {pdf.name}
-                                      </span>
-                                      <button
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleDownload(pdf.filename, pdf.name, pdf.path);
-                                        }}
-                                        className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
-                                        aria-label={`Download ${pdf.name}`}
-                                      >
-                                        <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
-                                      </button>
-                                    </div>
+                                    <DocumentRow key={pdfIndex} pdf={pdf} />
                                   ))}
                                 </div>
                               )}
@@ -328,28 +375,7 @@ const OurResourcesPage = () => {
                                     </div>
                                     <div className="space-y-2">
                                       {nestedCategory.pdfs.map((pdf, pdfIndex) => (
-                                        <div
-                                          key={pdfIndex}
-                                          className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                                        >
-                                          <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                          <span
-                                            className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
-                                            onClick={() => handleView(pdf.path)}
-                                          >
-                                            {pdf.name}
-                                          </span>
-                                          <button
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              handleDownload(pdf.filename, pdf.name, pdf.path);
-                                            }}
-                                            className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
-                                            aria-label={`Download ${pdf.name}`}
-                                          >
-                                            <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
-                                          </button>
-                                        </div>
+                                        <DocumentRow key={pdfIndex} pdf={pdf} />
                                       ))}
                                     </div>
                                   </div>
@@ -359,28 +385,7 @@ const OurResourcesPage = () => {
                           ) : category.pdfs.length > 0 ? (
                             <div className="space-y-2">
                               {category.pdfs.map((pdf, pdfIndex) => (
-                                <div
-                                  key={pdfIndex}
-                                  className="flex items-center gap-3 p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                                >
-                                  <FileText className="w-5 h-5 text-[#F2913F] flex-shrink-0" />
-                                  <span
-                                    className="flex-1 text-gray-700 cursor-pointer hover:text-[#F2913F] transition-colors duration-200"
-                                    onClick={() => handleView(pdf.path)}
-                                  >
-                                    {pdf.name}
-                                  </span>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleDownload(pdf.filename, pdf.name, pdf.path);
-                                    }}
-                                    className="p-1 hover:bg-gray-200 rounded transition-colors duration-200 cursor-pointer"
-                                    aria-label={`Download ${pdf.name}`}
-                                  >
-                                    <Download className="w-4 h-4 text-gray-500 hover:text-[#F2913F] transition-colors duration-200" />
-                                  </button>
-                                </div>
+                                <DocumentRow key={pdfIndex} pdf={pdf} />
                               ))}
                             </div>
                           ) : (
@@ -399,13 +404,14 @@ const OurResourcesPage = () => {
         </div>
       </section>
 
-      {/* Brochure Download Modal */}
-      {selectedBrochure && (
+      {/* Document Download Modal */}
+      {modalState && (
         <BrochureDownloadModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          brochureName={selectedBrochure.name}
-          brochurePath={selectedBrochure.path}
+          brochureName={modalState.name}
+          brochurePath={modalState.path}
+          googleUser={modalState.googleUser}
         />
       )}
     </div>

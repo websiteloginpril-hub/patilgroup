@@ -3,6 +3,7 @@
 <body>
 
 <!-- Hidden form for Netlify form detection at build time -->
+<!-- Form 1: First-time visitor registration (brochure/document download) -->
 <form
   name="brochure-download"
   method="POST"
@@ -17,6 +18,22 @@
   <input name="organization" />
   <input name="phone" />
   <input name="brochure" />
+  <input name="timestamp" />
+</form>
+
+<!-- Form 2: Returning visitor download record -->
+<form
+  name="document-download"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+>
+  <input type="hidden" name="form-name" value="document-download" />
+  <input name="bot-field" />
+  <input name="email" />
+  <input name="documentName" />
+  <input name="documentPath" />
+  <input name="timestamp" />
 </form>
 
 </body>

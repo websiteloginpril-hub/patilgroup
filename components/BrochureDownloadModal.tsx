@@ -1,13 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Download, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { X, Download, Loader2, CheckCircle2, AlertCircle, Search, ChevronDown } from 'lucide-react';
+import { countries } from '@/lib/countries';
+import { GoogleUser } from '@/contexts/GoogleAuthContext';
+import { saveUserInfo, StoredUserInfo } from '@/hooks/useDocumentDownload';
 
 interface BrochureDownloadModalProps {
   isOpen: boolean;
   onClose: () => void;
   brochureName: string;
   brochurePath: string;
+  googleUser?: GoogleUser | null;
 }
 
 type SubmitStatus = 'idle' | 'loading' | 'success' | 'error';
@@ -18,36 +22,54 @@ interface FormFields {
   email: string;
   organization: string;
   phone: string;
+  countryCode?: string;
 }
 
-const INITIAL_FIELDS: FormFields = {
-  firstName: '',
-  lastName: '',
-  email: '',
+const makeInitialFields = (googleUser?: GoogleUser | null): FormFields => ({
+  firstName: googleUser?.firstName || '',
+  lastName: googleUser?.lastName || '',
+  email: googleUser?.email || '',
   organization: '',
   phone: '',
-};
+  countryCode: '+91',
+});
 
 const BrochureDownloadModal = ({
   isOpen,
   onClose,
   brochureName,
   brochurePath,
+  googleUser,
 }: BrochureDownloadModalProps) => {
-  const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
+  const [fields, setFields] = useState<FormFields>(makeInitialFields(googleUser));
   const [errors, setErrors] = useState<Partial<FormFields>>({});
   const [status, setStatus] = useState<SubmitStatus>('idle');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
-  // Reset form when modal opens
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Reset & pre-fill form when modal opens
   useEffect(() => {
     if (isOpen) {
-      setFields(INITIAL_FIELDS);
+      setFields(makeInitialFields(googleUser));
       setErrors({});
       setStatus('idle');
+      // Focus the first unfilled field
       setTimeout(() => firstInputRef.current?.focus(), 150);
     }
-  }, [isOpen]);
+  }, [isOpen, googleUser]);
 
   // Close on Escape key
   useEffect(() => {
@@ -78,7 +100,7 @@ const BrochureDownloadModal = ({
     if (!fields.organization.trim()) newErrors.organization = 'Organization is required';
     if (!fields.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^[\d\s+\-()]{7,15}$/.test(fields.phone)) {
+    } else if (!/^\d{5,12}$/.test(fields.phone.replace(/\s+/g, ''))) {
       newErrors.phone = 'Enter a valid phone number';
     }
     setErrors(newErrors);
@@ -100,6 +122,9 @@ const BrochureDownloadModal = ({
     setStatus('loading');
 
     try {
+      const fullPhone = `${fields.countryCode || '+91'} ${fields.phone.trim()}`;
+
+      // Submit first-time registration to Netlify brochure-download form
       const body = new URLSearchParams({
         'form-name': 'brochure-download',
         'bot-field': '',
@@ -107,8 +132,9 @@ const BrochureDownloadModal = ({
         lastName: fields.lastName,
         email: fields.email,
         organization: fields.organization,
-        phone: fields.phone,
+        phone: fullPhone,
         brochure: brochureName,
+        timestamp: new Date().toISOString(),
       }).toString();
 
       const response = await fetch('/', {
@@ -118,6 +144,17 @@ const BrochureDownloadModal = ({
       });
 
       if (!response.ok) throw new Error('Submission failed');
+
+      // Persist user info for returning visits
+      const userInfo: StoredUserInfo = {
+        firstName: fields.firstName,
+        lastName: fields.lastName,
+        email: fields.email,
+        organization: fields.organization,
+        phone: fullPhone,
+        countryCode: fields.countryCode || '+91',
+      };
+      saveUserInfo(userInfo);
 
       setStatus('success');
 
@@ -150,13 +187,14 @@ const BrochureDownloadModal = ({
       aria-label="Download Brochure Form"
     >
       <div
-        className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl hide-scrollbar"
         style={{ background: '#fff', maxHeight: '90vh', overflowY: 'auto' }}
+        data-lenis-prevent
       >
         {/* Header */}
         <div
           className="relative px-6 pt-6 pb-4"
-          style={{ background: 'linear-gradient(135deg, #1E3888 0%, #8A393B 100%)' }}
+          style={{ background: '#7D2D2D' }}
         >
           <button
             onClick={onClose}
@@ -170,10 +208,28 @@ const BrochureDownloadModal = ({
               <Download size={20} className="text-white" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-lg leading-tight">Download Brochure</h2>
+              <h2 className="text-white font-bold text-lg leading-tight">Download Document</h2>
               <p className="text-white/70 text-xs mt-0.5 truncate max-w-[240px]">{brochureName}</p>
             </div>
           </div>
+
+          {/* Google sign-in badge */}
+          {googleUser && (
+            <div className="mt-3 flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2">
+              {googleUser.picture ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={googleUser.picture}
+                  alt={googleUser.name}
+                  className="w-6 h-6 rounded-full flex-shrink-0"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-white/30 flex-shrink-0" />
+              )}
+              <span className="text-white text-xs truncate">Signed in as <strong>{googleUser.email}</strong></span>
+            </div>
+          )}
         </div>
 
         {/* Body */}
@@ -209,7 +265,7 @@ const BrochureDownloadModal = ({
               </p>
 
               <p className="text-gray-500 text-sm mb-5">
-                Please fill in your details to download the brochure.
+                Please fill in your details to download the document.
               </p>
 
               <div className="space-y-4">
@@ -226,12 +282,11 @@ const BrochureDownloadModal = ({
                       type="text"
                       value={fields.firstName}
                       onChange={handleChange}
-                      placeholder="Ramesh"
-                      className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${
-                        errors.firstName
-                          ? 'border-red-400 bg-red-50 focus:border-red-400'
-                          : 'border-gray-300 focus:border-[#1E3888]'
-                      }`}
+                      placeholder=" "
+                      className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${errors.firstName
+                        ? 'border-red-400 bg-red-50 focus:border-red-400'
+                        : 'border-gray-300 focus:border-[#1E3888]'
+                        }`}
                     />
                     {errors.firstName && (
                       <p className="text-red-500 text-[11px] mt-1">{errors.firstName}</p>
@@ -247,12 +302,11 @@ const BrochureDownloadModal = ({
                       type="text"
                       value={fields.lastName}
                       onChange={handleChange}
-                      placeholder="Patil"
-                      className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${
-                        errors.lastName
-                          ? 'border-red-400 bg-red-50 focus:border-red-400'
-                          : 'border-gray-300 focus:border-[#1E3888]'
-                      }`}
+                      placeholder=" "
+                      className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${errors.lastName
+                        ? 'border-red-400 bg-red-50 focus:border-red-400'
+                        : 'border-gray-300 focus:border-[#1E3888]'
+                        }`}
                     />
                     {errors.lastName && (
                       <p className="text-red-500 text-[11px] mt-1">{errors.lastName}</p>
@@ -271,15 +325,20 @@ const BrochureDownloadModal = ({
                     type="email"
                     value={fields.email}
                     onChange={handleChange}
-                    placeholder="ramesh@company.com"
-                    className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${
-                      errors.email
-                        ? 'border-red-400 bg-red-50 focus:border-red-400'
+                    placeholder="xyz@company.com"
+                    readOnly={!!googleUser?.email}
+                    className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${errors.email
+                      ? 'border-red-400 bg-red-50 focus:border-red-400'
+                      : googleUser?.email
+                        ? 'border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
                         : 'border-gray-300 focus:border-[#1E3888]'
-                    }`}
+                      }`}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-[11px] mt-1">{errors.email}</p>
+                  )}
+                  {googleUser?.email && (
+                    <p className="text-[11px] text-gray-400 mt-1">Email verified via Google Sign-In</p>
                   )}
                 </div>
 
@@ -294,12 +353,11 @@ const BrochureDownloadModal = ({
                     type="text"
                     value={fields.organization}
                     onChange={handleChange}
-                    placeholder="Your company or institution"
-                    className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${
-                      errors.organization
-                        ? 'border-red-400 bg-red-50 focus:border-red-400'
-                        : 'border-gray-300 focus:border-[#1E3888]'
-                    }`}
+                    placeholder="company"
+                    className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${errors.organization
+                      ? 'border-red-400 bg-red-50 focus:border-red-400'
+                      : 'border-gray-300 focus:border-[#1E3888]'
+                      }`}
                   />
                   {errors.organization && (
                     <p className="text-red-500 text-[11px] mt-1">{errors.organization}</p>
@@ -311,19 +369,81 @@ const BrochureDownloadModal = ({
                   <label htmlFor="bd-phone" className="block text-xs font-semibold text-gray-700 mb-1">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    id="bd-phone"
-                    name="phone"
-                    type="tel"
-                    value={fields.phone}
-                    onChange={handleChange}
-                    placeholder="+91 98765 43210"
-                    className={`w-full px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${
-                      errors.phone
+                  <div className="flex gap-2">
+                    {/* Searchable Custom Dropdown */}
+                    <div className="relative" ref={dropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center justify-between gap-1.5 px-3 py-2 rounded-lg border border-gray-300 text-sm bg-white outline-none focus:border-[#1E3888] min-w-[105px] h-full text-left"
+                      >
+                        <span className="truncate">
+                          {countries.find(c => c.dial_code === fields.countryCode)?.code || 'IN'} ({fields.countryCode})
+                        </span>
+                        <ChevronDown size={14} className="text-gray-400 flex-shrink-0" />
+                      </button>
+
+                      {isDropdownOpen && (
+                        <div className="absolute left-0 bottom-full mb-1 w-72 rounded-lg border border-gray-200 bg-white shadow-lg z-[100000]" data-lenis-prevent>
+                          <div className="p-2 border-b border-gray-100 flex items-center gap-1.5 bg-gray-50 rounded-t-lg">
+                            <Search size={14} className="text-gray-400" />
+                            <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              placeholder="Search country..."
+                              className="w-full bg-transparent border-none outline-none text-xs text-gray-700 placeholder-gray-400 p-0.5"
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
+                          <div
+                            className="max-h-48 overflow-y-auto py-1"
+                            style={{ overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}
+                            data-lenis-prevent
+                          >
+                            {countries
+                              .filter(c =>
+                                c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                c.dial_code.includes(searchQuery) ||
+                                c.code.toLowerCase().includes(searchQuery.toLowerCase())
+                              )
+                              .map((country) => (
+                                <button
+                                  key={`${country.code}-${country.dial_code}`}
+                                  type="button"
+                                  onClick={() => {
+                                    setFields(prev => ({ ...prev, countryCode: country.dial_code }));
+                                    setIsDropdownOpen(false);
+                                    setSearchQuery('');
+                                  }}
+                                  className="w-full text-left px-3 py-2 text-xs hover:bg-gray-100 flex items-center justify-between transition-colors"
+                                >
+                                  <span className="text-gray-800 font-medium truncate pr-2">
+                                    {country.name}
+                                  </span>
+                                  <span className="text-gray-400 flex-shrink-0">
+                                    ({country.dial_code})
+                                  </span>
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <input
+                      id="bd-phone"
+                      name="phone"
+                      type="tel"
+                      value={fields.phone}
+                      onChange={handleChange}
+                      placeholder="XXXXX XXXXX"
+                      className={`flex-1 min-w-0 px-3 py-2 rounded-lg border text-sm outline-none transition-colors ${errors.phone
                         ? 'border-red-400 bg-red-50 focus:border-red-400'
                         : 'border-gray-300 focus:border-[#1E3888]'
-                    }`}
-                  />
+                        }`}
+                    />
+                  </div>
                   {errors.phone && (
                     <p className="text-red-500 text-[11px] mt-1">{errors.phone}</p>
                   )}
@@ -345,7 +465,7 @@ const BrochureDownloadModal = ({
                 ) : (
                   <>
                     <Download size={16} />
-                    Download Brochure
+                    Download Document
                   </>
                 )}
               </button>
