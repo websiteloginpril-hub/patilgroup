@@ -36,7 +36,7 @@ export function saveUserInfo(info: StoredUserInfo): void {
  * Fire-and-forget; failures are silently swallowed so the download is never blocked.
  */
 async function submitReturningDownload(
-  email: string,
+  userInfo: StoredUserInfo,
   documentName: string,
   documentPath: string,
 ): Promise<void> {
@@ -44,7 +44,11 @@ async function submitReturningDownload(
     const body = new URLSearchParams({
       'form-name': 'document-download',
       'bot-field': '',
-      email,
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: userInfo.email,
+      organization: userInfo.organization,
+      phone: userInfo.phone,
       documentName,
       documentPath,
       timestamp: new Date().toISOString(),
@@ -89,8 +93,8 @@ export function useDocumentDownload({ onOpenModal }: UseDocumentDownloadOptions)
       const proceed = (user: GoogleUser) => {
         const stored = getStoredUserInfo();
         if (stored) {
-          // Returning visitor — record in Netlify and download immediately
-          submitReturningDownload(stored.email, documentName, documentPath);
+          // Returning visitor — record full details in Netlify and download immediately
+          submitReturningDownload(stored, documentName, documentPath);
           triggerDownload(documentPath);
         } else {
           // First-time visitor — open registration modal
