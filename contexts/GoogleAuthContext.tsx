@@ -88,6 +88,17 @@ export function GoogleAuthProvider({ children }: { children: ReactNode }) {
 
 export function useGoogleAuth() {
   const ctx = useContext(GoogleAuthContext);
-  if (!ctx) throw new Error('useGoogleAuth must be used within GoogleAuthProvider');
+  if (!ctx) {
+    // Provide a graceful fallback during Next.js prerendering if the provider is not present in the tree yet.
+    if (typeof window === 'undefined') {
+      return {
+        googleUser: null,
+        isSigningIn: false,
+        signIn: () => {},
+        signOut: () => {}
+      };
+    }
+    throw new Error('useGoogleAuth must be used within GoogleAuthProvider');
+  }
   return ctx;
 }
