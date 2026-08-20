@@ -92,6 +92,7 @@ export default function RootLayout({
             <Toaster />
           </LenisProvider>
         </GoogleAuthProvider>
+        {/*
         <Script
           id="chatbase-script"
           strategy="lazyOnload"
@@ -115,6 +116,7 @@ export default function RootLayout({
             `,
           }}
         />
+        */}
       </body>
     </html>
   );
