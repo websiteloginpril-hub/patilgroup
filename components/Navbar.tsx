@@ -39,7 +39,7 @@ const Navbar = () => {
     { href: '/ballastless-track-urban-metro', label: 'Ballastless Track' },
     { href: '/flash-butt-welding-of-rails', label: 'Flash Butt Welding' },
     { href: '/patil-rheda-system', label: 'Patil RHEDA System' },
-    { href: '/porr-slab-track-systems', label: 'PORR Slab Track Systems' },
+
     { href: '/precast-plinth', label: 'Precast Plinth' },
   ];
 
