@@ -18,6 +18,28 @@ const PorrSlabTrackSystemsPage = () => {
           <div className="relative z-10 p-4 px-6 text-left hero-content">
             <h1 className="hero-title font-bold text-white mb-2 animate-fadeInUp">PORR Slab Track<br />Systems</h1>
           </div>
+
+          {/* Bottom Right Logo Overlay - Mobile */}
+          <div className="absolute bottom-6 right-4 z-30 flex items-center gap-4">
+            <Image
+              src="/pg.png"
+              alt="Patil Group Logo"
+              width={200}
+              height={140}
+              className="h-28 w-auto object-contain drop-shadow-lg"
+            />
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-80 drop-shadow flex-shrink-0">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            <Image
+              src="/porr.png"
+              alt="PORR Logo"
+              width={160}
+              height={110}
+              className="h-20 w-auto object-contain drop-shadow-lg"
+            />
+          </div>
         </div>
 
         {/* Desktop Layout */}
