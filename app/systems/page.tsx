@@ -19,6 +19,12 @@ const systemsData = [
     image: '/26_mobile_RHEDA_plant.jpg'
   },
   {
+    title: 'PORR Slab Track Systems',
+    description: 'High-performance precast slab track technology engineered for high-speed, heavy-haul, and urban railway lines with superior elasticity.',
+    link: '/porr-slab-track-systems',
+    image: '/system23.JPG'
+  },
+  {
     title: 'Precast Plinth',
     description: 'Factory-prepared plinth units that offer cleaner installation, reduced on-site time, and greater curve control.',
     link: '/precast-plinth',

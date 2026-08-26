@@ -1921,7 +1921,20 @@ h1, h2, h3, h4, h5, h6, p {
   top: 180px;
   z-index: 3;
 }
+.stack-card:nth-child(4) {
+  top: 220px;
+  z-index: 4;
+}
 
+.stack-card:nth-child(5) {
+  top: 260px;
+  z-index: 5;
+}
+
+.stack-card:nth-child(6) {
+  top: 300px;
+  z-index: 6;
+}
 @media (max-width: 1023px) {
   .precast-container > .stack-container .stack-card {
     width: 100%;

@@ -39,6 +39,7 @@ const Navbar = () => {
     { href: '/ballastless-track-urban-metro', label: 'Ballastless Track' },
     { href: '/flash-butt-welding-of-rails', label: 'Flash Butt Welding' },
     { href: '/patil-rheda-system', label: 'Patil RHEDA System' },
+    { href: '/porr-slab-track-systems', label: 'PORR Slab Track Systems' },
     { href: '/precast-plinth', label: 'Precast Plinth' },
   ];
 
@@ -101,7 +102,7 @@ const Navbar = () => {
       >
         <div className="w-full max-w-[1440px] mx-auto px-2 sm:px-3 md:px-6 lg:px-8">
           {/* Bar: logo left · desktop nav / mobile hamburger right */}
-          <div className="w-full flex items-center h-[52px] sm:h-16 lg:h-[66px] justify-between">
+          <div className="w-full flex items-center min-h-[46px] sm:min-h-[54px] lg:min-h-[56px] h-full justify-between">
 
             {/* Logo — left */}
             <div className="flex items-center animate-fadeInLeft ml-0 sm:-ml-4 md:-ml-6 lg:-ml-10">
@@ -219,7 +220,7 @@ const Navbar = () => {
 
         {/* Half-height + half-width panel (mobile only) */}
         <div
-          className={`lg:hidden fixed z-[9997] shadow-2xl rounded-b-2xl transition-transform duration-400 ease-out overflow-hidden top-[52px] sm:top-[76px]`}
+          className={`lg:hidden fixed z-[9997] shadow-2xl rounded-b-2xl transition-transform duration-400 ease-out overflow-hidden top-[46px] sm:top-[56px]`}
           style={{
             right: 0,
             width: '50vw',

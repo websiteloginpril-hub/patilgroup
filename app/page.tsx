@@ -326,21 +326,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* Google Analytics - Home Page Only */}
-      <Script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-R2LGP7BNK5"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
 
-          gtag('config', 'G-R2LGP7BNK5');
-        `}
-      </Script>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-black hero-section block sm:h-screen">
