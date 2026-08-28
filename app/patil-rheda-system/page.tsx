@@ -26,15 +26,15 @@ const PatilRhedaSystemPage = () => {
             <p className="text-gray-200 hero-subtitle animate-fadeInUp animate-delay-200">Advanced track solutions for modern railways.</p>
           </div>
         </div>
-        
+
         {/* Desktop Layout */}
         <div className="hidden md:block relative h-screen hero-section">
           <div className="absolute inset-0 hero-image">
-            <Image 
-              src="/Rheda hero image.png" 
-              alt="Patil RHEDA system" 
+            <Image
+              src="/Rheda hero image.png"
+              alt="Patil RHEDA system"
               fill
-              className="object-cover object-center z-0" 
+              className="object-cover object-center z-0"
               priority
               sizes="100vw"
             />
@@ -61,9 +61,9 @@ const PatilRhedaSystemPage = () => {
               The Patil RHEDA system is a slab-track solution optimized for tunnels and elevated structures. Developed with inputs from German RHEDA specifications, it provides integrated slab, rail, and fastening control within constrained alignments.
             </p>
           </div>
-          
+
           {/* Gradient Bar Below Text - Full width from left corner to right, pale to dark */}
-          <div 
+          <div
             className="w-full h-7 fade-in-section"
             style={{
               background: 'linear-gradient(90deg, rgba(255, 245, 235, 1) 0%, rgba(255, 235, 205, 0.9) 10%, rgba(242, 145, 63, 0.6) 25%, #F2913F 40%, #1E3888 65%, #8A393B 100%)'
@@ -88,16 +88,16 @@ const PatilRhedaSystemPage = () => {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 fade-in-section">
               {/* Image */}
               <div className="w-full md:w-1/2">
-                <Image 
-                  src="/rhedaimagenew.jpg" 
-                  alt="RHEDA system tunnel implementation" 
-                  width={800} 
-                  height={600} 
-                  className="rounded-lg shadow-lg w-full h-auto object-cover" 
-                  loading="lazy" 
+                <Image
+                  src="/rhedaimagenew.jpg"
+                  alt="RHEDA system tunnel implementation"
+                  width={800}
+                  height={600}
+                  className="rounded-lg shadow-lg w-full h-auto object-cover"
+                  loading="lazy"
                 />
               </div>
-              
+
               {/* Content */}
               <div className="w-full md:w-1/2">
                 <h3 className="text-[#8A393B] fluid-h3 font-bold mb-6">
@@ -110,7 +110,7 @@ const PatilRhedaSystemPage = () => {
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
-                    17.38 kms of tunnel segments
+                    17.38 kms of Patil Booted-block System
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-black rounded-full mr-3 flex-shrink-0"></span>
@@ -119,7 +119,7 @@ const PatilRhedaSystemPage = () => {
                 </ul>
               </div>
             </div>
-            
+
             {/* Bottom Text */}
             <div className="mt-8 md:mt-10 fade-in-section">
               <p className="text-black fluid-body">
@@ -129,7 +129,7 @@ const PatilRhedaSystemPage = () => {
           </div>
         </section>
       </div>
-      
+
     </div>
   );
 };
