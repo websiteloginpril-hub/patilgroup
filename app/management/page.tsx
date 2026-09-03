@@ -10,8 +10,9 @@ import Image from 'next/image';
    — no white space at the sides
    — no zoom-in effect
    — no blurred/dark backdrop layers                                 */
-const getManagementImageClassName = (name: string) =>
+const getManagementImageClassName = () =>
   'management-leadership-image object-cover object-top';
+
 
 const leadershipData = [
   {
@@ -40,7 +41,12 @@ const leadershipData = [
     post: 'MD - Track Systems',
   },
   {
-    image: '/management/swapan maithey.png',
+    image: '/management/amit sir exe.png',
+    name: 'Mr. Amit Pathak',
+    post: 'CFO',
+  },
+  {
+    image: '/management/swpan.png',
     name: 'Mr. Swapan Maity',
     post: 'CEO - Fastening Systems',
   },
@@ -55,7 +61,7 @@ const leadershipData = [
     post: 'Executive Director - Corporate Affairs',
   },
   {
-    image: '/management/sujeet.png',
+    image: '/management/sujeet sir.png',
     name: 'Mr. Sujeeth Ramakrishnan',
     post: 'CEO - Wire Business',
   },
@@ -169,7 +175,7 @@ const ManagementPage = () => {
                         src={leader.image}
                         alt={leader.name}
                         fill
-                        className={getManagementImageClassName(leader.name)}
+                        className={getManagementImageClassName()}
                         sizes="48vw"
                         priority={i < 6}
                         quality={90}
@@ -220,7 +226,7 @@ const ManagementPage = () => {
                         src={leader.image}
                         alt={leader.name}
                         fill
-                        className={getManagementImageClassName(leader.name)}
+                        className={getManagementImageClassName()}
                         sizes="240px"
                         priority={i < 6}
                         quality={90}
