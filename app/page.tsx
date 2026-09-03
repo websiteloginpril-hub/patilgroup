@@ -21,11 +21,6 @@ const projects = [
     link: "/projects"
   },
   {
-    city: "Nagpur Metro",
-    image: "/nagpurmetrohero.png",
-    link: "/projects"
-  },
-  {
     city: "Mumbai Line 7B",
     image: "/mumbai metro.png",
     link: "/projects"
