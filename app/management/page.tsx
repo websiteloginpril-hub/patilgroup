@@ -51,11 +51,6 @@ const leadershipData = [
     post: 'CEO - Fastening Systems',
   },
   {
-    image: '/management/avchandrasir.jpg',
-    name: 'Mr. A. V. Chandra Gupta',
-    post: 'CEO - Growth Centre',
-  },
-  {
     image: '/management/bnsajjansir.jpg',
     name: 'Mr. B. N. Sajjan',
     post: 'Executive Director - Corporate Affairs',
