@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chatbot Widget Demo</title>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; color: #1c2530; line-height: 1.6; }
+  h1 { font-size: 28px; }
+  code { background: #f1f3f5; padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <h1>Your website page</h1>
+  <p>This is a stand-in for any page on your real site. The chat launcher in the bottom-right corner is the widget — click it to ask a question. It only answers from the content you ingested into <code>knowledge-base.json</code>.</p>
+  <p>To add it to your real site, copy the two tags at the bottom of this file's source onto any page.</p>
+
+  <link rel="stylesheet" href="/widget.css">
+  <script src="/widget.js"
+          data-api-url="/api/chat"
+          data-title="Ask us anything"
+          data-subtitle="Answers based on this site"
+          data-greeting="Hi! Ask me anything about this site — I'll answer using its content."
+          defer></script>
+</body>
+</html>

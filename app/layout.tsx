@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import LenisProvider from '@/components/LenisProvider';
 import { GoogleAuthProvider } from '@/contexts/GoogleAuthContext';
+import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patilgroup.com'),
@@ -90,6 +91,7 @@ export default function RootLayout({
             <main>{children}</main>
             <Footer />
             <Toaster />
+            <ChatWidget />
           </LenisProvider>
         </GoogleAuthProvider>
 

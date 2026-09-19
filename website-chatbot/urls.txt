@@ -1,0 +1,32 @@
+# List one URL per line — these pages will be fetched and their text extracted.
+# Lines starting with # are ignored.
+#
+https://patilgroup.com/
+https://patilgroup.com/about
+https://patilgroup.com/our-vision
+https://patilgroup.com/legacy
+https://patilgroup.com/management
+https://patilgroup.com/our-resources
+https://patilgroup.com/our-presence
+https://patilgroup.com/sustainability
+https://patilgroup.com/our-clientele
+https://patilgroup.com/products
+https://patilgroup.com/sleepers
+https://patilgroup.com/fasteners
+https://patilgroup.com/wires
+https://patilgroup.com/inserts
+https://patilgroup.com/precast
+https://patilgroup.com/safety
+https://patilgroup.com/systems
+https://patilgroup.com/ballastless-track-urban-metro
+https://patilgroup.com/flash-butt-welding-of-rails
+https://patilgroup.com/patil-rheda-system
+https://patilgroup.com/precast-plinth
+https://patilgroup.com/projects
+https://patilgroup.com/cme
+https://patilgroup.com/research-and-development
+https://patilgroup.com/news
+https://patilgroup.com/apnatech
+https://patilgroup.com/careers
+https://patilgroup.com/contact
+https://patilgroup.com/privacy-policy
