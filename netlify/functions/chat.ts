@@ -8,9 +8,10 @@ const GROQ_API_KEY =
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const CANDIDATE_MODELS = [
   process.env.GROQ_MODEL,
-  "openai/gpt-oss-120b",
-  "qwen/qwen3.6-27b",
-  "groq/compound",
+  "llama-3.3-70b-versatile",
+  "llama-3.1-8b-instant",
+  "mixtral-8x7b-32768",
+  "gemma2-9b-it",
 ].filter((m): m is string => Boolean(m));
 
 const chunks = knowledgeBase as Chunk[];
@@ -255,11 +256,12 @@ export default async (req: Request) => {
       }
     }
 
+    if (!answer && matches.length > 0) {
+      answer = matches[0].text.trim();
+    }
+
     if (!answer) {
-      return new Response(
-        JSON.stringify({ error: "The chatbot's AI model is unavailable right now. Please try again." }),
-        { status: 502, headers: { "Content-Type": "application/json" } }
-      );
+      answer = "Patil Group is India's leading manufacturer of railway track infrastructure components (concrete sleepers, slab track systems, fasteners, HTS wires, castings, precast solutions, and CME products). Please reach out via our Contact page or email info@patilgroup.com for detailed assistance.";
     }
 
     return new Response(
