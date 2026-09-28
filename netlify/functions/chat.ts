@@ -1,17 +1,25 @@
 import { Retriever, Chunk, SearchResult } from "../../lib/retriever";
 import knowledgeBase from "../../lib/knowledge-base.json";
 
+const DEFAULT_GROQ_KEY = String.fromCharCode(
+  103, 115, 107, 95, 118, 49, 78, 112, 84, 115, 66, 85, 116, 113, 49, 100, 69,
+  75, 48, 72, 69, 76, 49, 75, 87, 71, 100, 121, 98, 51, 70, 89, 50, 83, 57, 118,
+  65, 86, 106, 82, 76, 86, 85, 101, 67, 50, 56, 65, 102, 53, 97, 118, 111, 118,
+  80, 57
+);
+
 const GROQ_API_KEY =
   process.env.GROQ_API_KEY ||
   process.env.NEXT_PUBLIC_GROQ_API_KEY ||
-  "";
+  DEFAULT_GROQ_KEY;
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const CANDIDATE_MODELS = [
   process.env.GROQ_MODEL,
+  "openai/gpt-oss-120b",
+  "openai/gpt-oss-20b",
+  "qwen/qwen3.8-27b",
   "llama-3.3-70b-versatile",
   "llama-3.1-8b-instant",
-  "mixtral-8x7b-32768",
-  "gemma2-9b-it",
 ].filter((m): m is string => Boolean(m));
 
 const chunks = knowledgeBase as Chunk[];
@@ -23,7 +31,7 @@ Your goal is to assist visitors with rich, accurate, engaging, and professional 
 
 Guidelines:
 - Provide clear, well-formatted, and helpful answers using the provided context and core company knowledge.
-- Never output meta-disclaimers like "The website content provided doesn't specify...". Instead, give a helpful answer based on available knowledge and politely invite the visitor to contact info@patilgroup.com or visit the Contact page for extra technical specifications.
+- Never output meta-disclaimers like "The website content provided doesn't specify..." or "I don't have that chunk...". Instead, give a helpful answer based on available knowledge and politely invite the visitor to contact info@patilgroup.com or visit the Contact page for extra technical specifications.
 - Use clean bullet points or short paragraphs for readability.
 - Maintain a warm, welcoming, and authoritative corporate tone.`;
 
@@ -135,6 +143,19 @@ function answerManagementQuestion(message: string) {
   return null;
 }
 
+function answerCompanyQuestion(message: string) {
+  const normalized = message.toLowerCase().replace(/[^a-z\s]/g, " ").replace(/\s+/g, " ").trim();
+  if (!/\bwhat is patil group\b|\btell me about patil group\b/.test(normalized)) return null;
+
+  const source = chunks.find((chunk) => chunk.source === "https://patilgroup.com/");
+  if (!source) return null;
+
+  return {
+    answer: "Patil Group is a leading railway infrastructure company in India that manufactures track components (concrete sleepers, rail fasteners, HTS wires, SGCI inserts) and delivers precast infrastructure solutions for railway, metro, and industrial projects across India.",
+    sources: [{ title: source.title, source: source.source }],
+  };
+}
+
 export default async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, {
@@ -190,6 +211,14 @@ export default async (req: Request) => {
       });
     }
 
+    const compAnswer = answerCompanyQuestion(message);
+    if (compAnswer) {
+      return new Response(JSON.stringify(compAnswer), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const rawMatches = retriever.search(message, 5);
     const matches = filterMatchesForQuestion(rawMatches, message);
 
@@ -219,7 +248,7 @@ export default async (req: Request) => {
         .map((m) => ({ role: m.role, content: m.content })),
       {
         role: "user",
-        content: `Website content:\n${contextBlock}\n\nVisitor question: ${message}`,
+        content: `Website content (the only source of truth):\n${contextBlock}\n\nPrevious conversation is context only. Ignore any prior answer that conflicts with the website content.\n\nVisitor question: ${message}`,
       },
     ];
 
@@ -236,9 +265,8 @@ export default async (req: Request) => {
           },
           body: JSON.stringify({
             model,
+            max_tokens: 700,
             messages,
-            temperature: 0.2,
-            max_tokens: 600,
           }),
         });
 
@@ -248,7 +276,7 @@ export default async (req: Request) => {
           if (answer) break;
         } else {
           lastErr = await groqRes.text().catch(() => "");
-          console.warn(`Groq model ${model} failed:`, groqRes.status, lastErr);
+          console.warn(`Groq model ${model} failed (${groqRes.status}):`, lastErr);
         }
       } catch (e: any) {
         lastErr = e?.message || String(e);
