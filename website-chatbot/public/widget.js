@@ -103,15 +103,42 @@
     }
   }
 
+  function formatMarkdownToHtml(str) {
+    if (!str) return "";
+    let html = escapeHtml(str);
+
+    // Convert --- / *** to <hr>
+    html = html.replace(/^\s*(-{3,}|\*{3,}|_{3,})\s*$/gm, '<hr style="border:none;border-top:1px solid #D6C7B8;margin:8px 0;">');
+
+    // Convert headers #, ##, ###
+    html = html.replace(/^### (.*$)/gim, '<strong style="display:block;font-size:14px;color:#8C2622;margin-top:6px;">$1</strong>');
+    html = html.replace(/^## (.*$)/gim, '<strong style="display:block;font-size:15px;color:#8C2622;margin-top:8px;">$1</strong>');
+    html = html.replace(/^# (.*$)/gim, '<strong style="display:block;font-size:16px;color:#8C2622;margin-top:10px;">$1</strong>');
+
+    // Convert Markdown links [label](url)
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#8C2622;font-weight:600;text-decoration:underline;">$1</a>');
+
+    // Convert **bold**
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+    // Convert bullet points
+    html = html.replace(/^[-*•]\s+(.*)$/gim, '<div style="display:flex;gap:6px;margin-top:2px;"><span style="color:#F0A527;">•</span><span>$1</span></div>');
+
+    // Preserve newlines
+    return html.replace(/\n/g, '<br/>');
+  }
+
   function addMessage(role, text, sources) {
     const wrap = document.createElement("div");
     wrap.className = `wcb-msg wcb-${role}`;
     const bubble = document.createElement("div");
     bubble.className = "wcb-bubble";
-    bubble.textContent = text;
+    if (role === "bot") {
+      bubble.innerHTML = formatMarkdownToHtml(text);
+    } else {
+      bubble.textContent = text;
+    }
     wrap.appendChild(bubble);
-
-
 
     messagesEl.appendChild(wrap);
     messagesEl.scrollTop = messagesEl.scrollHeight;

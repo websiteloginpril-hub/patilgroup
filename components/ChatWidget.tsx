@@ -104,6 +104,53 @@ function LogoBadge({ size = 32 }: { size?: number }) {
   );
 }
 
+function parseBold(text: string): React.ReactNode {
+  const parts = text.split(/\*\*([^*]+)\*\*/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, idx) =>
+    idx % 2 === 1 ? (
+      <strong key={idx} style={{ fontWeight: 700, color: "inherit" }}>
+        {part}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
+function parseInlineFormatting(text: string): React.ReactNode {
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = linkRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(parseBold(text.substring(lastIndex, match.index)));
+    }
+    const label = match[1];
+    const url = match[2];
+    parts.push(
+      <a
+        key={`link-${match.index}`}
+        href={url}
+        target={url.startsWith("http") ? "_blank" : "_self"}
+        rel="noopener noreferrer"
+        style={{ color: "#8C2622", fontWeight: 600, textDecoration: "underline" }}
+      >
+        {label}
+      </a>
+    );
+    lastIndex = linkRegex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(parseBold(text.substring(lastIndex)));
+  }
+
+  return parts;
+}
+
 function formatContent(text: string) {
   const blocks = text.split(/```/g);
   return blocks.map((block, idx) => {
@@ -132,28 +179,53 @@ function formatContent(text: string) {
     return (
       <div key={idx} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         {lines.map((line, lineIdx) => {
-          let content: React.ReactNode = line;
-
-          const bulletMatch = line.match(/^(\s*)[-*•]\s+(.*)$/);
-          const isBullet = !!bulletMatch;
-          const textToParse = isBullet ? bulletMatch[2] : line;
-
-          const boldParts = textToParse.split(/\*\*([^*]+)\*\*/g);
-          if (boldParts.length > 1) {
-            content = boldParts.map((part, partIdx) =>
-              partIdx % 2 === 1 ? (
-                <strong key={partIdx} style={{ fontWeight: 700, color: "inherit" }}>
-                  {part}
-                </strong>
-              ) : (
-                part
-              )
+          // Horizontal line rule (e.g. ---, ***, ___)
+          if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
+            return (
+              <hr
+                key={lineIdx}
+                style={{
+                  border: "none",
+                  borderTop: "1px solid #D6C7B8",
+                  margin: "8px 0",
+                }}
+              />
             );
-          } else {
-            content = textToParse;
           }
 
+          // Headers (e.g. #, ##, ###, ####)
+          const headerMatch = line.match(/^(\#{1,4})\s+(.*)$/);
+          if (headerMatch) {
+            const level = headerMatch[1].length;
+            const headerText = headerMatch[2];
+            const fontSize = level === 1 ? 16 : level === 2 ? 15 : 14;
+            return (
+              <div
+                key={lineIdx}
+                style={{
+                  fontWeight: 700,
+                  fontSize,
+                  color: "#8C2622",
+                  marginTop: level <= 2 ? 8 : 4,
+                  marginBottom: 2,
+                  lineHeight: 1.3,
+                }}
+              >
+                {parseInlineFormatting(headerText)}
+              </div>
+            );
+          }
+
+          // Bullet match (- item, * item, • item, or 1. item)
+          const bulletMatch = line.match(/^(\s*)([-*•]|\d+\.)\s+(.*)$/);
+          const isBullet = !!bulletMatch;
+          const bulletSymbol = isBullet ? bulletMatch[2] : "";
+          const textToParse = isBullet ? bulletMatch[3] : line;
+
+          const content = parseInlineFormatting(textToParse);
+
           if (isBullet) {
+            const isNumbered = /^\d+\.$/.test(bulletSymbol);
             return (
               <div
                 key={lineIdx}
@@ -161,18 +233,28 @@ function formatContent(text: string) {
                   display: "flex",
                   alignItems: "flex-start",
                   gap: 6,
-                  paddingLeft: 12,
+                  paddingLeft: 8,
                   marginTop: 2,
                 }}
               >
-                <span style={{ color: "#F0A527", fontSize: 14, lineHeight: "18px" }}>•</span>
+                <span
+                  style={{
+                    color: "#F0A527",
+                    fontSize: isNumbered ? 13 : 14,
+                    fontWeight: isNumbered ? 700 : 400,
+                    lineHeight: "18px",
+                    flexShrink: 0,
+                  }}
+                >
+                  {isNumbered ? bulletSymbol : "•"}
+                </span>
                 <span style={{ flex: 1 }}>{content}</span>
               </div>
             );
           }
 
           if (!line.trim()) {
-            return <div key={lineIdx} style={{ height: 6 }} />;
+            return <div key={lineIdx} style={{ height: 4 }} />;
           }
 
           return <div key={lineIdx}>{content}</div>;

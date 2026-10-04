@@ -44,13 +44,14 @@ app.use(
 
 const SYSTEM_PROMPT = `You are the official AI Assistant for Patil Group, India's leading manufacturer of railway track infrastructure components (concrete sleepers, slab track systems, fasteners, wires, castings, precast solutions, and CME products) with over 50 years of industry leadership.
 
-Your goal is to assist visitors with rich, accurate, engaging, and professional information about Patil Group's products, manufacturing footprint, plant locations, technology, leadership, and services.
+Your primary duty is to answer every visitor question accurately, factually, and strictly based on Patil Group's official website content.
 
-Guidelines:
-- Provide clear, well-formatted, and helpful answers using the provided context and core company knowledge.
-- Never output meta-disclaimers like "The website content provided doesn't specify...". Instead, give a helpful answer based on available knowledge and politely invite the visitor to contact info@patilgroup.com or visit the Contact page for extra technical specifications.
-- Use clean bullet points or short paragraphs for readability.
-- Maintain a warm, welcoming, and authoritative corporate tone, as the website's assistant.`;
+Strict Guidelines:
+1. TRUTHFUL & ACCURATE: Your responses must strictly align with the provided website content. Do not speculate, estimate, or invent facts, email addresses, numbers, or specifications that are not present in the site data.
+2. CAREERS & JOBS: For all employment, job application, or career inquiries, direct visitors to apply online at the Careers page (https://patilgroup.com/careers) using the Apply Now form or send their CV directly to careers@patilgroup.com.
+3. GENERAL & TECHNICAL CONTACT: For general business inquiries or extra technical details, direct visitors to info@patilgroup.com or the Contact page (https://patilgroup.com/contact).
+4. NO META DISCLAIMERS: Never say phrases like "According to the provided text..." or "The context doesn't state...". Speak naturally and authoritatively as Patil Group's AI assistant.
+5. CLEAN FORMATTING: Use clean bullet points and concise paragraphs. Never output raw markdown tokens like "---" or "###" as raw text.`;
 
 function buildContextBlock(matches) {
   if (matches.length === 0) return "(no relevant content found on the site for this question)";
@@ -59,19 +60,42 @@ function buildContextBlock(matches) {
       (m, i) =>
         `[Source ${i + 1}${m.title ? `: ${m.title}` : ""} — ${m.source}]\n${m.text}`
     )
-    .join("\n\n---\n\n");
+    .join("\n\n");
 }
 
 function filterMatchesForQuestion(matches, message) {
   const normalized = message.toLowerCase();
   const asksAboutPrivacy = /privacy|personal data|cookie|cookies|legal disclaimer|terms/.test(normalized);
-  const asksAboutCareers = /career|job|vacancy|employment|work at/.test(normalized);
+  const asksAboutCareers = /career|job|vacancy|vacancies|employment|work at|apply|application|hiring|opening|resume|cv|recruitment|join/.test(normalized);
 
   return matches.filter((match) => {
     if (match.source.endsWith("/privacy-policy") && !asksAboutPrivacy) return false;
     if (match.source.endsWith("/careers") && !asksAboutCareers) return false;
     return true;
   });
+}
+
+function answerCareerQuestion(message) {
+  const n = message.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
+  const careerSrc = [{ title: "Patil Group - Careers & Job Application", source: "https://patilgroup.com/careers" }];
+
+  if (
+    /\b(how to apply|apply for job|apply for jobs|job application|careers?|vacanc(y|ies)|hiring|join patil|send resume|submit resume|resume email|job email|careers? email|work at patil|apply job|apply jobs)\b/.test(n) ||
+    (/\b(apply|job|jobs|work|career|careers)\b/.test(n) && /\b(how|where|email|mail|process|form|link|id|details)\b/.test(n))
+  ) {
+    return {
+      answer: `To apply for jobs at Patil Group, you can use either of the following options:
+
+1. **Online Application**: Visit our **Careers Page** at [patilgroup.com/careers](https://patilgroup.com/careers) and submit your application using the **Apply Now** form. Fill in your details (First Name, Last Name, Email, Phone, Address, Position) and upload your Resume/CV (supported formats: PDF, DOC, DOCX up to 10MB).
+
+2. **Direct Email**: You can email your updated Resume/CV directly to our recruitment team at **careers@patilgroup.com**.
+
+Patil Group hires professionals across **Engineering, Production, Infrastructure Projects, Quality Control, and Corporate Support**.`,
+      sources: careerSrc,
+    };
+  }
+
+  return null;
 }
 
 function answerManagementQuestion(message) {
@@ -165,6 +189,9 @@ app.post("/api/chat", async (req, res) => {
     if (message.length > 2000) {
       return res.status(400).json({ error: "Message too long." });
     }
+
+    const careerAnswer = answerCareerQuestion(message);
+    if (careerAnswer) return res.json(careerAnswer);
 
     const plantAnswer = answerPlantQuestion(message);
     if (plantAnswer) return res.json(plantAnswer);
