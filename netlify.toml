@@ -17,6 +17,18 @@
 # ========================================
 
 [[redirects]]
+  from = "/crm"
+  to = "https://patilgroup-crm-5e5z.vercel.app/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/crm/*"
+  to = "https://patilgroup-crm-5e5z.vercel.app/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/api/chat"
   to = "/.netlify/functions/chat"
   status = 200

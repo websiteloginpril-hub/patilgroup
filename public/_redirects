@@ -1,0 +1,2 @@
+/crm    https://patilgroup-crm-5e5z.vercel.app/    200!
+/crm/*    https://patilgroup-crm-5e5z.vercel.app/:splat    200!
