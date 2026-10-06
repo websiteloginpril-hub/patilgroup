@@ -264,10 +264,50 @@ function formatContent(text: string) {
   });
 }
 
+// ---- Netlify Form submission helper ----
+async function submitChatbotResponseToNetlify(data: {
+  conversationId: string;
+  userMessage: string;
+  botResponse: string;
+  sources?: Source[];
+  pageUrl: string;
+  status: "success" | "error";
+}) {
+  try {
+    const formattedSources =
+      data.sources && data.sources.length > 0
+        ? data.sources.map((s) => `${s.title} (${s.source})`).join("; ")
+        : "";
+
+    const body = new URLSearchParams({
+      "form-name": "chatbot-response",
+      "bot-field": "",
+      conversation_id: data.conversationId,
+      user_message: data.userMessage,
+      bot_response: data.botResponse,
+      sources: formattedSources,
+      page_url: data.pageUrl,
+      status: data.status,
+      timestamp: new Date().toISOString(),
+    }).toString();
+
+    await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    });
+  } catch (err) {
+    console.error("Failed to submit chatbot response to Netlify form:", err);
+  }
+}
+
 export default function PatilGroupChatWidget() {
   useFonts();
   const pathname = usePathname();
 
+  const [conversationId, setConversationId] = useState<string>(
+    () => `conv_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+  );
   const [open, setOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -360,6 +400,16 @@ export default function PatilGroupChatWidget() {
       );
       setStatus("connected");
 
+      // Submit each prompt + response interaction to Netlify Form
+      submitChatbotResponseToNetlify({
+        conversationId,
+        userMessage: text,
+        botResponse: answer,
+        sources,
+        pageUrl: typeof window !== "undefined" ? window.location.href : pathname || "",
+        status: "success",
+      });
+
       if (typeof window !== "undefined" && (window as any).gtag) {
         (window as any).gtag("event", "chatbot_response_success", {
           event_category: "Chatbot",
@@ -367,24 +417,34 @@ export default function PatilGroupChatWidget() {
         });
       }
     } catch (err) {
+      const errorMsg = (err as Error).message;
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantId
-            ? { ...m, content: `Sorry, something went wrong: ${(err as Error).message}` }
+            ? { ...m, content: `Sorry, something went wrong: ${errorMsg}` }
             : m
         )
       );
       setStatus("error");
 
+      // Submit error response to Netlify Form
+      submitChatbotResponseToNetlify({
+        conversationId,
+        userMessage: text,
+        botResponse: `Error: ${errorMsg}`,
+        pageUrl: typeof window !== "undefined" ? window.location.href : pathname || "",
+        status: "error",
+      });
+
       if (typeof window !== "undefined" && (window as any).gtag) {
         (window as any).gtag("event", "chatbot_response_error", {
           event_category: "Chatbot",
           event_label: "Bot Response Failed",
-          value: (err as Error).message,
+          value: errorMsg,
         });
       }
     }
-  }, [input, messages, status, pathname]);
+  }, [input, messages, status, pathname, conversationId]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -394,6 +454,7 @@ export default function PatilGroupChatWidget() {
   };
 
   const clearChat = () => {
+    setConversationId(`conv_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`);
     setMessages([
       {
         id: crypto.randomUUID(),
@@ -408,6 +469,18 @@ export default function PatilGroupChatWidget() {
 
   return (
     <>
+      {/* Hidden HTML form for Netlify Form detection */}
+      <form name="chatbot-response" data-netlify="true" data-netlify-honeypot="bot-field" hidden aria-hidden="true">
+        <input type="hidden" name="form-name" value="chatbot-response" />
+        <input type="text" name="bot-field" />
+        <input type="text" name="conversation_id" />
+        <input type="text" name="user_message" />
+        <textarea name="bot_response" />
+        <input type="text" name="sources" />
+        <input type="text" name="page_url" />
+        <input type="text" name="status" />
+        <input type="text" name="timestamp" />
+      </form>
       <style>{`
         @keyframes p-dot {
           0%,100% { opacity: .25; transform: translateY(0); }

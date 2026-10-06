@@ -38,6 +38,22 @@
   <input name="documentName" />
   <input name="documentPath" />
   <input name="timestamp" />
+<!-- Form 3: Chatbot conversation response log -->
+<form
+  name="chatbot-response"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+>
+  <input type="hidden" name="form-name" value="chatbot-response" />
+  <input name="bot-field" />
+  <input name="conversation_id" />
+  <input name="user_message" />
+  <textarea name="bot_response"></textarea>
+  <input name="sources" />
+  <input name="page_url" />
+  <input name="status" />
+  <input name="timestamp" />
 </form>
 
 </body>
