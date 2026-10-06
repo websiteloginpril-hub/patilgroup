@@ -321,7 +321,6 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ onStateHover, stateLocationData = [
       { label: "Gaya", x: 58.25, y: 42.25 },
       { label: "Mirza", x: 81, y: 38 },
       { label: "Roopangarh", x: 22.35, y: 38.13 },
-      { label: "Bharatpur", x: 30.5, y: 35.5 },
       { label: "Delhi", x: 29.35, y: 30 },
       { label: "Bongaigaon", x: 78, y: 37.85 },
       { label: "Bokaro", x: 59.63, y: 46.35 },

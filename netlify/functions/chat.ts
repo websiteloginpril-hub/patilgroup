@@ -61,24 +61,55 @@ function filterMatchesForQuestion(
   });
 }
 
-/** Fast-path answers for career and job application questions */
+/** Fast-path answers for career and job application questions & HR contact */
 function answerCareerQuestion(message: string) {
   const n = message.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
   const careerSrc = [{ title: "Patil Group - Careers & Job Application", source: "https://patilgroup.com/careers" }];
 
   if (
-    /\b(how to apply|apply for job|apply for jobs|job application|careers?|vacanc(y|ies)|hiring|join patil|send resume|submit resume|resume email|job email|careers? email|work at patil|apply job|apply jobs)\b/.test(n) ||
-    (/\b(apply|job|jobs|work|career|careers)\b/.test(n) && /\b(how|where|email|mail|process|form|link|id|details)\b/.test(n))
+    /\b(how to contact hr|contact hr|hr contact|hr email|hr phone|hr number|reach hr|contact human resource(s)?|hr department|careers?|vacanc(y|ies)|hiring|join patil|send resume|submit resume|resume email|job email|careers? email|work at patil|apply job|apply jobs|how to apply|apply for job|apply for jobs|job application)\b/.test(n) ||
+    (/\b(apply|job|jobs|work|career|careers|hr|human resource|human resources)\b/.test(n) && /\b(how|where|email|mail|process|form|link|id|details|contact|reach|phone|number)\b/.test(n))
   ) {
     return {
-      answer: `To apply for jobs at Patil Group, you can use either of the following options:
+      answer: `To contact the HR department or apply for careers at Patil Group, you can use any of the following options:
 
-1. **Online Application**: Visit our **Careers Page** at [patilgroup.com/careers](https://patilgroup.com/careers) and submit your application using the **Apply Now** form. Fill in your details (First Name, Last Name, Email, Phone, Address, Position) and upload your Resume/CV (supported formats: PDF, DOC, DOCX up to 10MB).
+1. **Direct HR Email**: You can email your resume, CV, or HR inquiries directly to **careers@patilgroup.com**.
 
-2. **Direct Email**: You can email your updated Resume/CV directly to our recruitment team at **careers@patilgroup.com**.
+2. **Corporate Headquarters Contact**: Phone: **+91 40 3955 6700** | Address: **6-3-1342/4, Raj Bhavan Rd, Somajiguda, Hyderabad, Telangana 500082**.
+
+3. **Online Application**: Visit our **Careers Page** at [patilgroup.com/careers](https://patilgroup.com/careers) and submit your application using the **Apply Now** form (uploading your Resume/CV in PDF, DOC, or DOCX format up to 10MB).
 
 Patil Group hires professionals across **Engineering, Production, Infrastructure Projects, Quality Control, and Corporate Support**.`,
       sources: careerSrc,
+    };
+  }
+
+  return null;
+}
+
+/** Fast-path answers for company establishment / founding questions */
+function answerEstablishmentQuestion(message: string) {
+  const n = message.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
+  const aboutSrc = [
+    { title: "Patil Group - About Us", source: "https://patilgroup.com/about" },
+    { title: "Patil Group - Legacy & History", source: "https://patilgroup.com/legacy" }
+  ];
+
+  if (
+    /\b(when (was|is)? patil group (established|founded|started|incorporated))\b/.test(n) ||
+    /\b(patil group (established|founded|started) (in|year|when))\b/.test(n) ||
+    /\b(establishment|founding|foundation) (year|date|history|time)\b/.test(n) ||
+    /\b(when patil group established|when patil group founded|when was patil group established)\b/.test(n) ||
+    (/\b(when|year)\b/.test(n) && /\b(patil group|company|group)\b/.test(n) && /\b(established|founded|started|began)\b/.test(n))
+  ) {
+    return {
+      answer: `According to Patil Group's official website:
+
+- **1960s**: Patil Group began in the **1960s** with a single concrete sleeper plant.
+- **1970s**: Established its first sleeper manufacturing unit, laying the foundation for one of India's largest railway infrastructure companies.
+
+Today, Patil Group brings over **50 years of industry leadership** in manufacturing railway track infrastructure components across India.`,
+      sources: aboutSrc,
     };
   }
 
@@ -121,7 +152,6 @@ Together, these plants make Patil Group one of the world's largest concrete slee
 - **3 HTS Wire Facilities**: Bobbili (AP), Roopangarh (Rajasthan), and Chandrapur (Maharashtra) / Bokaro (Jharkhand).
 - **2 Ductile Iron Foundries & SGCI Insert Plants**: Bokaro (23,000 MT/year capacity & 1.3M SGCI inserts/month) and Kallakal/Hyderabad (13,000 MT/year capacity).
 - **1 Rail Fastening Systems Plant**: Medchal (Telangana) with in-house heat treatment and tool design.
-- **1 Precast Concrete Plant**: Bharatpur (Rajasthan).
 - **2 Flash Butt Welding Depots**: Bongaigaon (Assam) and Rangapani (West Bengal).
 - **2 R&D & Technology Centers**: Patil iLabs (Bengaluru) and Apna Technologies & Solutions (Hosur).`,
       sources: presenceSrc,
@@ -159,7 +189,8 @@ function answerManagementQuestion(message: string) {
   if (/\b(group director|group ceo|director.*ceo|ceo.*director)\b/.test(n) || (/\bceo\b/.test(n) && !/fastening|wire|track/.test(n)))
     return { answer: "Patil Group's Group Director & CEO is Mr. Vikash Kumar Gupta.", sources: src };
 
-  if (/\b(chro|chief human|hr)\b/.test(n))
+  const isContactQuery = /\b(contact|email|mail|phone|number|reach|call|address|how to|where to)\b/.test(n);
+  if (!isContactQuery && /\b(who is (the )?(group )?chro|who is (the )?head of hr|who is (the )?chief human|group chro)\b/.test(n))
     return { answer: "Patil Group's Group CHRO is Mr. Janardhanan Narayanaswamy.", sources: src };
 
   if (/\b(coo|chief operating)\b/.test(n))
@@ -223,6 +254,14 @@ export default async (req: Request) => {
     const careerAnswer = answerCareerQuestion(message);
     if (careerAnswer) {
       return new Response(JSON.stringify(careerAnswer), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const establishmentAnswer = answerEstablishmentQuestion(message);
+    if (establishmentAnswer) {
+      return new Response(JSON.stringify(establishmentAnswer), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });

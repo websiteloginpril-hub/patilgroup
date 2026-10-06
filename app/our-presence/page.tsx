@@ -15,7 +15,7 @@ const OurPresencePage = () => {
     { stateID: "IN-UT", state: "Uttarakhand", cities: [{ name: "Pathri", plantType: "SLEEPER PLANT" }], color: "#F2913F" },
     { stateID: "IN-HR", state: "Haryana", cities: [{ name: "Sholaka", plantType: "SLEEPER PLANT" }], color: "#F2913F" },
     { stateID: "IN-UP", state: "Uttar Pradesh", cities: [{ name: "Burhwal", plantType: "SLEEPER PLANT" }], color: "#F2913F" },
-    { stateID: "IN-RJ", state: "Rajasthan", cities: [{ name: "Roopangarh", plantType: "WIRE PLANT" }, { name: "Bharatpur", plantType: "PRECAST" }], color: "#F2913F" },
+    { stateID: "IN-RJ", state: "Rajasthan", cities: [{ name: "Roopangarh", plantType: "WIRE PLANT" }], color: "#F2913F" },
     { stateID: "IN-DL", state: "Delhi", cities: [{ name: "Delhi", plantType: "BRANCH OFFICE" }], color: "#F2913F" },
 
     { stateID: "IN-CT", state: "Chhattisgarh", cities: [{ name: "Kargi", plantType: "SLEEPER PLANT" }], color: "#F2913F" },

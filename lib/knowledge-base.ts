@@ -10,9 +10,9 @@ export const knowledgeBase = `
 Patil Group is one of India's leading manufacturers of railway track infrastructure components, with over 50 years of expertise in designing, manufacturing, and supplying high-quality track solutions.
 
 ## Founding & Legacy
-- Founded in 1972 by Shri L. P. Patil
-- Headquarters: Pune, Maharashtra, India
-- A "Make in India" champion in the railway infrastructure sector
+- Began in the 1960s with a single concrete sleeper plant; established its first sleeper manufacturing unit in the 1970s.
+- Headquarters (CHQ): Somajiguda, Hyderabad, Telangana, India
+- A "Make in India" champion in the railway infrastructure sector with over 50 years of industry leadership.
 
 ## Core Products
 1. **Concrete Sleepers (Mono-block & Bi-block)** – Pre-stressed concrete sleepers for broad gauge, metre gauge and narrow gauge tracks; used by Indian Railways and metro projects.
